@@ -20,7 +20,7 @@ jobs:
 
       # Step 3: Instalar dependências do projeto
       - name: Install Dependencies
-        run: npm install
+        run: npm install; npm run build
 
       # Step 4: Configurar o Java e o Android SDK
       - name: Set up Java JDK 17
