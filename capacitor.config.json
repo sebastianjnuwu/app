@@ -1,0 +1,10 @@
+{
+  "appId": "uwu.cookie.app",
+  "appName": "cookie",
+  "webDir": "build",
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": false
+    }
+  }
+}

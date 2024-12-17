@@ -1,0 +1,5 @@
+R_DEF: Internal format may change without notice
+local
+style capacitor_default_style
+style capacitor_full_screen_style
+style capacitor_immersive_style
