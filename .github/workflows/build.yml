@@ -43,10 +43,9 @@ jobs:
           cd android
           ./gradlew assembleRelease
 
-      # Step 6: Fazer upload do APK como artefato
-      - name: Upload APK
-        uses: actions/upload-artifact@v3
+      - name: Archive JAR Artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: app.apk
-          path: android/app/build/outputs/apk/release/*.apk
+         name: app.apk
+         path: android/app/build/outputs/apk/release/*.apk
           
