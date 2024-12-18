@@ -1,4 +1,4 @@
-name: Build and Sign APK with Capacitor
+name: Build (APK)
 
 on:
   workflow_dispatch: # Permite rodar a ação manualmente
@@ -43,28 +43,19 @@ jobs:
           cd android
           ./gradlew assembleRelease
 
-      # Step 6: Gerar o keystore dinamicamente
-      - name: Generate Keystore
+      # Step 6: Decodificar o Keystore a partir de Base64
+      - name: Decode Keystore
         run: |
-          keytool -genkeypair -v \
-            -keystore release-key.jks \
-            -keyalg RSA \
-            -keysize 2048 \
-            -validity 10000 \
-            -alias release-key \
-            -dname "CN=Your Name, OU=Your Unit, O=Your Org, L=Your City, S=Your State, C=Your Country" \
-            -storepass password123 \
-            -keypass password123
-        working-directory: android/app
+          echo "${{ secrets.KEYSTORE_FILE }}" | base64 -d > android/app/release-key.jks
 
-      # Step 7: Assinar o APK com o keystore gerado
+      # Step 7: Assinar o APK com o Keystore Permanente
       - name: Sign APK
         run: |
           $ANDROID_HOME/build-tools/34.0.0/apksigner sign \
             --ks android/app/release-key.jks \
-            --ks-key-alias release-key \
-            --ks-pass pass:password123 \
-            --key-pass pass:password123 \
+            --ks-key-alias ${{ secrets.ALIAS }} \
+            --ks-pass pass:${{ secrets.STORE_PASSWORD }} \
+            --key-pass pass:${{ secrets.KEY_PASSWORD }} \
             --out android/app/build/outputs/apk/release/app-release-signed.apk \
             android/app/build/outputs/apk/release/app-release-unsigned.apk
 
@@ -72,6 +63,5 @@ jobs:
       - name: Upload Signed APK
         uses: actions/upload-artifact@v4
         with:
-          name: android
-          path: android/app/build/outputs/apk/release/*.apk
-          
+          name: signed-app.apk
+          path: android/app/build/outputs/apk/release/app-release-signed.apk
