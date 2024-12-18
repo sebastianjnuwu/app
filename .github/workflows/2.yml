@@ -1,4 +1,4 @@
-name: Build and Sign APK with Capacitor (No Secrets)
+name: Build and Sign APK with Capacitor
 
 on:
   workflow_dispatch: # Permite rodar a ação manualmente
@@ -39,7 +39,7 @@ jobs:
       # Step 5: Gerar o Keystore
       - name: Generate Keystore
         run: |
-          keytool -genkey -v -keystore release-key.jks \
+          keytool -genkeypair -v -keystore release-key.jks \
             -keyalg RSA -keysize 2048 -validity 10000 \
             -storepass my-keystore-password \
             -keypass my-key-password \
@@ -75,4 +75,3 @@ jobs:
         with:
           name: signed-app.apk
           path: android/app/build/outputs/apk/release/*.apk
-          
