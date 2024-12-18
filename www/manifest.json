@@ -1,6 +1,6 @@
 {
-  "name": "App",
-  "short_name": "App",
+  "name": "Cookie",
+  "short_name": "Cookie",
   "start_url": "index.html",
   "display": "standalone",
   "icons": [{
