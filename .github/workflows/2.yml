@@ -1,0 +1,78 @@
+name: Build and Sign APK with Capacitor (No Secrets)
+
+on:
+  workflow_dispatch: # Permite rodar a ação manualmente
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checar o repositório
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 2: Instalar o Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Substitua pela versão necessária
+
+      # Step 3: Instalar dependências do projeto
+      - name: Install Dependencies
+        run: npm install; npm run build
+
+      # Step 4: Configurar o Java e o Android SDK
+      - name: Set up Java JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v2
+        with:
+          api-level: 34
+          build-tools: 34.0.0
+          ndk: false
+
+      # Step 5: Gerar o Keystore
+      - name: Generate Keystore
+        run: |
+          keytool -genkey -v -keystore release-key.jks \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -storepass my-keystore-password \
+            -keypass my-key-password \
+            -alias my-key-alias \
+            -dname "CN=My Company, OU=Mobile Dev, O=My Company, L=City, S=State, C=US"
+
+      # Step 6: Buildar o APK
+      - name: Build APK
+        run: |
+          npx cap sync android
+          cd android
+          ./gradlew assembleRelease
+
+      # Step 7: Assinar o APK
+      - name: Sign APK
+        run: |
+          jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
+            -keystore release-key.jks \
+            -storepass my-keystore-password \
+            -keypass my-key-password \
+            android/app/build/outputs/apk/release/app-release-unsigned.apk my-key-alias
+
+      # Step 8: Alinhar o APK
+      - name: Align APK
+        run: |
+          $ANDROID_HOME/build-tools/34.0.0/zipalign -v 4 \
+            android/app/build/outputs/apk/release/app-release-unsigned.apk \
+            android/app/build/outputs/apk/release/app-release.apk
+
+      # Step 9: Fazer upload do APK assinado
+      - name: Archive Signed APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: signed-app.apk
+          path: android/app/build/outputs/apk/release/*.apk
+          
