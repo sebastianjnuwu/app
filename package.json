@@ -1,7 +1,6 @@
 {
-  "name": "capacitor-app",
+  "name": "cookie-app",
   "version": "1.0.0",
-  "description": "An Amazing Capacitor App",
   "type": "module",
   "keywords": [
     "capacitor",
@@ -14,14 +13,13 @@
   },
   "dependencies": {
     "@capacitor/android": "^6.2.0",
-    "@capacitor/camera": "latest",
+    "@capacitor/camera": "^6.1.2",
     "@capacitor/core": "latest",
-    "@capacitor/splash-screen": "latest"
+    "@capacitor/splash-screen": "^6.0.3"
   },
   "devDependencies": {
     "@capacitor/cli": "latest",
+    "typescript": "^5.7.2",
     "vite": "^5.4.2"
-  },
-  "author": "",
-  "license": "ISC"
+  }
 }
