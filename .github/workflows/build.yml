@@ -1,4 +1,4 @@
-name: Build (APK)
+name: 🚀 Build (APK)
 
 on:
   workflow_dispatch: # Permite rodar a ação manualmente
@@ -63,5 +63,5 @@ jobs:
       - name: Upload Signed APK
         uses: actions/upload-artifact@v4
         with:
-          name: signed-app.apk
+          name: android
           path: android/app/build/outputs/apk/release/app-release-signed.apk
