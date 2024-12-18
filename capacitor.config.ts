@@ -4,12 +4,7 @@ const config: CapacitorConfig = {
   appId: 'uwu.cookie.app',
   appName: 'Cookie',
   webDir: 'www',
-  plugins: {
-    Camera: {
-      webUseInput: true,
-    },
-  },
-
+  plugins: {},
 };
 
 export default config;
