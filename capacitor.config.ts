@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: 'Cookie',
   webDir: 'www',
   backgroundColor: '#6200a3',
-  plugins: {},
+  plugins: {}
 };
 
 export default config;
