@@ -13,10 +13,10 @@
   },
   "dependencies": {
     "@capacitor/android": "^6.2.0",
-    "@capacitor/core": "latest"
+    "@capacitor/core": "^6.2.0"
   },
   "devDependencies": {
-    "@capacitor/cli": "latest",
+    "@capacitor/cli": "^6.2.0",
     "typescript": "^5.7.2",
     "vite": "^5.4.2"
   }
