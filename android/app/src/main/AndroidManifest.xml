@@ -11,9 +11,7 @@
         android:theme="@style/AppTheme">
 
         <!-- Configuração do AdMob -->
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-6690516270288705~6535066913" />
+        <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="@string/admob_app_id"/>
 
         <!-- Permissões -->
         <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
