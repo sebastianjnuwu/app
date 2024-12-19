@@ -15,5 +15,59 @@
   <script>
     eruda.init();
   </script>
-  <script src="./res/js/main.js" type="module"></script>
+  <script type="module">
+    import { Capacitor } from '@capacitor/core';
+import { AdMob, BannerAdOptions, BannerAdSize, BannerAdPosition, AdmobConsentStatus } from '@capacitor-community/admob';
+
+const initializeAds = async () => {
+  try {
+    
+    if (Capacitor.isNativePlatform()) {
+      await AdMob.initialize();
+
+      const [trackingInfo, consentInfo] = await Promise.all([
+        AdMob.trackingAuthorizationStatus(),
+        AdMob.requestConsentInfo(),
+      ]);
+
+      if (trackingInfo.status === 'notDetermined') {
+        await AdMob.requestTrackingAuthorization();
+      }
+
+      const authorizationStatus = await AdMob.trackingAuthorizationStatus();
+      if (
+        authorizationStatus.status === 'authorized' &&
+        consentInfo.isConsentFormAvailable &&
+        consentInfo.status === AdmobConsentStatus.REQUIRED
+      ) {
+        await AdMob.showConsentForm();
+      }
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const showBanner = async () => {
+  
+  try {
+
+    const options = {
+      adId: 'ca-app-pub-6690516270288705/1043067086',
+      adSize: BannerAdSize.BANNER,
+      position: BannerAdPosition.BOTTOM_CENTER,
+      margin: 0
+    };
+
+    await AdMob.showBanner(options);
+    
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+initializeAds().then(() => {
+  showBanner();
+});
+  </script>
 </html>
