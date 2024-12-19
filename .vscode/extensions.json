@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        "bracketpaircolordlw.bracket-pair-color-dlw",
+        "dracula-theme.theme-dracula",
+        "editorconfig.editorconfig",
+        "dbaeumer.vscode-eslint",
+        "github.vscode-github-actions",
+        "pkief.material-icon-theme"
+    ]
+}
