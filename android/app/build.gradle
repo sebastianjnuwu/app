@@ -20,11 +20,10 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true  // Habilita o ProGuard para remover código não utilizado
+            minifyEnabled true  // Habilita o ProGuard para otimizar e remover código não utilizado
             shrinkResources true  // Remove recursos não utilizados
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
     }
 
     buildFeatures {
