@@ -8,66 +8,14 @@
   <link rel="shortcut icon" href="./res/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="./res/styles/ui.css" type="text/css" media="all" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/eruda/3.4.1/eruda.min.js" integrity="sha512-3RVqOZtMevFOLeXCp0/Wl7np/l3J3MMysaFDUhNh+hdKx+Wb0lMXuHwA6CZ/+4DfYZM01Om1as8g+mnTaQH9vA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
- </head>
+  <script type="module" src="main.ts"></script>
+</head>
   <body>
-    
+    <button onclick="showBottomBanner()">Mostrar Banner</button>
+    <button onclick="hideBanner()">Ocultar Banner</button>
+    <button onclick="removeBanner()">Remover Banner</button>
   </body>
   <script>
     eruda.init();
-  </script>
-  <script type="module">
-    import { Capacitor } from '@capacitor/core';
-import { AdMob, BannerAdOptions, BannerAdSize, BannerAdPosition, AdmobConsentStatus } from '@capacitor-community/admob';
-
-const initializeAds = async () => {
-  try {
-    
-    if (Capacitor.isNativePlatform()) {
-      await AdMob.initialize();
-
-      const [trackingInfo, consentInfo] = await Promise.all([
-        AdMob.trackingAuthorizationStatus(),
-        AdMob.requestConsentInfo(),
-      ]);
-
-      if (trackingInfo.status === 'notDetermined') {
-        await AdMob.requestTrackingAuthorization();
-      }
-
-      const authorizationStatus = await AdMob.trackingAuthorizationStatus();
-      if (
-        authorizationStatus.status === 'authorized' &&
-        consentInfo.isConsentFormAvailable &&
-        consentInfo.status === AdmobConsentStatus.REQUIRED
-      ) {
-        await AdMob.showConsentForm();
-      }
-    }
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const showBanner = async () => {
-  
-  try {
-
-    const options = {
-      adId: 'ca-app-pub-6690516270288705/1043067086',
-      adSize: BannerAdSize.BANNER,
-      position: BannerAdPosition.BOTTOM_CENTER,
-      margin: 0
-    };
-
-    await AdMob.showBanner(options);
-    
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-initializeAds().then(() => {
-  showBanner();
-});
   </script>
 </html>
