@@ -17,7 +17,10 @@ jobs:
           node-version: '18' 
 
       - name: Install Dependencies
-        run: npm install; npm run build
+        run: npm install
+
+      - name: Build files
+        run: npm run build
 
       - name: Set up Java JDK 17
         uses: actions/setup-java@v3
@@ -34,7 +37,6 @@ jobs:
 
       - name: Build APK
         run: |
-          npx cap update
           npx cap sync android
           cd android
           ./gradlew assembleRelease
