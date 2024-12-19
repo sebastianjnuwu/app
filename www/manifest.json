@@ -1,6 +1,7 @@
 {
   "name": "Cookie",
   "short_name": "Cookie",
+  "theme_color": "#FEE7BD",
   "start_url": "index.html",
   "display": "standalone",
   "icons": [{
