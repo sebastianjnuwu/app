@@ -25,17 +25,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-    splits {
-        density {
-            enable true
-            compatibleScreenSizes 'hdpi', 'xhdpi', 'xxhdpi', 'xxxhdpi'  // Divide o APK por densidade de tela
-        }
-        abi {
-            enable true
-            reset()  // Garante que o APK gerado seja otimizado para a arquitetura correta
-            include 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'  // Divide o APK por arquitetura de CPU
-        }
     }
 
     buildFeatures {
