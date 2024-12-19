@@ -4,11 +4,7 @@ const config: CapacitorConfig = {
   appId: 'uwu.cookie.app',
   appName: 'Cookie',
   webDir: 'www',
-  bundledWebRuntime: false,
-  android: {
-    backgroundColor: '#FFFFFF',
-    appendUserAgent: 'Cookie' 
-  }
+  bundledWebRuntime: false
 };
 
 export default config;
