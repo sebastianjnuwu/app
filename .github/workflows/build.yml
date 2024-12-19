@@ -1,7 +1,9 @@
 name: 🚀 Build App (android)
 
 on:
-  workflow_dispatch: 
+  push:
+    branches:
+      - android
 
 jobs:
   build:
