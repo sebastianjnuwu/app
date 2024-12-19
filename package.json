@@ -10,11 +10,9 @@
     "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "capacitor:copy": "npx cap copy",
-    "capacitor:update": "npx cap update",
-    "capacitor:sync": "npx cap sync", 
-    "capacitor:open:android": "npx cap open android"
-
+    "copy": "npx cap copy",
+    "update": "npx cap update",
+    "sync": "npx cap sync"
   },
   "dependencies": {
     "@capacitor/android": "^6.2.0",
@@ -22,6 +20,7 @@
   },
   "devDependencies": {
     "@capacitor/cli": "^6.2.0",
+    "typescript": "^5.7.2",
     "vite": "^5.4.2"
   }
 }
