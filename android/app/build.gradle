@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 android {
     namespace "uwu.cookie.app"
     compileSdk rootProject.ext.compileSdkVersion
+
     defaultConfig {
         applicationId "uwu.cookie.app"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -10,23 +11,42 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
         aaptOptions {
-             // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
-             // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
+            // Files and dirs to omit from the packaged assets dir
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled true  // Habilita o ProGuard para remover código não utilizado
+            shrinkResources true  // Remove recursos não utilizados
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    splits {
+        density {
+            enable true
+            compatibleScreenSizes 'hdpi', 'xhdpi', 'xxhdpi', 'xxxhdpi'  // Divide o APK por densidade de tela
+        }
+        abi {
+            enable true
+            reset()  // Garante que o APK gerado seja otimizado para a arquitetura correta
+            include 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'  // Divide o APK por arquitetura de CPU
+        }
+    }
+
+    buildFeatures {
+        // Desabilite recursos não necessários para reduzir o tamanho do APK
+        viewBinding false
+        dataBinding false
     }
 }
 
 repositories {
-    flatDir{
+    flatDir {
         dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
     }
 }
