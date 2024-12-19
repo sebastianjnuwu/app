@@ -13,21 +13,19 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         aaptOptions {
-            // Files and dirs to omit from the packaged assets dir
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
 
     buildTypes {
         release {
-            minifyEnabled true  // Habilita o ProGuard para otimizar e remover código não utilizado
-            shrinkResources true  // Remove recursos não utilizados
+            minifyEnabled true  
+            shrinkResources true  
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
     buildFeatures {
-        // Desabilite recursos não necessários para reduzir o tamanho do APK
         viewBinding false
         dataBinding false
     }
