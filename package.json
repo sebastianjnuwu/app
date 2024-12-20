@@ -3,12 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "description": "Cookie...",
-  "author": [
-    "Sebastian Jn <sebastianjnuwu@gmail.com>"
-  ],
-  "keywords": [
-    "android"
-  ],
+  "author": "Sebastian Jn <sebastianjnuwu@gmail.com>",
   "scripts": {
     "start": "vite",
     "build": "vite build",
@@ -26,6 +21,5 @@
     "@capacitor/cli": "^6.2.0",
     "typescript": "^5.7.2",
     "vite": "^5.4.2"
-  },
-  "browserslist": "cover 100%,not android < 5"
+  }
 }
