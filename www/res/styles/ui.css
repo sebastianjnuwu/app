@@ -1,26 +1,27 @@
 /* desgner */
 
 :root {
-  --layout: #FEE7BD;
+	--layout: #fee7bd;
 }
 
 * {
-  margin: 0;
-  padding: 0;
+	margin: 0;
+	padding: 0;
 }
 
 html {
-  overflow: auto;
+	overflow: auto;
 }
 
-html, body {
-  width: 100%;
-  height: 100%;
-  font-size: 14px;
+html,
+body {
+	width: 100%;
+	height: 100%;
+	font-size: 14px;
 }
 
 body {
-  user-select: none;
-  font-family: 'Roboto', sans-serif;
-  background-color: var(--layout);
+	user-select: none;
+	font-family: "Roboto", sans-serif;
+	background-color: var(--layout);
 }

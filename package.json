@@ -7,7 +7,7 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
-    "format": "npx @biomejs/biome format --write ./www/res/js",
+    "format": "npx @biomejs/biome format --write",
     "preview": "vite preview",
     "copy": "npx cap copy",
     "update": "npx cap update",
