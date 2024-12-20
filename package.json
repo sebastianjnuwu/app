@@ -13,7 +13,6 @@
     "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "icon": "npx @capacitor/assets generate --android",
     "copy": "npx cap copy",
     "update": "npx cap update",
     "sync": "npx cap sync"
