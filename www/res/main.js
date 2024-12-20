@@ -32,7 +32,7 @@ function $hide_banner() {
 };
 
 function $show_video() {
-  const adId = 'ca-app-pub-6690516270288705/2597759707'; 
+  const adId = 'ca-app-pub-6690516270288705/7898187843'; 
   AdMob.prepareRewardVideoAd({ adId }).then(() => {
       console.log('Intersticial recompensado preparado.');
       return AdMob.showRewardVideoAd();
@@ -44,8 +44,30 @@ function $show_video() {
 
 };
 
- $("#show").on("click", () => {
+ $("#show_banner").on("click", () => {
+   return $show_banner();
+ });
+ 
+ $("#show_video").on("click", () => {
    return $show_video();
  });
+ 
+ $("#hide_banner").on("click", () => {
+   return $hide_banner();
+ });
+
+ $("#award").on("click", () => {
+  AdMob.prepareInterstitial({
+    adId: 'ca-app-pub-6690516270288705/8937605645',
+    autoShow: false,
+  }).then(() => {
+    console.log('Intersticial preparado.');
+    return AdMob.showInterstitial();
+  }).then(() => {
+    console.log('Anúncio intersticial exibido com sucesso.');
+  }).catch((err) => {
+    console.error('Erro ao exibir anúncio intersticial:', err.message);
+  });
+});
 
 });
