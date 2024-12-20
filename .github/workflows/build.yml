@@ -41,6 +41,7 @@ jobs:
         run: |
           npx cap sync android
           cd android
+          chmod +x ./gradlew
           ./gradlew assembleRelease
 
       - name: Decode Keystore
