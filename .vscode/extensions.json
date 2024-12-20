@@ -5,7 +5,6 @@
         "editorconfig.editorconfig",
         "dbaeumer.vscode-eslint",
         "github.vscode-github-actions",
-        "pkief.material-icon-theme",
-        "astro-build.astro-vscode"
+        "pkief.material-icon-theme"
     ]
 }
