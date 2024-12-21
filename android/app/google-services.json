@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "202105498916",
+    "project_id": "cookie-brasil",
+    "storage_bucket": "cookie-brasil.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:202105498916:android:cc1c2b81ebcda2ce8997b1",
+        "android_client_info": {
+          "package_name": "uwu.cookie.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCu0M-2ZMkHy-ABcch5yedVH1OE1t-P2Gw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

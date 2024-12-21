@@ -19,7 +19,8 @@
   "dependencies": {
     "@capacitor-community/admob": "^6.1.0",
     "@capacitor/android": "^6.2.0",
-    "@capacitor/core": "^6.2.0"
+    "@capacitor/core": "^6.2.0",
+    "@capacitor/push-notifications": "^6.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
