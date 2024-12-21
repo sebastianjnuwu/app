@@ -1,4 +1,6 @@
-/* desgner */
+/* 
+ By Sebastian Jn <sebastianjnuwu@gmail.com>
+*/
 
 :root {
 	--layout: #fee7bd;
@@ -9,18 +11,10 @@
 	padding: 0;
 }
 
-html {
-	overflow: auto;
-}
-
-html,
 body {
 	width: 100%;
 	height: 100%;
 	font-size: 14px;
-}
-
-body {
 	user-select: none;
 	font-family: "Roboto", sans-serif;
 	background-color: var(--layout);
