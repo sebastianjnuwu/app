@@ -1,5 +1,6 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
+ // https://capacitorjs.com/docs/config
 const config: CapacitorConfig = {
   appId: 'uwu.cookie.app',
   appName: 'Cookie',

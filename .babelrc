@@ -1,0 +1,20 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "useBuiltIns": "usage", 
+        "corejs": 3, 
+        "targets": "> 0.25%, not dead" 
+      }
+    ]
+  ],
+  "plugins": [
+    "@babel/plugin-transform-runtime", 
+    "@babel/plugin-syntax-dynamic-import",
+    [
+      "babel-plugin-transform-remove-console",
+      { "exclude": ["error", "warn"] } 
+    ]
+  ]
+}
