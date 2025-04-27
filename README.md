@@ -1,6 +1,6 @@
 <div align="center">
   <h1>Cookie Clicker</h1>
-  <img alt="icon" src="https://cookie-clicker-brasil.vercel.app/favicon.ico" width="40%" />
+  <img alt="icon" src="https://cookie-clicker-brasil.github.io/favicon.ico" width="40%" />
   <p>
     <b>🍪 Cookie Clicker Brasil</b> <i>is the best cookie clicking game you will find!</i>
   </p>
@@ -33,7 +33,7 @@
   <li><b>Multiplayer:</b> Real-time competition with other players.</li>
 </ul>
 
-<b>Demo:</b> <a href="https://cookie-clicker-brasil.vercel.app">Cookie Clicker Brasil (web)</a> 
+<b>Demo:</b> <a href="https://cookie-clicker-brasil.github.io/">Cookie Clicker Brasil (web)</a> 
 
 <h3>Features</h3>
 <ul>
