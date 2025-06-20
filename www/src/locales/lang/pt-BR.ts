@@ -1,4 +1,6 @@
-import { join } from "path";
+// File: www/src/locales/lang/pt-BR.ts
+// Project: Cookie Clicker Online
+// Description: Portuguese (Brazil) translation for Cookie Clicker Online
 
 // @lang/pt-BR
 const translation = {

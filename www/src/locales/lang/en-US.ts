@@ -1,4 +1,9 @@
+// File: www/src/locales/lang/en-US.ts
+// Project: Cookie Clicker Online
+// Description: English (US) translation for Cookie Clicker Online
+
 import type ptbrtranslation from "./pt-BR";
+
 // @lang/en-US
 const enUSTranslation = {
   general: {

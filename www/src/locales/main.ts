@@ -1,13 +1,13 @@
 import i18next, { type TFunction } from "i18next";
 import $ from "jquery";
 
-import pt from "./lang/pt-BR.ts";
-import en from "./lang/en-US.ts";
+import pt from "./lang/pt-BR";
+import en from "./lang/en-US";
 
 i18next.init({
   lng: "pt-BR",
   debug: false,
-  preload: true,
+  preload: ["en-US", "pt-BR"],
   resources: {
     "en-US": {
       translation: en,
