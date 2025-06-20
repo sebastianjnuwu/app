@@ -42,7 +42,7 @@ const translation = {
     },
     room: {
         message: {
-            join: "O jogador <b>{{room_player}}</b> entrou na sala de {{owner}}.",
+            join: "O jogador <b>{{room_player}}</b> entrou na sala.",
             leave: "O jogador <b>{{room_player}}</b> saiu da sala.",
             rejoin: "O jogador <b>{{room_player}}</b> reentrou na sala.",
         },

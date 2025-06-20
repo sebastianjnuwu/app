@@ -44,7 +44,7 @@ const enUSTranslation = {
   },
   room: {
     message: {
-      join: "Player <b>{{room_player}}</b> has joined the room of {{owner}}.",
+      join: "Player <b>{{room_player}}</b> has joined the room.",
       leave: "Player <b>{{room_player}}</b> has left the room.",
       rejoin: "Player <b>{{room_player}}</b> has rejoined the room.",
     },
