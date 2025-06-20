@@ -8,7 +8,9 @@ const $room_modal = new Modal($("#room_modal"));
  * Game Start Song
  */
 export const startSong = document.createElement("audio");
+export const JoinSong = document.createElement("audio");
 startSong.src = "/beeps.mp3";
+JoinSong.src = "/join.mp3";
 /**
  * Display a message with bootstrap toast
  * @param text - The message to display
@@ -38,7 +40,8 @@ function showMessage(text: string): void {
 // Create socket connection
 const socket: Socket = io(
   localStorage.getItem("SOCKET_URL") ||
-  import.meta.env.VITE_SOCKET_URL, 
+  import.meta.env.VITE_SOCKET_URL ||
+  "https://ws.squareweb.app",
   {
     transports: ["websocket", "polling"],
   },
@@ -260,12 +263,15 @@ socket.on("update_room", ({ type, room_player, room }: { type?: "JOIN" | "LEAVE"
 
   switch (type) {
     case "JOIN":
+      JoinSong.play();
       showMessage(`<i class="fas fa-sign-in-alt"></i> ${lang("room.message.join", { room_player })}`);
       break;
     case "LEAVE":
+      JoinSong.play();
       showMessage(`<i class="fas fa-sign-out-alt"></i> ${lang("room.message.leave", { room_player })}`);
       break;
     case "REJOIN":
+      JoinSong.play();
       showMessage(`<i class="fas fa-user-clock"></i> ${lang("room.message.rejoin", { room_player })}`);
       break;
   }
