@@ -39,9 +39,9 @@ const enUSTranslation = {
   },
   room: {
     message: {
-      join: "Player {{room_player}} has joined the room.",
-      leave: "Player {{room_player}} has left the room.",
-      rejoin: "Player {{room_player}} has rejoined the room.",
+      join: "Player <b>{{room_player}}</b> has joined the room of {{owner}}.",
+      leave: "Player <b>{{room_player}}</b> has left the room.",
+      rejoin: "Player <b>{{room_player}}</b> has rejoined the room.",
     },
     no_room_player: "It seems you haven't set your nickname!",
     no_room_time: "It seems you haven't set the room time!",

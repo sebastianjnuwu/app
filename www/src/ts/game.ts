@@ -264,7 +264,7 @@ socket.on("update_room", ({ type, room_player, room }: { type?: "JOIN" | "LEAVE"
   switch (type) {
     case "JOIN":
       JoinSong.play();
-      showMessage(`<i class="fas fa-sign-in-alt"></i> ${lang("room.message.join", { room_player })}`);
+      showMessage(`<i class="fas fa-sign-in-alt"></i> ${lang("room.message.join", { room_player, owner: room.owner  })}`);
       break;
     case "LEAVE":
       JoinSong.play();

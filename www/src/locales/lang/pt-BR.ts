@@ -40,9 +40,9 @@ const translation = {
     },
     room: {
         message: {
-            join: "O jogador {{room_player}} entrou na sala.",
-            leave: "O jogador {{room_player}} saiu da sala.",
-            rejoin: "O jogador {{room_player}} reentrou na sala.",
+            join: "O jogador <b>{{room_player}}</b> entrou na sala de {{owner}}.",
+            leave: "O jogador <b>{{room_player}}</b> saiu da sala.",
+            rejoin: "O jogador <b>{{room_player}}</b> reentrou na sala.",
         },
         no_room_player: "Parece que você não definiu seu nickname!",
         no_room_time: "Parece que você não definiu o tempo da sala!",
