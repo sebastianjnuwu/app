@@ -126,7 +126,7 @@ io.on("connection", (socket: Socket) => {
       });
       socket.emit("room", { room_player, room });
       socket.emit("token", { room_player, room: room.code, token: generateToken(room_player, room.code) })
-      io.to(room_code).emit("update_room", { type: "join", room_player, room });
+      io.to(room_code).emit("update_room", { type: "JOIN", room_player, room });
 
       logger.info(
         `Player "${colors.bold.green.underline(room_player)}" joined room "${colors.bold.green.underline(room_code)}".`,
@@ -163,8 +163,9 @@ io.on("connection", (socket: Socket) => {
     }
 
     socket.leave(room_code);
-    io.to(room_code).emit("update_room", { type: "leave", room_player: tokenData.username, room });
 
+    io.to(room_code).emit("update_room", { type: "LEAVE", room_player: tokenData.username, room });
+   
     logger.info(
       `Player ${tokenData.username} (Socket ID: ${socket.id}) left room ${room_code}`,
     );
@@ -243,7 +244,7 @@ io.on("connection", (socket: Socket) => {
     if (player) {
       player.socket = socket.id;
       socket.join(room_code);
-      io.to(room_code).emit("update_room", { type: "rejoin", room_player: tokenData.username, room });
+      io.to(room_code).emit("update_room", { type: "REJOIN", room_player: tokenData.username, room });
       socket.emit("room", { room_player: tokenData.username, room });
       logger.info(`Player "${tokenData.username}" rejoined room "${room_code}".`);
     }

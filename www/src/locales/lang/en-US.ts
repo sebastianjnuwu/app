@@ -38,6 +38,11 @@ const enUSTranslation = {
     gameTimeLabel: "Game Time (in seconds)",
   },
   room: {
+    message: {
+      join: "Player {{room_player}} has joined the room.",
+      leave: "Player {{room_player}} has left the room.",
+      rejoin: "Player {{room_player}} has rejoined the room.",
+    },
     no_room_player: "It seems you haven't set your nickname!",
     no_room_time: "It seems you haven't set the room time!",
     time_check:

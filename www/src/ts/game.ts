@@ -35,13 +35,10 @@ function showMessage(text: string): void {
     <div class="toast-body">${text}</div></div>`);
 }
 
-/*  */
-
 // Create socket connection
 const socket: Socket = io(
-  localStorage.getItem("wsURL") ||
-  import.meta.env.VITE_SOCKET_URL ||
-  "wss://ws.squareweb.app",
+  localStorage.getItem("SOCKET_URL") ||
+  import.meta.env.VITE_SOCKET_URL, 
   {
     transports: ["websocket", "polling"],
   },
@@ -236,7 +233,9 @@ socket.on(
     token = data.token
   },
 );
-socket.on("update_room", ({ room }: { room_player: string; room: any }) => {
+
+socket.on("update_room", ({ type, room_player, room }: { type?: "JOIN" | "LEAVE" | "REJOIN", room_player: string; room: any }) => {
+  
   $("#start-screen").hide();
   $("ui").show();
 
@@ -258,6 +257,19 @@ socket.on("update_room", ({ room }: { room_player: string; room: any }) => {
 
   $("#current_code").text(room.code);
   $("#online").text(room.players.length);
+
+  switch (type) {
+    case "JOIN":
+      showMessage(`<i class="fas fa-sign-in-alt"></i> ${lang("room.message.join", { room_player })}`);
+      break;
+    case "LEAVE":
+      showMessage(`<i class="fas fa-sign-out-alt"></i> ${lang("room.message.leave", { room_player })}`);
+      break;
+    case "REJOIN":
+      showMessage(`<i class="fas fa-user-clock"></i> ${lang("room.message.rejoin", { room_player })}`);
+      break;
+  }
+
 });
 
 // Leave room functionality
