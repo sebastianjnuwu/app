@@ -14,6 +14,8 @@ const enUSTranslation = {
   menu: {
     cookieTitle: "Cookie",
     playButton: "Play",
+    statistics: "Statistics",
+    shop: "Shop",
     settings: "Settings",
   },
   ranking: {

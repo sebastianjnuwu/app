@@ -13,6 +13,8 @@ const translation = {
   menu: {
     cookieTitle: "Cookie",
     playButton: "Jogar",
+    statistics: "Estatísticas",
+    shop: "Loja",
     settings: "Configurações",
   },
   ranking: {
