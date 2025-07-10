@@ -132,7 +132,7 @@ ui .statistic td .value {
     transform: translateY(-20px);
     opacity: 0;
   }
-
+  
   100% {
     transform: translateY(0);
     opacity: 1;
@@ -191,12 +191,12 @@ ui .statistic td .value {
 }
 
 @keyframes pulse {
-
+  
   0%,
   100% {
     transform: scale(1);
   }
-
+  
   50% {
     transform: scale(1.2);
   }
@@ -294,7 +294,7 @@ ui .statistic td .value {
   0% {
     transform: scale(1.2);
   }
-
+  
   100% {
     transform: scale(1);
   }
@@ -327,7 +327,7 @@ ui .statistic td .value {
     transform: translateY(100px);
     opacity: 0;
   }
-
+  
   100% {
     transform: translateY(0);
     opacity: 1;
@@ -335,12 +335,12 @@ ui .statistic td .value {
 }
 
 @keyframes bounce {
-
+  
   0%,
   100% {
     transform: translateY(0);
   }
-
+  
   50% {
     transform: translateY(-10px);
   }
@@ -355,4 +355,98 @@ ui .statistic td .value {
   color: var(--text-color-dark) !important;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#update-screen {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  backdrop-filter: blur(12px);
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Minecraftia", cursive;
+  color: #fff;
+  pointer-events: all;
+  overflow: hidden; 
+}
+
+.update-content {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  max-width: 340px;
+  width: 90%;
+  box-shadow: 0 0 40px rgba(255, 255, 255, 0.05);
+  animation: fadeIn 0.5s ease-out;
+}
+
+.update-content h1 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.update-btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 14px 32px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--text-color);
+  background: linear-gradient(to bottom, var(--layout), var(--layout-dark));
+  border: none;
+  border-radius: 20px;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.5s ease;
+  animation: pulseZoom 1.5s infinite;
+}
+
+.update-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 5px var(--layout-dark);
+}
+    
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes wiggle {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+  75% {
+    transform: translateX(-2px);
+  }
+}
+
+@keyframes pulseZoom {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
 }

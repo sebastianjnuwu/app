@@ -72,6 +72,10 @@ const enUSTranslation = {
       "There are no public rooms available at the moment.",
     ROOM_CODE_NOT_FOUND: "The room code was not found.",
   },
+  update: {
+    title: "New version available!",
+    download: "Download"
+  },
 } satisfies typeof ptbrtranslation;
 
 export default enUSTranslation;

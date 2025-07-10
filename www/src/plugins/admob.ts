@@ -5,11 +5,16 @@ import {
 } from "@capacitor-community/admob";
 import $ from "jquery";
 
+/**
+ * Initializes AdMob and sets up event listeners for showing/removing banners and rewarded ads.
+ * Only runs if the platform is Android.
+ */
 if (window.Capacitor.getPlatform() !== "android") {
   console.log(
     `AdMob: Unsupported platform (${window.Capacitor.getPlatform()})`,
   );
 } else {
+  // Initialize AdMob when on Android platform
   AdMob.initialize()
     .then(() => {
       console.log("AdMob initialized.");
@@ -18,34 +23,47 @@ if (window.Capacitor.getPlatform() !== "android") {
       console.error("Error initializing AdMob: ", err.message);
     });
 
-  function $show_banner() {
+  /**
+   * Displays a banner ad at the bottom center of the screen.
+   * @returns {Promise<void>}
+   */
+  function $show_banner(): void {
     AdMob.showBanner({
       adId: "ca-app-pub-6690516270288705/6940688181",
       adSize: BannerAdSize.FULL_BANNER,
       position: BannerAdPosition.BOTTOM_CENTER,
       margin: 0,
-      // isTesting: true
+      // Optional flags:
+      // isTesting: true,
       // npa: true
     })
       .then(() => {
-        return console.log("Banner displayed.");
+        console.log("Banner displayed.");
       })
       .catch((err) => {
-        return console.error("Error displaying banner: ", err.message);
+        console.error("Error displaying banner: ", err.message);
       });
   }
 
-  function $remove_banner() {
+  /**
+   * Removes the currently displayed banner ad.
+   * @returns {Promise<void>}
+   */
+  function $remove_banner(): void {
     AdMob.removeBanner()
       .then(() => {
-        return console.log("Banner hidden successfully.");
+        console.log("Banner hidden successfully.");
       })
       .catch((err) => {
-        return console.error("Error hiding banner: ", err.message);
+        console.error("Error hiding banner: ", err.message);
       });
   }
 
-  function $show_video() {
+  /**
+   * Prepares and shows a rewarded video ad.
+   * @returns {Promise<void>}
+   */
+  function $show_video(): void {
     const adId = "ca-app-pub-6690516270288705/7898187843";
     AdMob.prepareRewardVideoAd({ adId })
       .then(() => {
@@ -60,9 +78,11 @@ if (window.Capacitor.getPlatform() !== "android") {
       });
   }
 
+  // Attach click events to UI buttons
   $("#start-playing").on("click", () => $show_banner());
 
   $("#start_game").on("click", () => $remove_banner());
 
   $("#game_exit").on("click", () => $show_video());
+  
 }

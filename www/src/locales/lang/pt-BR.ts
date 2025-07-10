@@ -69,6 +69,10 @@ const translation = {
         NO_PUBLIC_ROOMS_AVAILABLE: "Não há salas públicas disponíveis no momento.",
         ROOM_CODE_NOT_FOUND: "O código da sala não foi encontrado.",
     },
+    update: {
+      title: "Nova versão disponível!",
+      download: "Baixar"
+    }
 };
 
 export default translation;

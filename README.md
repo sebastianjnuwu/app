@@ -35,6 +35,8 @@
 
 <b>Demo:</b> <a href="https://cookie-clicker-brasil.vercel.app/">Cookie Clicker Brasil (web)</a> 
 
+<b>Download:</b> <a href="https://github.com/sebastianjnuwu/cookie-clicker-brasil/actions/workflows/build.yml">Cookie Clicker Brasil (Android)</a> 
+
 <h3>Features</h3>
 <ul>
   <li><b>Active Clicking:</b> Earn cookies by manually clicking the large cookie.</li>

@@ -1,7 +1,7 @@
 {
   "name": "cookie-clicker",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "license": "Apache-2.0",
   "author": "Sebastian Jn <sebastianjnuwu@gmail.com>",

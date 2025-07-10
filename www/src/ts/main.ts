@@ -1,4 +1,5 @@
 import $ from "jquery";
+const CURRENT_VERSION = "1.0.2";
 
 /**
  * This function runs when the document is ready.
@@ -35,4 +36,11 @@ $(() => {
       $game_container.show();
     }
   });
+});
+
+$.getJSON("https://raw.githubusercontent.com/sebastianjnuwu/cookie-clicker-brasil/refs/heads/android/package.json", ({ version, repository }) => {
+  if (version !== CURRENT_VERSION) {
+    $("#update-screen").show();
+    $(".update-btn").attr("href", repository.url);
+  }
 });
