@@ -2,6 +2,7 @@ import { io, type Socket } from "socket.io-client";
 import { lang } from "../locales/main";
 import { Modal } from "bootstrap";
 import $ from "jquery";
+const isSoundEnabled = () => localStorage.soundEnabled !== "false";
 //@ts-ignore
 const $room_modal = new Modal($("#room_modal"));
 /**
@@ -243,9 +244,11 @@ socket.on("update_room", ({ type, room_player, room }: { type?: "JOIN" | "LEAVE"
   $("ui").show();
 
   if (room.state === "waiting") {
+    $("#splash-screen").hide();
     $(".waiting-room").show();
     $(".room-code").show();
   } else if (room.state === "in_game") {
+    $("#splash-screen").hide();
     $(".waiting-room").hide();
     $("#game").show();
   }
@@ -263,15 +266,15 @@ socket.on("update_room", ({ type, room_player, room }: { type?: "JOIN" | "LEAVE"
 
   switch (type) {
     case "JOIN":
-      JoinSong.play();
+      if (isSoundEnabled()) JoinSong.play();
       showMessage(`<i class="fas fa-sign-in-alt"></i> ${lang("room.message.join", { room_player })}`);
       break;
     case "LEAVE":
-      JoinSong.play();
+      if (isSoundEnabled()) JoinSong.play();
       showMessage(`<i class="fas fa-sign-out-alt"></i> ${lang("room.message.leave", { room_player })}`);
       break;
     case "REJOIN":
-      JoinSong.play();
+      if (isSoundEnabled()) JoinSong.play();
       showMessage(`<i class="fas fa-user-clock"></i> ${lang("room.message.rejoin", { room_player })}`);
       break;
   }

@@ -9,23 +9,23 @@
     <meta name="theme-color" content="#FBF0C1">
     <meta name="google-adsense-account" content="ca-pub-6690516270288705">
     <meta name="robots" content="index, follow">
-    <meta name="description" content="Cookie Clicker Brasil - Não confie em ÍMPAR ou PAR, ou CARA ou COROA!" />
+    <meta name="description" content="Cookie Clicker Brasil - Procurando um jogo novo para jogar com seus amigos? Jogue agora!" />
     <meta name="keywords"
         content="Cookie Clicker, Jogo de clique, biscoitos, jogo viciante, jogo de navegador, clique para ganhar, jogos online, JavaScript, CSS, HTML, TypeScript, Open Source, GitHub" />
     <meta name="description" lang="en"
-        content="Cookie Clicker Brazil - Don’t rely on ODD or EVEN, or HEADS or TAILS!" />
+        content="Cookie Clicker Brazil - Looking for a new game to play with your friends? Play now!" />
     <meta name="keywords" lang="en"
         content="Cookie Clicker, Click game, cookies, addictive game, browser game, click to win, online games, JavaScript, CSS, HTML, TypeScript, Open Source, GitHub" />
     <meta property="og:site_name" content="Cookie Clicker Brasil">
     <meta property="og:title" content="Cookie Clicker Brasil">
-    <meta property="og:description" content="Cookie Clicker Brasil - Não confie em ímpar ou par, ou cara ou coroa!">
+    <meta property="og:description" content="Cookie Clicker Brasil - Procurando um jogo novo para jogar com seus amigos? Jogue agora!">
     <meta property="og:image" content="https://cookie-clicker-brasil.vercel.app/favicon.ico">
     <meta property="og:url" content="https://cookie-clicker-brasil.vercel.app/">
     <meta property="og:locale" content="pt_BR">
     <meta property="og:type" content="website">
-    <meta property="og:title" lang="en" content="Cookie Clicker Brazil - Addictive Game of Clicking to Earn Cookies">
+    <meta property="og:title" lang="en" content="Cookie Clicker Brazil">
     <meta property="og:description" lang="en"
-        content="Cookie Clicker Brazil - Don’t rely on ODD or EVEN, or HEADS or TAILS!">
+        content="Cookie Clicker Brazil - Looking for a new game to play with your friends? Play now!">
     <meta property="og:image" lang="en" content="https://cookie-clicker-brasil.vercel.app/favicon.ico">
     <meta property="og:url" lang="en" content="https://cookie-clicker-brasil.vercel.app/en">
     <meta property="og:locale" lang="en" content="en_US">
@@ -64,7 +64,11 @@
   </div>
 </div>
 
-    <div id="start-screen">
+  <div id="splash-screen">
+    <img class="icon" src="/favicon.ico" />
+  </div>
+
+   <div id="start-screen" style="display: none;">
         <h1 class="title">
             <i class="fas fa-cookie-bite"></i>
             <i18next i18next-id="menu.cookieTitle">Cookie</i18next>
@@ -81,11 +85,11 @@
             <button id="start-shop" data-bs-toggle="modal" data-bs-target="#shop_modal">
                 <i class="fas fa-store"></i>
                 <i18next i18next-id="menu.shop">Shop</i18next>
-            </button>
+            </button> -->
             <button id="start-settings" data-bs-toggle="modal" data-bs-target="#settings_modal">
                 <i class="fas fa-cog"></i>
                 <i18next i18next-id="menu.settings">Settings</i18next>
-            </button> -->
+            </button> 
         </div>
     </div>
 
@@ -294,6 +298,51 @@
             </div>
         </div>
     </div>
+    
+ <div class="modal fade" id="settings_modal" tabindex="-1" aria-labelledby="settings_modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content bg-dark text-light border-light">
+      <div class="modal-header">
+        <h5 class="modal-title" id="settings_modalLabel">
+          <i class="fas fa-cog me-2"></i>
+          <i18next i18next-id="menu.settings">Configurações</i18next>
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <form id="settings-form" class="d-flex flex-column gap-2">
+          
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="mb-2">
+  <label for="toggleSound" class="form-label">
+    <i class="fas fa-volume-up"></i>
+    <i18next i18next-id="settings.sound">Som</i18next>
+  </label>
+  <input type="checkbox" class="form-check-input me-2" id="toggleSound" name="toggleSound">
+</div>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center">
+          <div class="mb-2">
+  <label for="toggleMusic" class="form-label">
+    <i class="fas fa-music"></i>
+    <i18next i18next-id="settings.music">Música de Fundo</i18next>
+  </label>
+  <input type="checkbox" class="form-check-input me-2" id="toggleMusic" name="toggleMusic">
+</div>
+          </div>
+          
+        </form>
+      </div>
+                <div class="modal-footer">
+                    <button type="button" class="close" data-bs-dismiss="modal">
+                        <i class="fas fa-times"></i>
+                        <i18next i18next-id="modal.cancel">Cancel</i18next>
+                    </button>
+                </div>
+    </div>
+  </div>
+</div>
 
 </body>
 

@@ -1,12 +1,23 @@
 import $ from "jquery";
 const CURRENT_VERSION = "1.0.2";
+export const startMusicSong = document.createElement("audio");
+startMusicSong.src = "/music.mp3";
+startMusicSong.loop = true;
+startMusicSong.volume = 0.5;
 
 /**
  * This function runs when the document is ready.
  * It initializes interactions with the splash screen and handles the game room code visibility logic.
  */
 $(() => {
-  $("#start-screen").show();
+ 
+  $("#splash-screen").on("click", () => {
+    
+    if (localStorage.musicEnabled !== "false") startMusicSong.play();
+    
+    $("#splash-screen").hide();
+    $("#start-screen").show();
+  });
 
   /**
    * Event handler for changing the game option selection (either creating a new game or joining an existing one).
@@ -38,6 +49,20 @@ $(() => {
   });
 });
 
+
+  $("#toggleSound").prop("checked", localStorage.soundEnabled !== "false");
+  
+  $("#toggleMusic").prop("checked",
+  localStorage.musicEnabled !== "false");
+  
+  $("#toggleSound").on("change", e => localStorage.soundEnabled = e.target.checked);
+  
+  $("#toggleMusic").on("change", (e) => {
+    localStorage.musicEnabled = e.target.checked;
+    if (e.target.checked) startMusicSong.play();
+    else startMusicSong.pause();
+  });
+ 
 $.getJSON("https://raw.githubusercontent.com/sebastianjnuwu/cookie-clicker-brasil/refs/heads/android/package.json", ({ version, repository }) => {
   if (version !== CURRENT_VERSION) {
     $("#update-screen").show();
