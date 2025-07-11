@@ -1,4 +1,6 @@
 import { MusicSong, ClickSong } from "@ts/game/sound"
+import { showMessage } from "@ts/game/toast";
+import { lang } from "@language/main";
 import $ from "jquery";
 
 /**
@@ -48,8 +50,6 @@ $(() => {
       $game_container.show();
     }
   });
-});
-
 
   $("#toggleSound").prop("checked", localStorage.soundEnabled !== "false");
   
@@ -66,11 +66,12 @@ $(() => {
     else MusicSong.pause();
   });
 
-  $.each({
-    "#donation-pix": "6eddc8ae-83cd-4af4-a206-7cd684a6557c",
-    "#donation-bitcoin": "bc1qv8sfkevq0k65rq5d6t87klne2t8783dyk54p0w",
-  }, (selector, value) => {
-    $(selector).on("click", () => {
-      navigator.clipboard.writeText(value)
-    });
+  $("#pix").on("click", () => {
+    showMessage(lang("donate.message.pix", { pix: "6eddc8ae-83cd-4af4-a206-7cd684a6557c" }), 30000);
   });
+  
+  $("#bitcoin").on("click", () => {
+    showMessage(lang("donate.message.bitcoin", { bitcoin: "bc1qv8sfkevq0k65rq5d6t87klne2t8783dyk54p0w" }), 30000);
+  });
+  
+});

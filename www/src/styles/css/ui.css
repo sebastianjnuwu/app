@@ -122,7 +122,7 @@ ui .statistic td .value {
   letter-spacing: 1px;
 }
 
-.room-code p::selection {
+.room-code p::selection, .selection::selection {
   background: var(--text-color-dark);
   color: #fff;
 }

@@ -4,15 +4,15 @@ import $ from "jquery";
 /**
  * Displays a single Bootstrap toast message inside the "#message" container.
  *
- * @param text - The message text to display.
+ * @param message - The message text to display.
+ * @param duration - How long to show the message (in milliseconds). Default is 5000 ms.
  *
  * @remarks
- * - Replaces any existing toast (no stacking).
- * - Auto-dismisses after 5 seconds.
+ * - Replaces any existing toast.
+ * - Auto-dismisses after the given duration.
  * - Can also be manually dismissed.
  */
-function showMessage(text: string): void {
-  
+function showMessage(message: string, duration: number = 5000): void {
   const $message = $("#message");
   if (!$message.length) return;
 
@@ -28,7 +28,7 @@ function showMessage(text: string): void {
         </small>
         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" style="box-shadow: none; outline: none;"></button>
       </div>
-      <div class="toast-body">${text}</div>
+      <div class="toast-body">${message}</div>
     </div>
   `;
 
@@ -36,7 +36,7 @@ function showMessage(text: string): void {
 
   setTimeout(() => {
     $message.empty();
-  }, 5000);
-};
+  }, duration);
+}
 
 export { showMessage };

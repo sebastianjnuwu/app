@@ -6,6 +6,12 @@ import type ptbrtranslation from "./pt-BR";
 
 // @lang/en-US
 const enUSTranslation = {
+  donate: {
+    message: {
+      pix: "Make a donation via Pix to the key <b class='selection' style='user-select: all; cursor: pointer;'>{{pix}}</b> and support the <b>Cookie Clicker Brasil</b> project.",
+      bitcoin: "Donate to the Bitcoin address <b class='selection' style='user-select: all; cursor: pointer;'>{{bitcoin}}</b> and support the <b>Cookie Clicker Brasil</b> project."
+    }
+  },
   general: {
     cookies: "Cookies",
     seconds: "Clicks",
