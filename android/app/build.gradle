@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "uwu.cookie.app"
+    namespace "sebastianjnuwu.cookie.app"
     compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "sebastianjnuwu.cookie.app"
