@@ -22,6 +22,7 @@ const enUSTranslation = {
     statistics: "Statistics",
     shop: "Shop",
     settings: "Settings",
+    donate: "Donate",
   },
   ranking: {
     rankingTitle: "Ranking",

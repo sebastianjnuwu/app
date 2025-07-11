@@ -20,6 +20,7 @@ const translation = {
         statistics: "Estatísticas",
         shop: "Loja",
         settings: "Configurações",
+        donate: "Doar"
     },
     ranking: {
         rankingTitle: "Ranking",

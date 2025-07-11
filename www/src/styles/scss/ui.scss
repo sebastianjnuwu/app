@@ -5,7 +5,7 @@
     width: 15rem;
     animation: splash-screen 2s infinite ease-in-out;
   }
-
+  
   h1 {
     font-family: "Press Start 2P", cursive;
     text-align: center;
@@ -19,18 +19,23 @@
 }
 
 @keyframes splash-screen {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0);
     opacity: 1;
   }
+  
   25% {
     transform: translateY(-8px);
     opacity: 0.8;
   }
+  
   50% {
     transform: translateY(-15px);
     opacity: 1;
   }
+  
   75% {
     transform: translateY(-8px);
     opacity: 0.8;
@@ -42,6 +47,7 @@
     opacity: 0;
     transform: scale(0.8);
   }
+  
   100% {
     opacity: 1;
     transform: scale(1);
@@ -49,7 +55,7 @@
 }
 
 #start-screen {
- 
+  
   .title {
     font-family: "MedievalSharp", cursive;
     font-size: 4.5rem;
@@ -59,31 +65,32 @@
     text-shadow: 2px 2px 8px var(--text-color-dark);
     animation: start-screen-title 1s ease-in-out;
   }
+  
+}
 
-  .menu {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-
-    button {
-      font-size: 1.6rem;
-      padding: 0.8rem 3rem;
-      border: none;
-      border-radius: 50px;
-      font-weight: bold;
-      font-family: "MedievalSharp", cursive;
-      border: 0.5px solid var(--text-color-dark);
-      text-shadow: 1px 1px 0.5px var(--text-color-dark);
-      background-color: var(--layout-dark);
-      color: var(--text-color);
-      cursor: pointer;
-      animation: start-screen-title 1s ease-in-out;
-      transition: all 0.08s ease-in-out;
-
-      &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
-      }
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  
+  button {
+    font-size: 1.6rem;
+    padding: 0.8rem 3rem;
+    border: none;
+    border-radius: 50px;
+    font-weight: bold;
+    font-family: "MedievalSharp", cursive;
+    border: 0.5px solid var(--text-color-dark);
+    text-shadow: 1px 1px 0.5px var(--text-color-dark);
+    background-color: var(--layout-dark);
+    color: var(--text-color);
+    cursor: pointer;
+    animation: start-screen-title 1s ease-in-out;
+    transition: all 0.08s ease-in-out;
+    
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
     }
   }
 }
@@ -93,6 +100,7 @@
     transform: translateY(-50px);
     opacity: 0;
   }
+  
   to {
     transform: translateY(0);
     opacity: 1;
