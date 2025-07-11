@@ -2,7 +2,7 @@ import type { CapacitorConfig } from "@capacitor/cli";
 
 // https://capacitorjs.com/docs/config
 const config: CapacitorConfig = {
-  appId: "uwu.cookie.app",
+  appId: "sebastianjnuwu.cookie.app",
   appName: "Cookie",
   webDir: "build",
   plugins: {
