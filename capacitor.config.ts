@@ -3,7 +3,7 @@ import type { CapacitorConfig } from "@capacitor/cli";
 // https://capacitorjs.com/docs/config
 const config: CapacitorConfig = {
   appId: "sebastianjnuwu.cookie.app",
-  appName: "Cookie",
+  appName: "Cookie Clicker",
   webDir: "build",
   plugins: {
     AdMob: {
