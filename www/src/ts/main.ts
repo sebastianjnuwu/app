@@ -1,9 +1,5 @@
+import { MusicSong } from "@ts/game/sound"
 import $ from "jquery";
-const CURRENT_VERSION = "1.0.2";
-export const startMusicSong = document.createElement("audio");
-startMusicSong.src = "/music.mp3";
-startMusicSong.loop = true;
-startMusicSong.volume = 0.5;
 
 /**
  * This function runs when the document is ready.
@@ -13,10 +9,11 @@ $(() => {
  
   $("#splash-screen").on("click", () => {
     
-    if (localStorage.musicEnabled !== "false") startMusicSong.play();
-    
+    if (localStorage.musicEnabled !== "false") MusicSong.play();
+  
     $("#splash-screen").hide();
     $("#start-screen").show();
+    
   });
 
   /**
@@ -59,13 +56,6 @@ $(() => {
   
   $("#toggleMusic").on("change", (e) => {
     localStorage.musicEnabled = e.target.checked;
-    if (e.target.checked) startMusicSong.play();
-    else startMusicSong.pause();
+    if (e.target.checked) MusicSong.play();
+    else MusicSong.pause();
   });
- 
-$.getJSON("https://raw.githubusercontent.com/sebastianjnuwu/cookie-clicker-brasil/refs/heads/android/package.json", ({ version, repository }) => {
-  if (version !== CURRENT_VERSION) {
-    $("#update-screen").show();
-    $(".update-btn").attr("href", repository.url);
-  }
-});

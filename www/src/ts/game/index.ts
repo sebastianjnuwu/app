@@ -1,55 +1,18 @@
-import { io, type Socket } from "socket.io-client";
-import { lang } from "../locales/main";
+import { showMessage } from "@ts/game/toast";
+import { EffectSong, JoinSong } from "@ts/game/sound"
+import { lang } from "@language/main";
+import { socket } from "@ts/socket";
 import { Modal } from "bootstrap";
 import $ from "jquery";
+
 const isSoundEnabled = () => localStorage.soundEnabled !== "false";
+
 //@ts-ignore
 const $room_modal = new Modal($("#room_modal"));
-/**
- * Game Start Song
- */
-export const startSong = document.createElement("audio");
-export const JoinSong = document.createElement("audio");
-startSong.src = "/beeps.mp3";
-JoinSong.src = "/join.mp3";
-/**
- * Display a message with bootstrap toast
- * @param text - The message to display
- */
-function showMessage(text: string): void {
-  const $message = $("#message");
 
-  // Clear any previous messages
-  $message.html("");
-
-  setTimeout(() => {
-    $message.html("");
-  }, 10000);
-
-  // Create and append toast message
-  $message.html(`
-    <div class="toast fade show">
-     <div class="toast-header">
-     <img style="width: 10%;" src="favicon.ico" class="rounded me-2">
-     <strong class="me-auto">Cookie</strong>
-     <small><i18next i18next-id="general.message_now">${lang("general.message_now")}</i18next></small>
-     <button type="button" style="box-shadow: none; outline: none;" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-    <div class="toast-body">${text}</div></div>`);
-}
-
-// Create socket connection
-const socket: Socket = io(
-  localStorage.getItem("SOCKET_URL") ||
-  import.meta.env.VITE_SOCKET_URL ||
-  "https://socket-hj1h.onrender.com",
-  {
-    transports: ["websocket", "polling"],
-  },
-);
 // Initialize cookies count and handle local storage
 let cookies: number = Number(localStorage.getItem("cookie")) || 0;
-let token: string = "";
+let token = "";
 function main() {
   if (localStorage.getItem("tmp-token")) token = localStorage.getItem("tmp-token");
   
@@ -309,7 +272,7 @@ socket.on("count_down", ({ countdown }: { countdown: number }) => {
   $("ui").hide();
   $("#countdown-container").show();
   if (countdown === 3) {
-    startSong.play();
+    EffectSong.play();
   }
   if (countdown > 0) {
     $("#countdown").text(countdown);
