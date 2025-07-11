@@ -1,4 +1,4 @@
-import { MusicSong } from "@ts/game/sound"
+import { MusicSong, ClickSong } from "@ts/game/sound"
 import $ from "jquery";
 
 /**
@@ -16,6 +16,10 @@ $(() => {
     
   });
 
+  $("button").on("click", () => {
+    if (localStorage.soundEnabled !== "false") ClickSong.play();
+  });
+  
   /**
    * Event handler for changing the game option selection (either creating a new game or joining an existing one).
    * Shows or hides the room code input field based on the user's choice.
@@ -52,7 +56,9 @@ $(() => {
   $("#toggleMusic").prop("checked",
   localStorage.musicEnabled !== "false");
   
-  $("#toggleSound").on("change", e => localStorage.soundEnabled = e.target.checked);
+  $("#toggleSound").on("change", (e) => {
+    localStorage.soundEnabled = e.target.checked
+  });
   
   $("#toggleMusic").on("change", (e) => {
     localStorage.musicEnabled = e.target.checked;

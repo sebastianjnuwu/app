@@ -6,9 +6,8 @@ const getCurrentVersion = async (): Promise<string> => {
   if (Capacitor.isNativePlatform()) {
     const { version } = await App.getInfo();
     return version;
-  } else {
-    return "1.0.2";
-  }
+  } 
+  return "1.0.0";
 };
 
 getCurrentVersion().then((CURRENT_VERSION) => {
