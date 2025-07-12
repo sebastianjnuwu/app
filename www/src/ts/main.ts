@@ -67,11 +67,15 @@ $(() => {
   });
 
   $("#pix").on("click", () => {
-    showMessage(lang("donate.message.pix", { pix: "6eddc8ae-83cd-4af4-a206-7cd684a6557c" }), 30000);
+    navigator.clipboard.writeText("6eddc8ae-83cd-4af4-a206-7cd684a6557c").then(() => {
+     return showMessage(lang("donate.message.pix", { pix: "6eddc8ae-83cd-4af4-a206-7cd684a6557c" }), 30000);
+    });
   });
   
   $("#bitcoin").on("click", () => {
-    showMessage(lang("donate.message.bitcoin", { bitcoin: "bc1qv8sfkevq0k65rq5d6t87klne2t8783dyk54p0w" }), 30000);
+    navigator.clipboard.writeText("bc1qv8sfkevq0k65rq5d6t87klne2t8783dyk54p0w").then(() => {
+     return showMessage(lang("donate.message.bitcoin", { bitcoin: "bc1qv8sfkevq0k65rq5d6t87klne2t8783dyk54p0w" }), 30000);
+    });
   });
   
 });
