@@ -8,8 +8,9 @@ import type ptbrtranslation from "./pt-BR";
 const enUSTranslation = {
   donate: {
     message: {
-      pix: "Make a donation via Pix to the key <b class='selection' style='user-select: all; cursor: pointer;'>{{pix}}</b> and support the <b>Cookie Clicker Brasil</b> project.",
-      bitcoin: "Donate to the Bitcoin address <b class='selection' style='user-select: all; cursor: pointer;'>{{bitcoin}}</b> and support the <b>Cookie Clicker Brasil</b> project."
+      pix: "Copied the Pix key <b class='selection' style='user-select: all; cursor: pointer;'>{{pix}}</b>? You're now part of the <b>Cookie Clicker Brasil</b> revolution!",
+
+      bitcoin: "Bitcoin in hand, cookie on screen! Support <b>Cookie Clicker Brasil</b> with a donation to <b class='selection' style='user-select: all; cursor: pointer;'>{{bitcoin}}</b>."
     }
   },
   general: {

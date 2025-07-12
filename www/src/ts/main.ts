@@ -17,10 +17,11 @@ $(() => {
     $("#start-screen").show();
     
   });
-
-  $("button").on("click", () => {
-    if (localStorage.soundEnabled !== "false") ClickSong.play();
-  });
+  
+$(document).on("click", "button", () => {
+  if (localStorage.soundEnabled !== "false") ClickSong.play();
+});
+  
   
   /**
    * Event handler for changing the game option selection (either creating a new game or joining an existing one).
@@ -66,16 +67,54 @@ $(() => {
     else MusicSong.pause();
   });
 
-  $("#pix").on("click", () => {
-    navigator.clipboard.writeText("6eddc8ae-83cd-4af4-a206-7cd684a6557c").then(() => {
-     return showMessage(lang("donate.message.pix", { pix: "6eddc8ae-83cd-4af4-a206-7cd684a6557c" }), 30000);
+const PIX_KEY = "6eddc8ae-83cd-4af4-a206-7cd684a6557c";
+
+const BITCOIN_KEY = "bc1qv8sfkevq0k65rq5d6t87klne2t8783dyk54p0w";
+  
+function showQRCode(type, keyOrAddress, imageUrl) {
+  
+  $("#donate_buttons").html(`
+    <div class="text-center">
+      <img src="${imageUrl}" alt="QR Code ${type}" style="max-width: 200px; margin-bottom: 15px; border: 1.5px solid #d2691e; border-radius: 16px;">
+      <div class="d-grid gap-2">
+        <button class="btn" id="copy_qr"><i class="fas fa-copy me-1"></i> Copiar ${type}</button>
+        <button class="btn" id="back_donate"><i class="fas fa-arrow-left me-1"></i> Voltar</button>
+      </div>
+    </div>
+  `);
+
+  $("#copy_qr").on("click", () => {
+    navigator.clipboard.writeText(keyOrAddress).then(() => {
+      showMessage(lang(`donate.message.${type}`, { [type]: keyOrAddress }), 30000);
     });
   });
+
+  $("#back_donate").on("click", () => {
+    $("#donate_buttons").html(`
+      <button id="pix">
+        <i class="fas fa-qrcode fa-lg"></i>
+        <span>Pix</span>  
+      </button> 
+      <button id="bitcoin">
+        <i class="fab fa-bitcoin fa-lg"></i>
+        <span>Bitcoin</span>
+      </button> 
+    `);
+    RDB();
+  });
   
+}
+
+function RDB() { 
+$("#pix").on("click", () => {
+    showQRCode("pix", PIX_KEY, "/images/QRCODE_PIX.png"); 
+  });
+
   $("#bitcoin").on("click", () => {
-    navigator.clipboard.writeText("bc1qv8sfkevq0k65rq5d6t87klne2t8783dyk54p0w").then(() => {
-     return showMessage(lang("donate.message.bitcoin", { bitcoin: "bc1qv8sfkevq0k65rq5d6t87klne2t8783dyk54p0w" }), 30000);
-    });
+    showQRCode("bitcoin", BITCOIN_KEY, "/images/QRCODE_BITCOIN.png");
   });
-  
+};
+
+RDB();
+
 });

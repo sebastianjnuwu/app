@@ -6,8 +6,8 @@
 const translation = {
   donate: {
     message: {
-      pix: "Faça uma doação via Pix para a chave <b class='selection' style='user-select: all; cursor: pointer;'>{{pix}}</b> e contribua com o projeto <b>Cookie Clicker Brasil.</b>",
-      bitcoin: "Doe para o endereço Bitcoin <b class='selection' style='user-select: all; cursor: pointer;'>{{bitcoin}}</b> e contribua com o projeto <b>Cookie Clicker Brasil</b>."
+      pix: "Copiou a chave Pix <b class='selection' style='user-select: all; cursor: pointer;'>{{pix}}</b>? Agora você faz parte da revolução do <b>Cookie Clicker Brasil</b>!",
+      bitcoin: "Bitcoin na mão, cookie na tela! Ajude o <b>Cookie Clicker Brasil</b> com uma doação para <b class='selection' style='user-select: all; cursor: pointer;'>{{bitcoin}}</b>."
     }
   },
   general: {
