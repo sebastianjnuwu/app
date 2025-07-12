@@ -74,14 +74,18 @@ const BITCOIN_KEY = "bc1qv8sfkevq0k65rq5d6t87klne2t8783dyk54p0w";
 function showQRCode(type, keyOrAddress, imageUrl) {
   
   $("#donate_buttons").html(`
-    <div class="text-center">
-      <img src="${imageUrl}" alt="QR Code ${type}" style="max-width: 200px; margin-bottom: 15px; border: 1.5px solid #d2691e; border-radius: 16px;">
-      <div class="d-grid gap-2">
-        <button class="btn" id="copy_qr"><i class="fas fa-copy me-1"></i> Copiar ${type}</button>
-        <button class="btn" id="back_donate"><i class="fas fa-arrow-left me-1"></i> Voltar</button>
-      </div>
+  <div class="text-center">
+    <img src="${imageUrl}" alt="QR Code ${type}" style="max-width: 200px; margin-bottom: 15px; border: 1.5px solid #d2691e; border-radius: 16px;">
+    <div class="d-grid gap-2">
+      <button class="btn" id="copy_qr">
+        <i class="fas fa-copy me-1"></i> ${lang("donate.copy_button", { type })}
+      </button>
+      <button class="btn" id="back_donate">
+        <i class="fas fa-arrow-left me-1"></i> ${lang("donate.back_button")}
+      </button>
     </div>
-  `);
+  </div>
+`);
 
   $("#copy_qr").on("click", () => {
     navigator.clipboard.writeText(keyOrAddress).then(() => {

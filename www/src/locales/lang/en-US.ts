@@ -7,6 +7,8 @@ import type ptbrtranslation from "./pt-BR";
 // @lang/en-US
 const enUSTranslation = {
   donate: {
+    copy_button: "Copy {{type}}",
+    back_button: "Back",
     message: {
       pix: "Copied the Pix key <b class='selection' style='user-select: all; cursor: pointer;'>{{pix}}</b>? You're now part of the <b>Cookie Clicker Brasil</b> revolution!",
 

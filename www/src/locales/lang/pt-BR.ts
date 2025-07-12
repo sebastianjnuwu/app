@@ -5,6 +5,8 @@
 // @lang/pt-BR
 const translation = {
   donate: {
+    copy_button: "Copiar {{type}}",
+    back_button: "Voltar",
     message: {
       pix: "Copiou a chave Pix <b class='selection' style='user-select: all; cursor: pointer;'>{{pix}}</b>? Agora você faz parte da revolução do <b>Cookie Clicker Brasil</b>!",
       bitcoin: "Bitcoin na mão, cookie na tela! Ajude o <b>Cookie Clicker Brasil</b> com uma doação para <b class='selection' style='user-select: all; cursor: pointer;'>{{bitcoin}}</b>."
