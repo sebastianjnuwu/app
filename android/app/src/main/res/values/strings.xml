@@ -3,6 +3,6 @@
   <string name="admob_app_id">ca-app-pub-6690516270288705~6535066913</string>
   <string name="app_name">Cookie</string>
   <string name="title_activity_main">Cookie</string>
-  <string name="package_name">uwu.cookie.app</string>
-  <string name="custom_url_scheme">uwu.cookie.app</string>
+  <string name="package_name">sebastianjnuwu.cookie.app</string>
+  <string name="custom_url_scheme">sebastianjnuwu.cookie.app</string>
 </resources>
