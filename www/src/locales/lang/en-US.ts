@@ -6,6 +6,11 @@ import type ptbrtranslation from "./pt-BR";
 
 // @lang/en-US
 const enUSTranslation = {
+  cookie: {
+    message: "This website uses cookies to make your experience even sweeter. By continuing, you agree to our <a style='color: var(--text-color-dark);' data-bs-toggle='modal' data-bs-target='#policy_modal'>Privacy Policy</a> and <a style='color: var(--text-color-dark);' data-bs-toggle='modal' data-bs-target='#terms_modal'>Terms of Use</a>.",
+    accept: "Accept",
+    reject: "Reject"
+  },
   donate: {
     copy_button: "Copy {{type}}",
     back_button: "Back",
@@ -82,6 +87,16 @@ const enUSTranslation = {
     NO_PUBLIC_ROOMS_AVAILABLE:
       "There are no public rooms available at the moment.",
     ROOM_CODE_NOT_FOUND: "The room code was not found.",
+  },
+  settings: {
+    sound: "Sound Effect",
+    music: "Music"
+  },
+  terms: {
+    title: "Terms of Use"
+  },
+  policy: {
+    title: "Privacy Policy"
   },
   update: {
     title: "New version available!",

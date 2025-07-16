@@ -37,6 +37,26 @@
 
 <body class="d-flex flex-column justify-content-center align-items-center vh-100">
 
+ <div id="overlay"></div>
+ 
+ <cookie id='cookie'>
+  <div class='content'>
+    <p><i18next i18next-id="cookie.message"></i18next></p>
+    <div class="row mt-2">
+      <div class="col">
+        <button class="btn btn-outline-light w-100" id="reject-cookies">
+          <i class="fas fa-times-circle"></i> <i18next i18next-id="cookie.reject"></i18next>
+        </button>
+      </div>
+      <div class="col">
+        <button class="btn btn-warning w-100" id="accept-cookies">
+          <i class="fas fa-cookie-bite"></i> <i18next i18next-id="cookie.accept"></i18next>
+        </button>
+      </div>
+    </div>
+  </div>
+ </cookie>
+
  <div class="toast-container position-fixed bottom-0 end-0 p-3">
         <div id="message"></div>
     </div>
@@ -53,7 +73,7 @@
  <div id="splash-screen">
     <img class="icon" src="https://cookie-clicker-brasil.vercel.app/favicon.ico" />
   <div class="splash-footer">
-    <i18next i18next-id="splashScreen.policy"><a target="_blank">Terms of Use</a> and <a target="_blank">Privacy Policy</a></i18next>
+    <i18next i18next-id="splashScreen.policy"><a target='_blank' data-bs-toggle='modal' data-bs-target='#terms_modal'>Terms of Use</a> and <a target='_blank' data-bs-toggle='modal' data-bs-target='#policy_modal'>Privacy Policy</a></i18next>
   </div>
   </div>
 
@@ -357,6 +377,56 @@
       <span>Bitcoin</span>
     </button> 
   </div>
+</div>
+   <div class="modal-footer">
+      <button type="button" class="close" data-bs-dismiss="modal">
+   <i class="fas fa-times"></i>
+   <i18next i18next-id="modal.cancel">Cancel</i18next>
+      </button>
+     </div>
+    </div>
+   </div>
+  </div>
+  
+ <div class="modal fade" id="terms_modal" tabindex="-1" aria-labelledby="terms_modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content bg-dark text-light border-light">
+   <div class="modal-header">
+        <h5 class="modal-title" id="settings_modalLabel">
+          <i class="fas fa-file-signature me-2"></i>
+          <i18next i18next-id="terms.title">Terms</i18next>
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+   <div class="modal-body">
+   <div style="text-align: center;">
+  <i class="fas fa-ban" style="font-size: 5rem; color: var(--text-color-dark);"></i>
+</div>
+</div>
+   <div class="modal-footer">
+      <button type="button" class="close" data-bs-dismiss="modal">
+   <i class="fas fa-times"></i>
+   <i18next i18next-id="modal.cancel">Cancel</i18next>
+      </button>
+     </div>
+    </div>
+   </div>
+  </div>
+  
+ <div class="modal fade" id="policy_modal" tabindex="-1" aria-labelledby="policy_modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content bg-dark text-light border-light">
+   <div class="modal-header">
+        <h5 class="modal-title" id="settings_modalLabel">
+          <i class="fas fa-user-secret me-2"></i>
+          <i18next i18next-id="policy.title">Policy</i18next>
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+   <div class="modal-body">
+   <div style="text-align: center;">
+  <i class="fas fa-ban" style="font-size: 5rem; color: var(--text-color-dark);"></i>
+</div>
 </div>
    <div class="modal-footer">
       <button type="button" class="close" data-bs-dismiss="modal">

@@ -4,6 +4,11 @@
 
 // @lang/pt-BR
 const translation = {
+  cookie: {
+    message: "Este site usa cookies para deixar sua experiência ainda mais gostosa. Ao continuar, você concorda com nossa <a style='color: var(--text-color-dark);' data-bs-toggle='modal' data-bs-target='#policy_modal'>Política de Privacidade</a> e <a style='color: var(--text-color-dark);' data-bs-toggle='modal' data-bs-target='#terms_modal'>Termos de Uso</a>.",
+    accept: "Aceito",
+    reject: "Recusar"
+  },
   donate: {
     copy_button: "Copiar {{type}}",
     back_button: "Voltar",
@@ -82,6 +87,12 @@ const translation = {
   settings: {
     sound: "Efeito Sonoro",
     music: "Música"
+  },
+  terms: {
+    title: "Termos de Uso"
+  },
+  policy: {
+    title: "Política de Privacidade"
   },
   update: {
     title: "Nova versão disponível!",

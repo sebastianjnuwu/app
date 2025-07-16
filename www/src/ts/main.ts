@@ -8,7 +8,12 @@ import $ from "jquery";
  * It initializes interactions with the splash screen and handles the game room code visibility logic.
  */
 $(() => {
- 
+
+if (!localStorage.getItem('user_cookie_authorization')) {
+  $('#overlay').css('display', 'block');
+  $("#cookie").css('display', 'block');
+};
+    
   $("#splash-screen img").on("click", () => {
     
     if (localStorage.musicEnabled !== "false") MusicSong.play();
@@ -21,8 +26,18 @@ $(() => {
 $(document).on("click", "button", () => {
   if (localStorage.soundEnabled !== "false") ClickSong.play();
 });
-  
-  
+
+$('#reject-cookies').on('click', () => {
+  $('#overlay').css('display', 'none');
+  $("#cookie").css('animation', 'slideInEnd 1s ease forwards');
+});
+
+$('#accept-cookies').on('click', () => {
+  localStorage.setItem('user_cookie_authorization', "YES");
+  $('#overlay').css('display', 'none');
+  $("#cookie").css('animation', 'slideInEnd 1s ease forwards');
+});
+
   /**
    * Event handler for changing the game option selection (either creating a new game or joining an existing one).
    * Shows or hides the room code input field based on the user's choice.
