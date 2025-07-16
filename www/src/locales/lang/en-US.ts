@@ -24,6 +24,7 @@ const enUSTranslation = {
   },
   splashScreen: {
     splashClick: "Click...",
+    policy: "<a target='_blank' data-bs-toggle='modal' data-bs-target='#terms_modal'>Terms of Use</a> and <a target='_blank' data-bs-toggle='modal' data-bs-target='#policy_modal'>Privacy Policy</a>"
   },
   menu: {
     cookieTitle: "Cookie",

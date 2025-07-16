@@ -21,6 +21,7 @@ const translation = {
   },
   splashScreen: {
     splashClick: "Clique...",
+    policy: "<a target='_blank' data-bs-toggle='modal' data-bs-target='#terms_modal'>Termos De Uso</a> E <a target='_blank' data-bs-toggle='modal' data-bs-target='#policy_modal'>Política De Privacidade</a>"
   },
   menu: {
     cookieTitle: "Cookie",

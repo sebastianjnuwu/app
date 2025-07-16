@@ -3,7 +3,8 @@
 #splash-screen {
   .icon {
     width: 15rem;
-    animation: splash-screen 2s infinite ease-in-out;
+    padding: 1rem;
+    animation: icon-bounce 2s infinite ease-in-out;
   }
   
   h1 {
@@ -16,28 +17,48 @@
     cursor: pointer;
     animation: reveal forwards ease-out;
   }
+  
+.splash-footer {
+  font-family: "Press Start 2P", cursive;
+  position: absolute;
+  bottom: 5vh; 
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.45rem; 
+  text-align: center;
+  color: var(--text-color);
+
+  a {
+    color: var(--text-color);
+    text-decoration: underline;
+  }
+
+  @media (min-width: 768px) {
+    bottom: 3vh;
+    font-size: 0.5rem;
+  }
 }
 
-@keyframes splash-screen {
+}
 
-  0%,
-  100% {
-    transform: translateY(0);
+@keyframes icon-bounce {
+  0%, 100% {
+    transform: translateX(0);
     opacity: 1;
   }
-  
+
   25% {
-    transform: translateY(-8px);
+    transform: translateX(-8px);
     opacity: 0.8;
   }
-  
+
   50% {
-    transform: translateY(-15px);
+    transform: translateX(8px);
     opacity: 1;
   }
-  
+
   75% {
-    transform: translateY(-8px);
+    transform: translateX(-8px);
     opacity: 0.8;
   }
 }

@@ -9,7 +9,7 @@ import $ from "jquery";
  */
 $(() => {
  
-  $("#splash-screen").on("click", () => {
+  $("#splash-screen img").on("click", () => {
     
     if (localStorage.musicEnabled !== "false") MusicSong.play();
   

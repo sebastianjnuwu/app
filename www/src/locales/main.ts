@@ -38,7 +38,7 @@ switch (window.navigator.language) {
 
 $("[i18next-id]").each(function () {
   const id = $(this).attr("i18next-id");
-  $(this).text(lang(id));
+  $(this).html(lang(id));
 });
 
 export { lang };
