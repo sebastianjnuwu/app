@@ -21,7 +21,7 @@ function showMessage(message: string, duration: number = 5000): void {
   const toastHtml = `
     <div class="toast fade show">
       <div class="toast-header">
-        <img src="favicon.ico" class="rounded me-2" style="width: 10%;" alt="icon">
+        <img src="https://cookie-clicker-brasil.vercel.app/favicon.ico" class="rounded me-2" style="width: 10%;" alt="icon">
         <strong class="me-auto">Cookie</strong>
         <small>
           <i18next i18next-id="general.message_now">${lang("general.message_now")}</i18next>
