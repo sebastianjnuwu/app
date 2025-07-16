@@ -111,11 +111,11 @@ function showQRCode(type, keyOrAddress, imageUrl) {
 
 function RDB() { 
 $("#pix").on("click", () => {
-    showQRCode("pix", PIX_KEY, "/images/QRCODE_PIX.png"); 
+    showQRCode("pix", PIX_KEY, "https://cookie-clicker-brasil.vercel.app/images/QRCODE_PIX.png"); 
   });
 
   $("#bitcoin").on("click", () => {
-    showQRCode("bitcoin", BITCOIN_KEY, "/images/QRCODE_BITCOIN.png");
+    showQRCode("bitcoin", BITCOIN_KEY, "https://cookie-clicker-brasil.vercel.app/images/QRCODE_BITCOIN.png");
   });
 };
 
