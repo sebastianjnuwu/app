@@ -6,4 +6,3 @@ import "@ts/CheckVersionUpdate.ts";
 import "@ts/main.ts";
 import "@ts/game/index.ts";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "@js/firebase.mjs";
