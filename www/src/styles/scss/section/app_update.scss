@@ -1,0 +1,110 @@
+@use "../variables" as *;
+@use "sass:color";
+
+#app_update {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  backdrop-filter: blur(12px);
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Minecraftia", cursive;
+  color: $text-color-white;
+  pointer-events: all;
+  overflow: hidden;
+
+  .content {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    max-width: 340px;
+    width: 90%;
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.05);
+    animation: FadeIn 0.5s ease-out;
+
+    .icon-link {
+      display: inline-block;
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+
+      .icon {
+        width: 6rem;
+        height: 6rem;
+        margin-bottom: 20px;
+        background-image: url("https://cookie-clicker-brasil.vercel.app/favicon.ico");
+        background-size: cover;
+        background-position: center;
+        animation: FadeIn 0.6s ease-out;
+        pointer-events: none;
+      }
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-shadow: 0px 3px 0px $text-color-shadow;
+    }
+
+    a.download {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 14px 32px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: $text-color;
+      background: linear-gradient(
+        to bottom,
+        color.adjust($layout, $lightness: 5%),
+        color.adjust($layout-dark, $lightness: -5%)
+      );
+      border: none;
+      border-radius: 20px;
+      text-decoration: none;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: all 0.5s ease;
+      animation: PulseZoom 1.5s infinite;
+
+      &:hover {
+        opacity: 0.9;
+        color: $text-color-dark;
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 6px 14px rgba($text-color-dark, 0.3);
+      }
+    }
+  }
+}
+
+@keyframes FadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes PulseZoom {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+}

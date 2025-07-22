@@ -23,6 +23,8 @@
   },
   "dependencies": {
     "@capacitor-community/admob": "^7.0.1",
+    "@capacitor-firebase/analytics": "^7.2.0",
+    "@capacitor-firebase/authentication": "^7.2.0",
     "@capacitor/android": "^7.1.0",
     "@capacitor/app": "^7.0.1",
     "@capacitor/core": "^7.1.0",
@@ -32,10 +34,11 @@
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
     "dotenv": "^16.4.7",
-    "firebase": "^11.5.0",
+    "firebase": "^11.10.0",
     "i18next": "^24.2.3",
     "jquery": "^3.7.1",
-    "socket.io-client": "^4.8.1"
+    "socket.io-client": "^4.8.1",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.26.10",

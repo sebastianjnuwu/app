@@ -1,0 +1,168 @@
+@use "../variables" as *;
+@use "sass:color";
+
+.room_code {
+  text-align: center;
+  background-color: $color-sandybrown;
+  padding: 5px;
+  border: 1px solid $color-chocolate;
+  box-shadow: 1px 1px $text-color-dark;
+  border-radius: 16px;
+  width: 10rem;
+  margin: 0.5rem;
+  font-weight: bold;
+  opacity: 0;
+  animation: slideIn 2s forwards;
+}
+
+.room_code h3 {
+  margin: 0;
+  padding: 0;
+  font-family: "minecraftia", cursive;
+  font-weight: bold;
+  font-size: 0.6rem;
+  color: $text-color-dark;
+}
+
+.room_code p {
+  user-select: text;
+  font-family: "minecraftia", cursive;
+  font-size: 1rem;
+  margin: 0;
+  font-weight: bold;
+  color: $text-color-dark;
+}
+
+.room_code p::selection,
+.selection::selection {
+  background: $text-color-chocolate;
+  color: $text-color-white;
+}
+
+#toggle_code_visibility {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  color: $text-color-dark;
+  border-radius: 8px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  
+  i {
+    pointer-events: none;
+  }
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
+  
+  &:focus {
+    outline: none;
+    outline-offset: 2px;
+  }
+}
+
+.waiting_room_data {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: "MedievalSharp", sans-serif;
+}
+
+.waiting_room {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+  gap: 40px;
+  
+  h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: $text-color-dark;
+    margin-bottom: 10px;
+    text-shadow: 0.5px 0.5px 1px $color-chocolate;
+  }
+  
+  p {
+    font-size: 1rem;
+    color: $text-color-dark;
+    text-shadow: 0px 0px 1px $color-chocolate;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+}
+
+#room_settings_btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  color: $text-color-dark;
+  border: none;
+  border-radius: 50%;
+  padding: 0.7rem;
+  font-size: 1.75rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease;
+  
+  i {
+    pointer-events: none;
+  }
+  
+  &:hover {
+    transform: rotate(360deg) scale(1.1);
+  }
+  
+  &:active {
+    transform: rotate(20deg) scale(0.95);
+  }
+  
+  &:focus {
+    outline: none;
+  }
+}
+
+#room_create_game, #leave_room_game, #chat_room_game {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 14px 32px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: $text-color-white;
+  background-color: $btn-primary-bg;
+  border: none;
+  border-radius: 20px;
+  text-decoration: none;
+  text-shadow: 1px 1px 2px $color-chocolate;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.5s ease;
+  
+  &:hover {
+    text-shadow: 2px 2px 2px $color-chocolate;
+    transform: translateY(-2px) scale(0.95);
+    box-shadow: 5px 5px 15px rgba($text-color-dark, 0.3);
+  }
+
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

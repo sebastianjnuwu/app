@@ -1,10 +1,16 @@
 {
   "compilerOptions": {
-    "lib": ["ESNext"],
-    "module": "commonjs",
-    "moduleResolution": "node",
     "target": "ESNext",
+    "module": "commonjs",
+    "lib": ["ESNext"],
+    "moduleResolution": "node",
     "outDir": "build",
+    "baseUrl": "./src",
+    "paths": {
+      "@db/*": ["database/*"],
+      "@socket/*": ["socket/*"],
+      "@functions/*": ["functions/*"]
+    },
     "strictNullChecks": false,
     "sourceMap": false,
     "esModuleInterop": true,

@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model ROOM {
+  ID            String   @id @default(auto()) @map("_id") @db.ObjectId
+  OWNER_ID      String   @db.ObjectId
+  OWNER         PLAYER   @relation("ROOM_OWNER", fields: [OWNER_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction)
+  STATE         String   @default("WAITING")
+  PLAYER_LIMIT  Int
+  TIME          Int
+  PUBLIC        Boolean?
+  CODE          String   @unique
+  PLAYERS       PLAYER[] @relation("ROOM_PLAYERS")
+  CREATED_AT    DateTime @default(now())
+  ENDED_AT      DateTime?
+
+  @@map("ROOMS")
+}
+
+model PLAYER {
+  ID           String   @id @map("_id") @default(auto()) @db.ObjectId
+  UID          String   @unique
+  NAME         String
+  PHOTO_URL    String?
+  IS_ORIGINAL  Boolean?
+  ROOM_ID      String?   @db.ObjectId
+  ROOM         ROOM?     @relation("ROOM_PLAYERS", fields: [ROOM_ID], references: [ID])
+  
+  OWNED_ROOMS  ROOM[]   @relation("ROOM_OWNER")
+
+  @@map("PLAYERS")
+}

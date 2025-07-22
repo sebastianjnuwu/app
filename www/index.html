@@ -36,6 +36,7 @@
   
   <!-- Fonts -->  
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=MedievalSharp&display=swap" rel="stylesheet">
+  
   <link href="https://fonts.cdnfonts.com/css/minecraftia" rel="stylesheet">
   
   <!-- Styles --> 
@@ -46,286 +47,252 @@
   <meta name="google-adsense-account" content="ca-pub-6690516270288705">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6690516270288705" crossorigin="anonymous"></script>  
   
-  <script type="module" src="./main.ts"></script>
+  <script type="module" src="./src/ts/main.ts"></script>
 </head>
 <body class="d-flex flex-column justify-content-center align-items-center vh-100">
 
- <div id="overlay"></div>
+ <div id="overlay" hidden></div>
  
  <!--- PRIVACY POLICY AND TERMS OF USE NOTICE MESSAGE --->
- <cookie id='cookie'>
+ <section id='cookie'>
   <div class='content'>
-    <p><i18next i18next-id="cookie.message"></i18next></p>
+    <p><i18next i18next-id="app.cookie.message"></i18next></p>
     <div class="row mt-2">
       <div class="col">
-        <button class="btn btn-outline-light w-100" id="reject-cookies">
-          <i class="fas fa-times-circle"></i> <i18next i18next-id="cookie.reject"></i18next>
+        <button class="btn w-100 SOUND_EFFECT" id="reject-cookies">
+          <i class="fas fa-times-circle"></i> <i18next i18next-id="app.cookie.reject"></i18next>
         </button>
       </div>
       <div class="col">
-        <button class="btn btn-warning w-100" id="accept-cookies">
-          <i class="fas fa-cookie-bite"></i> <i18next i18next-id="cookie.accept"></i18next>
+        <button class="btn w-100 SOUND_EFFECT" id="accept-cookies">
+          <i class="fas fa-cookie-bite"></i> <i18next i18next-id="app.cookie.accept"></i18next>
         </button>
       </div>
     </div>
   </div>
- </cookie>
+ </section>
 
  <!--- POPUP MESSAGE --->
  <div class="toast-container position-fixed bottom-0 end-0 p-3">
   <div id="message"></div>
  </div>
+ 
+ <!-- MAIN BACKGROUND MUSIC FOR THE GAME -->
+<audio id="MUSIC_SONG" preload="auto" loop>
+  <source src="https://cookie-clicker-brasil.vercel.app/sound/music.mp3"
+  type="audio/mpeg" />
+</audio>
+
+<!-- BEEP SOUND EFFECT FOR QUICK ACTIONS -->
+<audio id="EFFECT_SONG" preload="auto">
+  <source src="https://cookie-clicker-brasil.vercel.app/sound/beeps.mp3" type="audio/mpeg" />
+</audio>
+
+<!-- NOTIFICATION SOUND WHEN A PLAYER JOINS -->
+<audio id="JOIN_SONG" preload="auto">
+  <source src="https://cookie-clicker-brasil.vercel.app/sound/join.mp3" type="audio/mpeg" />
+</audio>
+
+<!-- CLICK SOUND EFFECT FOR UI INTERACTIONS -->
+<audio id="CLICK_SONG" preload="auto">
+  <source src="https://cookie-clicker-brasil.vercel.app/sound/click.mp3" type="audio/mpeg" />
+</audio>
 
  <!-- SCREEN OF WHEN A NEW UPDATE IS AVAILABLE IN THE ANDROID APPLICATION --->
- <div id="update-screen" style="display: none;">
-  <div class="update-content">
-    <h1><i18next i18next-id="update.title">New version available!</i18next></h1>
-    <a class="update-btn">
-      <i class="fas fa-download"></i> <i18next i18next-id="update.download">Download</i18next>
+ <section id="app_update" aria-live="polite" aria-labelledby="app_update_title" hidden>
+  <div class="content">
+    <a class="icon-link" href="#" aria-label="Download new version">
+      <div class="icon"></div>
+    </a>
+    <h1 id="app_update_title">
+      <i18next i18next-id="app.update.title">New version available!</i18next>
+    </h1>
+    <a class="download SOUND_EFFECT" type="button" aria-label="Download new version">
+      <i class="fas fa-download" aria-hidden="true"></i>
+      <i18next i18next-id="app.update.download">Download</i18next>
     </a>
   </div>
-</div>
+</section>
 
  <!--- SPLASH SCREEN --->
- <div id="splash-screen">
+ <section id="splash_screen">
     <img class="icon" src="https://cookie-clicker-brasil.vercel.app/favicon.ico" />
-  <div class="splash-footer">
-    <i18next i18next-id="splashScreen.policy"><a target='_blank' data-bs-toggle='modal' data-bs-target='#terms_modal'>Terms of Use</a> and <a target='_blank' data-bs-toggle='modal' data-bs-target='#policy_modal'>Privacy Policy</a></i18next>
+  <div class="splash_footer">
+    <i18next i18next-id="app.splash_screen.message"><a target='_blank' data-bs-toggle='modal' data-bs-target='#terms_modal'>Terms of Use</a> and <a target='_blank' data-bs-toggle='modal' data-bs-target='#policy_modal'>Privacy Policy</a></i18next>
   </div>
+  </section>
+
+ <!--- THE GAME'S START MENU --->
+ <section id="home_menu" hidden>
+  <h1 class="title">
+    <i class="fas fa-cookie-bite"></i>
+    <i18next i18next-id="app.menu.title">Cookie</i18next>
+  </h1>
+  <div class="menu">
+    <button id="create_game_room" class="SOUND_EFFECT" data-bs-toggle="modal"
+    data-bs-target="#room_modal">
+        <i class="fas fa-gamepad"></i>
+       <i18next i18next-id="app.menu.button.play">Play</i18next>
+    </button>
+    <button id="open_settings" class="SOUND_EFFECT" data-bs-toggle="modal" data-bs-target="#settings_modal">
+     <i class="fas fa-cog"></i>
+     <i18next i18next-id="app.menu.button.settings">Settings</i18next>
+   </button> 
   </div>
+ </section>
 
- <!-- THE GAME'S START MENU  --->
- <div id="start-screen" style="display: none;">
-        <h1 class="title">
-            <i class="fas fa-cookie-bite"></i>
-            <i18next i18next-id="menu.cookieTitle">Cookie</i18next>
-        </h1>
-        <div class="menu">
-            <button id="start-playing" data-bs-toggle="modal" data-bs-target="#room_modal">
-                <i class="fas fa-gamepad"></i>
-                <i18next i18next-id="menu.playButton">Play</i18next>
-            </button>
-          <!---  <button id="start-statistics" data-bs-toggle="modal" data-bs-target="#statistics_modal">
-                <i class="fas fa-chart-bar"></i>
-                <i18next i18next-id="menu.statistics">Statistics</i18next>
-            </button>
-            <button id="start-shop" data-bs-toggle="modal" data-bs-target="#shop_modal">
-                <i class="fas fa-store"></i>
-                <i18next i18next-id="menu.shop">Shop</i18next>
-            </button> -->
-            <button id="start-settings" data-bs-toggle="modal" data-bs-target="#settings_modal">
-                <i class="fas fa-cog"></i>
-                <i18next i18next-id="menu.settings">Settings</i18next>
-            </button> 
-            <button id="donate-button" data-bs-toggle="modal" data-bs-target="#donate_modal">
-  <i class="fas fa-donate"></i>
-  <i18next i18next-id="menu.donate">Donate</i18next>
-</button>
-        </div>
-    </div>
-
- <!-- COUNTDOWN --->
- <div style="display: none;" id="countdown-container" class="countdown-overlay justify-content-center align-items-center">
-   <h1 id="countdown" class="countdown-text">3</h1>
+ <div id="countdown-container" class="countdown-overlay justify-content-center
+ align-items-center" hidden>
+   <h1 id="countdown" class="countdown-text">
+     3
+   </h1>
  </div>
 
- <!-- GAME SCREEN WHEN YOU CLICK ON THE COOKIE  --->
- <ui style="display: none;">
+ <section id="GAMEPLAY" hidden>
 
-        <div id="ranking" style="display: none;">
-            <h2>
-                <i class="fas fa-trophy"></i>
-                <i18next i18next-id="ranking.rankingTitle">Ranking</i18next>
-            </h2>
-            <ul id="ranking-list"></ul>
-            <div class="d-flex flex-column justify-content-center align-items-center gap-2">
-                <button id="game_exit" class="btn btn-secondary">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <i18next i18next-id="ranking.leaveButton">Exit</i18next>
-                </button>
-            </div>
-        </div>
+   <button id="room_settings_btn" class="btn position-absolute top-0 end-0 m-4 me-4 SOUND_EFFECT">
+      <i class="fas fa-cog"></i>
+   </button>
+    
+ <div class="room_code position-fixed top-0 start-50 translate-middle-x mt-4">
+  <h3 class="d-flex align-items-center justify-content-center gap-2 position-relative">
+    <i class="fas fa-key"></i>
+    <i18next i18next-id="app.waiting.code">Room Code:</i18next>
+  </h3>
+  <p class="d-flex text-center align-items-center justify-content-center gap-2">
+    <span id="ROOM_CODE_TEXT">------</span>
+    <button id="toggle_code_visibility" class="btn btn-sm p-1 SOUND_EFFECT">
+      <i class="fas fa-eye"></i>
+    </button>
+  </p>
+ </div>
 
-        <div class="room-code position-fixed top-0 start-50 translate-middle-x mt-4">
-            <h3>
-                <i class="fas fa-key"></i>
-                <i18next i18next-id="ranking.roomCode">Room Code:</i18next>
-            </h3>
-            <p id="current_code">
-                <i class="fas fa-wifi"></i>
-            </p>
-        </div>
+  <div class="waiting_room">
+    <div class="waiting_room-data">
+    <h1>
+     <i class="fas fa-cookie-bite"></i>
+     <i18next i18next-id="app.waiting.title">Waiting...</i18next>
+   </h1>
+   <p class="text-center">
+     <i class="fas fa-users"></i>
+     <x id="PLAYER_ONLINE">1</x>/<x id="PLAYER_MAX">10</x>
+   </p>
+   <div class="d-flex flex-column justify-content-center align-items-center gap-2">
+     <button id="room_create_game" class="btn SOUND_EFFECT w-100">
+       <i class="fas fa-play"></i>
+       <i18next i18next-id="app.waiting.button.start">Start</i18next>
+     </button>
+     <button id="leave_room_game" class="btn SOUND_EFFECT w-100">
+       <i class="fas fa-sign-out-alt"></i>
+       <i18next i18next-id="app.waiting.button.leave">Leave</i18next>
+     </button>
+     <button id="chat_room_game" class="btn SOUND_EFFECT w-100">
+       <i class="fas fa-comments"></i>
+       <i18next i18next-id="app.waiting.button.chat">Chat</i18next>
+     </button>
+    </div>
+   </div>
+  </div>
 
-    <div class="waiting-room">
-            <div class="waiting-room-data">
-                <h1>
-                    <i class="fas fa-cookie-bite"></i>
-                    <i18next i18next-id="ranking.waiting">Waiting...</i18next>
-                </h1>
-                <p>
-                    <i class="fas fa-users"></i>
-                    <x id="online">1</x>/<x id="max">10</x>
-                </p>
-                <div class="d-flex flex-column justify-content-center align-items-center gap-2">
-                    <button id="start_game" class="btn btn-primary">
-                        <i class="fas fa-play"></i>
-                        <i18next i18next-id="ranking.startButton">Start</i18next>
-                    </button>
-                    <button id="leave_room" class="btn btn-secondary">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <i18next i18next-id="ranking.leaveButton">Leave</i18next>
-                    </button>
-                </div>
-            </div>
-        </div>
+  </section>
 
-        <div id="game" style="display: none;">
-            <table class="d-flex flex-column justify-content-center align-items-center statistic position-relative">
-                <tbody>
-                    <tr>
-                        <th>
-                            <i class="fas fa-cookie-bite"></i>
-                            <i18next i18next-id="general.cookies">Cookies</i18next>
-                        </th>
-                        <td id="click-cookie" class="value">0</td>
-                    </tr>
-                    <tr>
-                        <th>
-                            <i class="fas fa-stopwatch"></i>
-                            <i18next i18next-id="general.seconds">Seconds</i18next>
-                        </th>
-                        <td id="cps" class="value">0</td>
-                    </tr>
-                </tbody>
-            </table>
-            <cookie class="d-flex flex-column justify-content-center align-items-center cookie position-relative">
-                <img src="https://cookie-clicker-brasil.vercel.app/images/cookie/cookie-default.webp" oncontextmenu="return false;" alt="cookie default" class="icon mb-4">
-            </cookie>
-            <div class="game-time position-fixed bottom-0 start-50 translate-middle-x mb-4">
-                <h3>
-                    <i class="fas fa-stopwatch"></i>
-                    <i18next i18next-id="general.timeLabel">Time:</i18next>
-                    <span id="timer">0:00</span>
-                </h3>
-            </div>
-        </div>
-
-    </ui>
-
- <!--- MULTIPLAYER ROOM SETTINGS CARD --->
+  <!-- CARD TO CONFIGURE GAME ROOM --->
  <div class="modal fade" id="room_modal" tabindex="-1" aria-labelledby="room_modalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="room_modalLabel">
                         <i class="fas fa-gamepad"></i>
-                        <i18next i18next-id="menu.settings">Settings</i18next>
+                        <i18next i18next-id="app.menu.button.settings">Settings</i18next>
                     </h5>
                 </div>
                 <div class="modal-body">
-                    <form id="form">
-                        <div class="mb-3">
-                            <label for="nickname" class="form-label">
-                                <i class="fas fa-user"></i>
-                                <i18next i18next-id="game.nicknameLabel">Nickname</i18next>
-                            </label>
-                            <input type="text" class="form-control" id="room_name" name="nickname"
-                                placeholder="Scooby-Doo" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">
-                                <i class="fas fa-list-ul"></i>
-                                <i18next i18next-id="game.gameOptionLabel">Choose an option:</i18next>
-                            </label>
-                            <div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="option_game" id="room_random"
-                                        value="room_random">
-                                    <label class="form-check-label" for="room_random">
-                                        <i class="fas fa-random"></i>
-                                        <i18next i18next-id="game.randomRoom">Join a random room</i18next>
-                                    </label>
-                                </div>
-
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="option_game" id="createRoom"
-                                        value="create" checked>
-                                    <label class="form-check-label" for="createRoom">
-                                        <i class="fas fa-plus-circle"></i>
-                                        <i18next i18next-id="game.createRoom">Create a room</i18next>
-                                    </label>
-                                </div>
-
-
-
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="option_game" id="room_join"
-                                        value="join">
-                                    <label class="form-check-label" for="room_join">
-                                        <i class="fas fa-sign-in-alt"></i>
-                                        <i18next i18next-id="game.joinRoom">Join a room</i18next>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mb-3" id="code_container" style="display: none;">
-                            <label for="room_code" class="form-label">
-                                <i class="fas fa-key"></i>
-                                <i18next i18next-id="game.roomCodeLabel">Room Code</i18next>
-                            </label>
-                            <input type="text" class="form-control" id="room_code" name="room_code"
-                                placeholder="XN4ZXP" autocomplete="off">
-                        </div>
-
-
-                        <div id="game_container">
-
-                            <div class="d-flex gap-2">
-                                <div class="mb-3 flex-grow-1">
-                                    <label for="room_time" class="form-label d-block">
-                                        <i class="fas fa-clock"></i>
-                                        <i18next i18next-id="game.gameTimeLabel">Game Time</i18next>
-                                    </label>
-                                    <input type="number" class="form-control w-100" id="room_time" name="gameTime"
-                                        placeholder="e.g. 11" min="11" max="600" value="11">
-                                </div>
-                                <div class="mb-3 flex-grow-1">
-                                    <label for="player_limit" class="form-label d-block">
-                                        <i class="fas fa-users"></i>
-                                        <i18next i18next-id="game.gamePlayerLimit">Player Limit</i18next>
-                                    </label>
-                                    <input type="number" class="form-control w-100" id="player_limit" name="playerLimit"
-                                        placeholder="e.g. 10" min="2" max="50" value="10">
-                                </div>
-                            </div>
-
-
-
-                            <div class="mb-3">
-                                <label for="publicRoom" class="form-label">
-                                    <i class="fas fa-users"></i>
-                                    <i18next i18next-id="game.publicRoomLabel">Public Room</i18next>
-                                </label>
-                                <input type="checkbox" class="form-check-input me-2" id="room_public"
-                                    name="room_public">
-                            </div>
-
-
-                        </div>
-
-
-                    </form>
+<form id="form">
+  <div class="mb-3">
+    <label for="nickname" class="form-label">
+      <i class="fas fa-user"></i>
+      <i18next i18next-id="app.game.nicknameLabel">Nickname</i18next>
+    </label>
+    <input type="text" class="form-control" id="room_name" name="nickname" placeholder="Scooby-Doo" required>
+  </div>
+  
+  <div class="mb-3">
+    <label class="form-label">
+      <i class="fas fa-list-ul"></i>
+      <i18next i18next-id="app.game.gameOptionLabel">Choose an option:</i18next>
+    </label>
+    <div>
+      <div class="form-check">
+        <input class="form-check-input SOUND_EFFECT" type="radio" name="option_game" id="room_random" value="room_random">
+        <label class="form-check-label" for="room_random">
+          <i class="fas fa-random"></i>
+          <i18next i18next-id="app.game.randomRoom">Join a random room</i18next>
+        </label>
+      </div>
+      
+      <div class="form-check">
+        <input class="form-check-input SOUND_EFFECT" type="radio" name="option_game" id="createRoom" value="create" checked>
+        <label class="form-check-label" for="createRoom">
+          <i class="fas fa-plus-circle"></i>
+          <i18next i18next-id="app.game.createRoom">Create a room</i18next>
+        </label>
+      </div>
+      
+      <div class="form-check">
+        <input class="form-check-input SOUND_EFFECT" type="radio" name="option_game" id="room_join" value="join">
+        <label class="form-check-label" for="room_join">
+          <i class="fas fa-sign-in-alt"></i>
+          <i18next i18next-id="app.game.joinRoom">Join a room</i18next>
+        </label>
+      </div>
+    </div>
+  </div>
+  
+  <div class="mb-3" id="code_container" style="display: none;">
+    <label for="room_code" class="form-label">
+      <i class="fas fa-key"></i>
+      <i18next i18next-id="app.game.roomCodeLabel">Room Code</i18next>
+    </label>
+    <input type="text" class="form-control" id="room_code" name="room_code" placeholder="XN4ZXP" autocomplete="off">
+  </div>
+  
+  <div id="game_container">
+    <div class="d-flex gap-2">
+      <div class="mb-3 flex-grow-1">
+        <label for="room_time" class="form-label d-block">
+          <i class="fas fa-clock"></i>
+          <i18next i18next-id="app.game.gameTimeLabel">Game Time</i18next>
+        </label>
+        <input type="number" class="form-control w-100" id="room_time"
+        name="gameTime" placeholder="e.g. 10" min="10" max="600" value="11">
+      </div>
+      <div class="mb-3 flex-grow-1">
+        <label for="player_limit" class="form-label d-block">
+          <i class="fas fa-users"></i>
+          <i18next i18next-id="app.game.gamePlayerLimit">Player Limit</i18next>
+        </label>
+        <input type="number" class="form-control w-100" id="player_limit" name="playerLimit" placeholder="e.g. 10" min="2" max="50" value="10">
+      </div>
+    </div>
+    
+    <div class="mb-3">
+      <label for="publicRoom" class="form-label">
+        <i class="fas fa-users"></i>
+        <i18next i18next-id="app.game.publicRoomLabel">Public Room</i18next>
+      </label>
+      <input type="checkbox" class="form-check-input me-2 SOUND_EFFECT" id="room_public" name="room_public">
+    </div>
+  </div>
+</form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="close" data-bs-dismiss="modal">
+                    <button type="button" class="close SOUND_EFFECT" data-bs-dismiss="modal">
                         <i class="fas fa-times"></i>
-                        <i18next i18next-id="modal.cancel">Cancel</i18next>
+                        <i18next i18next-id="app.modal.close">Close</i18next>
                     </button>
-                    <button id="form_button" class="confirm">
+                    <button id="create_room" class="confirm SOUND_EFFECT">
                         <i class="fas fa-check"></i>
-                        <i18next i18next-id="modal.confirm">Confirm</i18next>
+                        <i18next i18next-id="app.modal.open">Confirm</i18next>
                     </button>
                 </div>
             </div>
@@ -339,78 +306,63 @@
       <div class="modal-header">
         <h5 class="modal-title" id="settings_modalLabel">
           <i class="fas fa-cog me-2"></i>
-          <i18next i18next-id="menu.settings">Configurações</i18next>
+          <i18next i18next-id="app.menu.button.settings">Settings</i18next>
         </h5>
-
       </div>
       <div class="modal-body">
-        <form id="settings-form" class="d-flex flex-column gap-2">
+        <div id="settings-form" class="d-flex flex-column gap-2">
+          
+      <!---    <div class="d-flex justify-content-between align-items-center">
+            <div class="mb-2">
+              <label for="toggleSound" class="form-label">
+                <i class="fas fa-bell"></i>
+                <i18next i18next-id="app.settings.notification">Notification</i18next>
+              </label>
+              <input type="checkbox" class="form-check-input me-2"
+              id="toggleNotification" name="toggleNotification">
+            </div>
+          </div> --->
           
           <div class="d-flex justify-content-between align-items-center">
             <div class="mb-2">
-  <label for="toggleSound" class="form-label">
-    <i class="fas fa-volume-up"></i>
-    <i18next i18next-id="settings.sound">Sound</i18next>
-  </label>
-  <input type="checkbox" class="form-check-input me-2" id="toggleSound" name="toggleSound">
-</div>
-          </div>
-
-          <div class="d-flex justify-content-between align-items-center">
-          <div class="mb-2">
-  <label for="toggleMusic" class="form-label">
-    <i class="fas fa-music"></i>
-    <i18next i18next-id="settings.music">Background Music</i18next>
-  </label>
-  <input type="checkbox" class="form-check-input me-2" id="toggleMusic" name="toggleMusic">
-</div>
+              <label for="toggleSound" class="form-label">
+                <i class="fas fa-volume-up"></i>
+                <i18next i18next-id="app.settings.sound">Sound</i18next>
+              </label>
+              <input type="checkbox" class="form-check-input me-2 SOUND_EFFECT" id="toggleSound" name="toggleSound">
+            </div>
           </div>
           
-        </form>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="mb-2">
+              <label for="toggleMusic" class="form-label">
+                <i class="fas fa-music"></i>
+                <i18next i18next-id="app.settings.music">Background Music</i18next>
+              </label>
+              <input type="checkbox" class="form-check-input me-2 SOUND_EFFECT" id="toggleMusic" name="toggleMusic">
+            </div>
+          </div>
+
+         <div class="d-flex justify-content-center my-1">
+    <button class="google d-flex align-items-center gap-2 SOUND_EFFECT">
+    <i class="fab fa-google"></i>
+    <span id="google"><i18next
+    i18next-id="app.login.google">Login</i18next></span>
+  </button>
+   </div>
+          
+        </div>
       </div>
-                <div class="modal-footer">
-                    <button type="button" class="close" data-bs-dismiss="modal">
-                        <i class="fas fa-times"></i>
-                        <i18next i18next-id="modal.cancel">Cancel</i18next>
-                    </button>
-                </div>
+      <div class="modal-footer">
+        <button type="button" class="close SOUND_EFFECT" data-bs-dismiss="modal">
+          <i class="fas fa-times"></i>
+          <i18next i18next-id="app.modal.close">Close</i18next>
+        </button>
+      </div>
     </div>
   </div>
 </div>
  
- <!-- CARD FOR PLAYERS TO MAKE A GOODWILL DONATION - PLEASE DONATE!!! --->
- <div class="modal fade" id="donate_modal" tabindex="-1" aria-labelledby="donate_modalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-   <div class="modal-header">
-        <h5 class="modal-title" id="settings_modalLabel">
-          <i class="fas fa-donate me-2"></i>
-          <i18next i18next-id="menu.donate">Donate</i18next>
-        </h5>
-
-      </div>
-   <div class="modal-body">
-  <div class="menu" id="donate_buttons">
-    <button id="pix">
-      <i class="fas fa-qrcode fa-lg"></i>
-      <span>Pix</span>  
-    </button> 
-    <button id="bitcoin">
-      <i class="fab fa-bitcoin fa-lg"></i>
-      <span>Bitcoin</span>
-    </button> 
-  </div>
-</div>
-   <div class="modal-footer">
-      <button type="button" class="close" data-bs-dismiss="modal">
-   <i class="fas fa-times"></i>
-   <i18next i18next-id="modal.cancel">Cancel</i18next>
-      </button>
-     </div>
-    </div>
-   </div>
-  </div>
-
  <!--- CARD TO PRESENT THE TERMS TO USERS FOLLOWING THE CORRECT POLICIES --->
  <div class="modal fade" id="terms_modal" tabindex="-1" aria-labelledby="terms_modalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -459,7 +411,7 @@
    </div>
   </div>
  </div>
-  
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/eruda/3.4.1/eruda.min.js" integrity="sha512-3RVqOZtMevFOLeXCp0/Wl7np/l3J3MMysaFDUhNh+hdKx+Wb0lMXuHwA6CZ/+4DfYZM01Om1as8g+mnTaQH9vA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script defer>
    // FOR DEVELOPMENT PURPOSES 

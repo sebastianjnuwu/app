@@ -1,0 +1,67 @@
+@use "../variables" as *;
+@use "sass:color";
+
+#splash_screen {
+  .icon {
+    width: 15rem;
+    padding: 1rem;
+    animation: icon-bounce 2s infinite ease-in-out;
+  }
+  
+  .splash_footer {
+    font-family: "Press Start 2P", cursive;
+    position: absolute;
+    bottom: 5vh;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.45rem;
+    text-align: center;
+    color: $text-color;
+    
+    a {
+      color: $text-color;
+      text-decoration: underline;
+    }
+    
+    @media (min-width: 768px) {
+      bottom: 3vh;
+      font-size: 0.5rem;
+    }
+  }
+  
+  @keyframes icon-bounce {
+    
+    0%,
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    
+    25% {
+      transform: translateX(-8px);
+      opacity: 0.8;
+    }
+    
+    50% {
+      transform: translateX(8px);
+      opacity: 1;
+    }
+    
+    75% {
+      transform: translateX(-8px);
+      opacity: 0.8;
+    }
+  }
+  
+  @keyframes reveal {
+    0% {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}

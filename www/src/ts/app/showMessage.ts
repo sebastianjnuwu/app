@@ -13,18 +13,20 @@ import $ from "jquery";
  * - Can also be manually dismissed.
  */
 function showMessage(message: string, duration: number = 5000): void {
+  
   const $message = $("#message");
   if (!$message.length) return;
 
   $message.empty();
 
-  const toastHtml = `
+  const RAW_HTML = `
     <div class="toast fade show">
       <div class="toast-header">
-        <img src="https://cookie-clicker-brasil.vercel.app/favicon.ico" class="rounded me-2" style="width: 10%;" alt="icon">
+        <img src="https://cookie-clicker-brasil.vercel.app/favicon.ico"
+        class="rounded me-2" style="width: 10%;" alt="APP ICON">
         <strong class="me-auto">Cookie</strong>
         <small>
-          <i18next i18next-id="general.message_now">${lang("general.message_now")}</i18next>
+          <i18next i18next-id="app.message.now">${lang("app.message.now")}</i18next>
         </small>
         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" style="box-shadow: none; outline: none;"></button>
       </div>
@@ -32,7 +34,7 @@ function showMessage(message: string, duration: number = 5000): void {
     </div>
   `;
 
-  $message.html(toastHtml);
+  $message.html(RAW_HTML);
 
   setTimeout(() => {
     $message.empty();
