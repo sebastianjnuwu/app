@@ -54,11 +54,7 @@ export async function ROOM({
         PUBLIC: ROOM_PUBLIC ?? false,
         TIME: time,
         PLAYERS: {
-          create: {
-            UID: PLAYER.UID,
-            NAME: PLAYER.NAME,
-            PHOTO_URL: PLAYER.PHOTO_URL,
-          },
+          connect: { ID: PLAYER_IN_DB.ID }
         },
       },
       include: { PLAYERS: true, OWNER: true },

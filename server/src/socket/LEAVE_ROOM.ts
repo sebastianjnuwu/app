@@ -39,7 +39,7 @@ export async function LEAVE_ROOM({ USER, ROOM_CODE }: LeaveRoomData) {
     where: { UID: USER.UID },
     data: { ROOM_ID: null }
   });
-
+  
   if (ROOM.PLAYERS.length === 0) {
     
     await db.ROOM.delete({ 
@@ -67,11 +67,13 @@ export async function LEAVE_ROOM({ USER, ROOM_CODE }: LeaveRoomData) {
       NEW_OWNER: NEW_OWNER.NAME,
       ROOM: safeRoom(ROOM),
     });
+    
+    logger.info(`👑 Room ${chalk.cyanBright(`"${ROOM_CODE}"`)} ownership changed: ${chalk.red(`"${USER.NAME}"`)} ➜ ${chalk.green(`"${NEW_OWNER.NAME}"`)}`);
 
   };
 
   socket.leave(ROOM_CODE);
-
+  
   logger.info(`🚪 Player ${chalk.green(`"${USER.NAME}"`)} left room ${chalk.cyanBright(`"${ROOM_CODE}"`)}`);
   
 };
