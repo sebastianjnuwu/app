@@ -60,7 +60,7 @@ export async function LEAVE_ROOM({ USER, ROOM_CODE }: LeaveRoomData) {
       where: { ID: ROOM.ID },
       data: { OWNER_ID: NEW_OWNER.ID }
     });
-
+  
     socket.to(ROOM_CODE).emit("UPDATE_ROOM", {
       TYPE: "OWNER_CHANGED",
       OLD_OWNER: USER.NAME,

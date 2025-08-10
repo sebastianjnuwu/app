@@ -9,15 +9,16 @@ socket.on("UPDATE_ROOM", ({ TYPE, PLAYER, ROOM }) => {
     $("#home_menu").attr("hidden", true);
     $("#GAMEPLAY").attr("hidden", false);
   };
-  
-  $("#room_create_game").prop("hidden", ROOM.TYPE == "CREATE");
 
   localStorage.setItem("CODE", ROOM.CODE);
   $("#ROOM_CODE_TEXT").text(ROOM.CODE);
   $("#PLAYER_ONLINE").text(ROOM.PLAYERS.length);
   $("#PLAYER_MAX").text(ROOM.PLAYER_LIMIT);
 
-  switch (ROOM.TYPE) {
+  switch (TYPE) {
+    case "CREATE":
+      $("#room_create_game").attr("hidden", false);
+      break;
     case "JOIN":
       showMessage(`<i class="fas fa-sign-in-alt"></i> ${lang("app.room.message.join", { room_player: PLAYER.NAME })}`);
       break;
@@ -29,5 +30,4 @@ socket.on("UPDATE_ROOM", ({ TYPE, PLAYER, ROOM }) => {
       break;
   }
   
-  console.log(true)
 });
