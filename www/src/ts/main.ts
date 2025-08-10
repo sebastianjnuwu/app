@@ -24,10 +24,6 @@ socket.on("ERR_SOCKET", ({ ERR_SOCKET }: { ERR_SOCKET: string }) => {
   return showMessage(lang(ERR_SOCKET));
 });
 
-socket.on("UPDATE_ROOM", (a) => {
-  console.log(a)
-});
-
 $("#splash_screen img").on("click", () => {
 
   if (!localStorage.MusicEnabled) $("#MUSIC_SONG")[0].play();

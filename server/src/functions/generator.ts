@@ -10,6 +10,7 @@ export async function GENERATE_CODE(): Promise<string> {
 
 export function safePlayer(p: any) {
   return {
+    UID: p.UID,
     NAME: p.NAME,
     PHOTO_URL: p.PHOTO_URL,
   };
@@ -22,6 +23,11 @@ export function safeRoom(r: any) {
     PLAYER_LIMIT: r.PLAYER_LIMIT,
     PUBLIC: r.PUBLIC,
     TIME: r.TIME,
+    OWNER: {
+      UID: r.OWNER.UID,
+      NAME: r.OWNER.NAME,
+      PHOTO_URL: r.OWNER.PHOTO_URL,
+    },
     PLAYERS: r.PLAYERS.map(safePlayer),
   };
 }

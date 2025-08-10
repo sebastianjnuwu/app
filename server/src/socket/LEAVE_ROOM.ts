@@ -7,7 +7,8 @@ import type { Socket } from "socket.io";
 export async function LEAVE_ROOM({ USER, ROOM_CODE }: LeaveRoomData) {
   
   const socket = this as Socket;
-
+  const io = socket.server;
+    
   let ROOM = await db.ROOM.findUnique({
     where: { CODE: ROOM_CODE },
     include: {
@@ -61,10 +62,9 @@ export async function LEAVE_ROOM({ USER, ROOM_CODE }: LeaveRoomData) {
       data: { OWNER_ID: NEW_OWNER.ID }
     });
   
-    socket.to(ROOM_CODE).emit("UPDATE_ROOM", {
-      TYPE: "OWNER_CHANGED",
-      OLD_OWNER: USER.NAME,
-      NEW_OWNER: NEW_OWNER.NAME,
+   io.in(ROOM_CODE).emit("UPDATE_ROOM", {
+      TYPE: "CREATE",
+      PLAYER: safePlayer(NEW_OWNER),
       ROOM: safeRoom(ROOM),
     });
     

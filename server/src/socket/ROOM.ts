@@ -13,9 +13,10 @@ export async function ROOM({
 }: RoomEventPayload) {
 
   const socket = this as Socket;
+  const io = socket.server;
 
   const CODE = (!ROOM_CODE || ROOM_CODE.trim() === "") ? await GENERATE_CODE() : ROOM_CODE;
-  
+
   let PLAYER_IN_DB = await db.PLAYER.findUnique({
     where: { UID: PLAYER.UID },
   });
@@ -37,7 +38,7 @@ export async function ROOM({
   });
 
   if (!ROOM && !ROOM_CODE) {
-    
+
     if (!ROOM_PLAYER_LIMIT) {
       return socket.emit("ERR_SOCKET", { ERR_SOCKET: "app.error.INVALID_PLAYER_LIMIT" });
     }
@@ -78,7 +79,7 @@ export async function ROOM({
       ERR_SOCKET: "app.error.ROOM_NOT_FOUND"
     });
   }
-  
+
   if (ROOM.STATE === "IN_GAME") {
     return socket.emit("ERR_SOCKET", {
       ERR_SOCKET: "app.error.ROOM_STATE_ERROR_IN_GAME"
@@ -109,7 +110,12 @@ export async function ROOM({
     },
   });
 
-  socket.emit("UPDATE_ROOM", {
+  ROOM = await db.ROOM.findUnique({
+    where: { CODE },
+    include: { PLAYERS: true, OWNER: true },
+  });
+
+  io.in(CODE).emit("UPDATE_ROOM", {
     TYPE: "JOIN",
     PLAYER: safePlayer(PLAYER_IN_DB),
     ROOM: safeRoom(ROOM),
