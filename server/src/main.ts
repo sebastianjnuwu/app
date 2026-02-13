@@ -4,6 +4,8 @@ import { Server } from "socket.io"; // valor real para instância
 import type { Socket } from "socket.io"; // apenas tipo
 import { ROOM } from "@socket/ROOM";
 import { LEAVE_ROOM } from "@socket/LEAVE_ROOM";
+import { START_GAME } from "@socket/START_GAME";
+import { UPDATE_COOKIES } from "@socket/UPDATE_COOKIES";
 import { UpdateRoomType } from "./constants/constants";
 import express from "express";
 import colors from "colors";
@@ -64,6 +66,12 @@ io.on("connection", (socket: Socket) => {
 
   // Sair da sala
   socket.on("LEAVE_ROOM", (data) => LEAVE_ROOM(socket, io, data));
+
+  // Iniciar jogo
+  socket.on("START_GAME", (data) => START_GAME(socket, io, data));
+
+  // Atualizar cookies durante o jogo
+  socket.on("UPDATE_COOKIES", (data) => UPDATE_COOKIES(socket, io, data));
 
   // Desconexão
   socket.on("disconnect", async () => {

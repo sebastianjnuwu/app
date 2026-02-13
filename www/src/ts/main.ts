@@ -10,7 +10,9 @@ import $ from "jquery";
 
 import "@ts/game/StartRoom"; // Entrar na sala / Criar sala
 import "@ts/game/UpdateRoom"; // Atualização de sala (entrada, saída, reentrada)
-import "@ts/game/LeaveRoom";
+import "@ts/game/LeaveRoom"; // Sair da sala
+import "@ts/game/GameEvents"; // Eventos do jogo (start, countdown, timer, end)
+import "@ts/game/CookieClicker"; // Lógica de clicar no cookie
 
 // Função para serializar objetos no localStorage
 const encode = (data: object) =>
