@@ -46,7 +46,7 @@ export async function ROOM(
   if (!PLAYER_IN_DB || Object.keys(PLAYER_IN_DB).length === 0) {
     PLAYER_IN_DB = {
       UID: PLAYER.UID,
-      NAME: PLAYER.NAME.substring(0, 20), // limite de 20 caracteres
+      NAME: PLAYER.NAME.substring(0, 14), // limite de 14 caracteres
       PHOTO_URL: PLAYER.PHOTO_URL,
       IS_ORIGINAL: PLAYER.ORIGINAL.toString(),
       ROOM_ID: "",
@@ -99,7 +99,7 @@ export async function ROOM(
     });
 
     logger.info(
-      `📦 Room ${chalk.cyanBright(`"${CODE}" - [0/${ROOM.PLAYER_LIMIT}] - ${ROOM.PUBLIC === "true" ? "public" : "private"}"`)} created by ${chalk.green(`"${PLAYER.NAME.substring(0, 20)}"`)}.`,
+      `📦 Room ${chalk.cyanBright(`"${CODE}" - [0/${ROOM.PLAYER_LIMIT}] - ${ROOM.PUBLIC === "true" ? "public" : "private"}"`)} created by ${chalk.green(`"${PLAYER.NAME.substring(0, 14)}"`)}.`,
     );
     return;
   }
@@ -126,7 +126,7 @@ export async function ROOM(
 
   // Atualiza player
   PLAYER_IN_DB.ROOM_ID = CODE;
-  PLAYER_IN_DB.NAME = PLAYER.NAME.substring(0, 20); // limite de 20 caracteres
+  PLAYER_IN_DB.NAME = PLAYER.NAME.substring(0, 14); // limite de 14 caracteres
   PLAYER_IN_DB.PHOTO_URL = PLAYER.PHOTO_URL;
   PLAYER_IN_DB.IS_ORIGINAL = PLAYER.ORIGINAL.toString();
   await redis.hmset(playerKey, PLAYER_IN_DB);
@@ -155,6 +155,6 @@ export async function ROOM(
   });
 
   logger.info(
-    `👋 Player ${chalk.green(`"${PLAYER.NAME.substring(0, 20)}"`)} joined room ${chalk.cyanBright(`"${CODE}"`)}.`,
+    `👋 Player ${chalk.green(`"${PLAYER.NAME.substring(0, 14)}"`)} joined room ${chalk.cyanBright(`"${CODE}"`)}.`,
   );
 }

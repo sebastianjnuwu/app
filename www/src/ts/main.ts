@@ -32,7 +32,7 @@ $(() => {
   // Splash screen
   $("#splash_screen img").on("click", () => {
     const musicElem = document.getElementById("MUSIC_SONG") as HTMLAudioElement;
-    if (!localStorage.MusicEnabled && musicElem) musicElem.play();
+    if (localStorage.getItem("MusicEnabled") !== "false" && musicElem) musicElem.play();
 
     $("#splash_screen").addClass("fade-out").attr("hidden", "true");
     $("#home_menu").addClass("fade-in").removeAttr("hidden");

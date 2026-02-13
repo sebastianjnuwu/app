@@ -19,7 +19,7 @@ const client: RedisClient = new Redis(
         ? {
             key: process.env.REDIS_TLS_KEY.replace(/\\n/g, "\n"),
             cert: process.env.REDIS_TLS_CERT.replace(/\\n/g, "\n"),
-            rejectUnauthorized: false,
+            rejectUnauthorized: true,
           }
         : undefined,
   },
@@ -49,7 +49,7 @@ client.on("error", (err: Error) =>
 // Log URL mascarada quando conectado
 client.on("ready", () =>
   logger.info(
-    `Redis conectado (${(process.env.REDIS_URL || "redis://localhost:6379").replace(/\/\/.*@.*/, "//***:***@***")})`,
+    `Redis connected (${(process.env.REDIS_URL || "redis://localhost:6379").replace(/\/\/.*@.*/, "//***:***@***")})`,
   ),
 );
 
