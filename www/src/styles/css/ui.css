@@ -23,6 +23,7 @@ body {
   margin: 0;
   width: 100%;
   flex-direction: column;
+  -webkit-user-select: none;
   user-select: none;
   background: linear-gradient(to bottom, var(--layout), var(--layout-dark));
 }
@@ -102,6 +103,7 @@ ui .statistic td .value {
 }
 
 .room-code p {
+  -webkit-user-select: text;
   user-select: text;
   font-family: "minecraftia", cursive;
   font-size: 1rem;
@@ -355,6 +357,7 @@ ui .statistic td .value {
   width: 100%;
   height: 100%;
   z-index: 9999;
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   background: rgba(0, 0, 0, 0.6);
   display: flex;
@@ -407,95 +410,8 @@ ui .statistic td .value {
   box-shadow: 0 0 5px var(--layout-dark);
 }
 
-#overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  z-index: 998;
-  backdrop-filter: blur(0px);
-  opacity: 0;
-  animation: fadeInBlur 1s forwards;
-}
 
-@keyframes fadeInBlur {
-  from {
-    opacity: 0;
-    backdrop-filter: blur(0px);
-  }
-  
-  to {
-    opacity: 2;
-    backdrop-filter: blur(10px);
-  }
-}
 
-#cookie {
-  font-family: "Minecraftia", cursive;
-  background: linear-gradient(135deg, var(--layout) 0%, var(--layout-dark) 100%);
-  display: none;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  border-top-left-radius: 50px;
-  border-top-right-radius: 50px;
-  color: var(--text-color-dark);
-  z-index: 999;
-  animation: slideInUp 1.2s ease forwards;
-  box-shadow: 0px -4px 20px rgba(0, 0, 0, 0.5);
-}
-
-#cookie .content {
-  text-align: center;
-  padding: 20px;
-  margin: auto;
-}
-
-#cookie .row {
-  display: flex;
-  justify-content: space-between;
-}
-
-#cookie .col {
-  flex: 1;
-  padding: 0 10px;
-}
-
-#cookie p {
-  font-size: 0.8rem;
-  line-height: 1.8;
-  color: var(--text-color-dark);
-  margin: 0;
-}
-
-#cookie a {
-  color: var(--text-color-dark);
-  font-weight: bold;
-  text-decoration: underline;
-}
-
-#cookie button {
-  width: 100%;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1.2px solid var(--text-color-dark);
-  color: var(--text-color-dark);
-  padding: 10px;
-  text-transform: uppercase;
-  font-size: 0.8rem;
-  margin-top: 0.5rem;
-  border-radius: 1.5rem;
-  cursor: pointer;
-  transition: background 0.3s, color 0.3s;
-}
-
-#cookie button:hover {
-  background: var(--layout-dark);
-  color: #1e1b33;
-}
 
 .block {
   font-family: "Minecraftia", cursive;
@@ -568,4 +484,22 @@ ui .statistic td .value {
   50% {
     transform: scale(1.05);
   }
+}
+
+.fade-out {
+  animation: fadeOut 0.8s forwards;
+}
+
+.fade-in {
+  animation: fadeIn 0.8s forwards;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

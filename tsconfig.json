@@ -1,23 +1,36 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "outDir": "build",
-    "useDefineForClassFields": true,
-    "module": "ESNext",
-    "lib": ["ESNext", "DOM"],
-    "moduleResolution": "Node",
-    "strict": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "esModuleInterop": true,
-    "noEmit": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
-    "strictFunctionTypes": true,
-    "strictNullChecks": false
-  }
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "lib": [
+            "ESNext",
+            "DOM"
+        ],
+        "outDir": "build",
+        "strict": true,
+        "isolatedModules": true,
+        "esModuleInterop": true,
+        "noEmit": true,
+        "skipLibCheck": true,
+        "baseUrl": "./src",
+        "paths": {
+            "@ts/*": [
+                "ts/*"
+            ],
+            "@language/*": [
+                "locales/*"
+            ],
+            "@scss/*": [
+                "styles/scss/*"
+            ]
+        }
+    },
+    "include": [
+        "src/**/*",
+        "types/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "build"
+    ]
 }

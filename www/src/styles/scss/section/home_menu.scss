@@ -1,0 +1,55 @@
+@use "../variables" as *;
+@use "sass:color";
+
+#home_menu {
+  
+  .title {
+    font-family: "MedievalSharp", cursive;
+    font-size: 4.5rem;
+    font-weight: bold;
+    margin: 2rem;
+    color: $text-color;
+    text-shadow: 2px 2px 8px $text-color-dark;
+    animation: screen-title 1s ease-in-out;
+  }
+  
+  .menu {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    
+    button {
+      font-size: 1.6rem;
+      padding: 0.8rem 3rem;
+      border: none;
+      border-radius: 50px;
+      font-weight: bold;
+      font-family: "MedievalSharp", cursive;
+      border: 0.5px solid $text-color-dark;
+      text-shadow: 1px 1px 0.5px $text-color-dark;
+      background-color: $layout-dark;
+      color: $text-color;
+      cursor: pointer;
+      animation: screen-title 1s ease-in-out;
+      transition: all 0.08s ease-in-out;
+      
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+      }
+    }
+  }
+  
+  @keyframes screen-title {
+    from {
+      transform: translateY(-50px);
+      opacity: 0;
+    }
+    
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+}

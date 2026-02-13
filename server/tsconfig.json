@@ -1,16 +1,24 @@
 {
   "compilerOptions": {
-    "lib": ["ESNext"],
-    "module": "commonjs",
-    "moduleResolution": "node",
     "target": "ESNext",
+    "module": "commonjs",
+    "lib": ["ESNext"],
+    "moduleResolution": "node",
     "outDir": "build",
+    "baseUrl": "./src",
+    "paths": {
+      "@database/*": ["database/*"],
+      "@socket/*": ["socket/*"],
+      "@functions/*": ["functions/*"]
+    },
+    "strict": true,
     "strictNullChecks": false,
     "sourceMap": false,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "resolveJsonModule": true,

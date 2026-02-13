@@ -1,129 +1,82 @@
-@use "../css/ui.css";
+@use "./variables.scss" as *;
+@use "./effect/overlay.scss";
+@use "./section/app_update.scss";
+@use "./section/splash_screen.scss";
+@use "./section/cookie.scss";
+@use "./section/home_menu.scss";
+@use "./section/waiting.scss";
+@use "./modal.scss";
+@use "sass:color";
 
-#splash-screen {
-  .icon {
-    width: 15rem;
-    padding: 1rem;
-    animation: icon-bounce 2s infinite ease-in-out;
-  }
+*,
+*:before,
+*:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  -webkit-user-select: none;
+  user-select: none;
+  background: linear-gradient(to bottom, $layout, $layout-dark);
+}
+
+.google {
+  font-size: 1.5rem;
+  padding: 15px;
+  border: none;
+  border-radius: 50px;
+  font-weight: bold;
+  font-family: "MedievalSharp", cursive;
+  border: 0.5px solid $text-color-dark;
+  text-shadow: 1px 1px 0.5px $text-color-dark;
+  background-color: $layout-dark;
+  color: $text-color;
+  cursor: pointer;
+  transition: all 0.08s ease-in-out;
   
-  h1 {
-    font-family: "Press Start 2P", cursive;
-    text-align: center;
-    font-size: 1.5rem;
-    color: var(--text-color);
-    font-weight: bold;
-    text-shadow: 1px 1px var(--text-color-dark);
-    cursor: pointer;
-    animation: reveal forwards ease-out;
-  }
-  
-.splash-footer {
-  font-family: "Press Start 2P", cursive;
-  position: absolute;
-  bottom: 5vh; 
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.45rem; 
-  text-align: center;
-  color: var(--text-color);
-
-  a {
-    color: var(--text-color);
-    text-decoration: underline;
-  }
-
-  @media (min-width: 768px) {
-    bottom: 3vh;
-    font-size: 0.5rem;
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
   }
 }
 
-}
-
-@keyframes icon-bounce {
-  0%, 100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-
-  25% {
-    transform: translateX(-8px);
-    opacity: 0.8;
-  }
-
-  50% {
-    transform: translateX(8px);
-    opacity: 1;
-  }
-
-  75% {
-    transform: translateX(-8px);
-    opacity: 0.8;
-  }
-}
-
-@keyframes reveal {
-  0% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
+a {
+  color: $text-color-dark;
+  font-weight: bold;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s ease;
   
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
+  &:hover {
+    color: color.adjust($text-color-dark, $lightness: -10%);
 
-#start-screen {
-  
-  .title {
-    font-family: "MedievalSharp", cursive;
-    font-size: 4.5rem;
-    font-weight: bold;
-    margin: 2rem;
-    color: var(--text-color);
-    text-shadow: 2px 2px 8px var(--text-color-dark);
-    animation: start-screen-title 1s ease-in-out;
-  }
-  
-}
-
-.menu {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  
-  button {
-    font-size: 1.6rem;
-    padding: 0.8rem 3rem;
-    border: none;
-    border-radius: 50px;
-    font-weight: bold;
-    font-family: "MedievalSharp", cursive;
-    border: 0.5px solid var(--text-color-dark);
-    text-shadow: 1px 1px 0.5px var(--text-color-dark);
-    background-color: var(--layout-dark);
-    color: var(--text-color);
-    cursor: pointer;
-    animation: start-screen-title 1s ease-in-out;
-    transition: all 0.08s ease-in-out;
-    
-    &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+    &::after {
+      transform: scaleX(1);
     }
   }
 }
 
-@keyframes start-screen-title {
+@keyframes slideInEnd {
   from {
-    transform: translateY(-50px);
-    opacity: 0;
+    transform: translateY(0);
+  }
+  
+  to {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(100%);
   }
   
   to {
     transform: translateY(0);
-    opacity: 1;
   }
 }

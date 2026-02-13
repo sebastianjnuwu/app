@@ -8,7 +8,7 @@
   "scripts": {
     "start": "node build/main.js",
     "build": "tsc --project tsconfig.json",
-    "dev": "tsnd --expose-gc --transpile-only --ignore-watch node_modules --respawn src/main.ts",
+    "dev": "tsnd --require tsconfig-paths/register --expose-gc --transpile-only --ignore-watch node_modules --respawn src/main.ts",
     "lint": "npx @biomejs/biome lint --write",
     "format": "npx @biomejs/biome format --write"
   },
@@ -23,10 +23,13 @@
     "typescript": "^5.7.3"
   },
   "dependencies": {
+    "chalk": "^5.4.1",
     "colors": "^1.4.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "ioredis": "^5.9.3",
     "socket.io": "^4.8.1",
+    "tsconfig-paths": "^4.2.0",
     "tsx": "^4.19.3",
     "winston": "^3.17.0"
   },
