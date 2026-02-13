@@ -1,79 +1,92 @@
 import { logger } from "@functions/logger";
 import { safePlayer, safeRoom } from "@functions/generator";
-import db from "@db/prisma";
+import redis from "@database/redis";
 import chalk from "chalk";
 import type { Socket } from "socket.io";
 
+interface LeaveRoomData {
+  USER: {
+    UID: string;
+    NAME: string;
+    ORIGINAL?: boolean;
+    PHOTO_URL?: string;
+  };
+  ROOM_CODE: string;
+}
+
 export async function LEAVE_ROOM({ USER, ROOM_CODE }: LeaveRoomData) {
-  
   const socket = this as Socket;
   const io = socket.server;
-    
-  let ROOM = await db.ROOM.findUnique({
-    where: { CODE: ROOM_CODE },
-    include: {
-     OWNER: true,
-     PLAYERS: {
-      where: {
-        UID: { not: USER.UID }
-      }
-     }
-    }
-  });
-  
-  if (!ROOM) return;
-  
-  if (ROOM.STATE !== "WAITING") {
-    
-    await db.PLAYER.update({
-      where: { UID: USER.UID },
-      data: { ROOM_ID: null }
-    });
 
-    logger.info(`🚪 Player ${chalk.green(`"${USER.NAME}"`)} left room ${chalk.cyanBright(`"${ROOM_CODE}"`)} with state: ${chalk.yellow(ROOM.STATE)}`);
-    
-    socket.leave(ROOM_CODE);
+  const roomKey = `room:${ROOM_CODE}`;
+  const playerKey = `player:${USER.UID}`;
+
+  // Recupera sala e jogador
+  let ROOM = await redis.hgetall(roomKey);
+  let PLAYER = await redis.hgetall(playerKey);
+
+  if (!ROOM || Object.keys(ROOM).length === 0 || !PLAYER || Object.keys(PLAYER).length === 0) {
     return;
   }
 
-  await db.PLAYER.update({
-    where: { UID: USER.UID },
-    data: { ROOM_ID: null }
-  });
-  
-  if (ROOM.PLAYERS.length === 0) {
-    
-    await db.ROOM.delete({ 
-      where: { ID: ROOM.ID } 
-    });
+  const players: string[] = JSON.parse(ROOM.PLAYERS || "[]");
 
-    logger.info(`🗑️ Room ${chalk.cyanBright(`"${ROOM_CODE}"`)} deleted. Last owner was ${chalk.green(`"${USER.NAME}"`)}.`);
-    
+  // Remove jogador da sala
+  PLAYER.ROOM_ID = "";
+  await redis.hmset(playerKey, PLAYER);
+
+  // Se a sala não estiver esperando, apenas remove o player
+  if (ROOM.STATE !== "WAITING") {
     socket.leave(ROOM_CODE);
+    logger.info(
+      `🚪 Player ${chalk.green(`"${USER.NAME}"`)} left room ${chalk.cyanBright(`"${ROOM_CODE}"`)} with state: ${chalk.yellow(ROOM.STATE)}`
+    );
     return;
-  };
+  }
 
-  if (ROOM.OWNER.UID === USER.UID) {
+  const remainingPlayers = players.filter(uid => uid !== USER.UID);
 
-    const NEW_OWNER = ROOM.PLAYERS[0];
+  // Sala vazia → deletar
+  if (remainingPlayers.length === 0) {
+    await redis.del(roomKey);
+    socket.leave(ROOM_CODE);
+    logger.info(
+      `🗑️ Room ${chalk.cyanBright(`"${ROOM_CODE}"`)} deleted. Last owner was ${chalk.green(`"${USER.NAME}"`)}.`
+    );
+    return;
+  }
 
-    await db.ROOM.update({
-      where: { ID: ROOM.ID },
-      data: { OWNER_ID: NEW_OWNER.ID }
-    });
-  
-   io.in(ROOM_CODE).emit("UPDATE_ROOM", {
+  // Atualiza sala com novos jogadores
+  ROOM.PLAYERS = JSON.stringify(remainingPlayers);
+
+  // Mudança de dono se necessário
+  if (ROOM.OWNER_ID === USER.UID) {
+    const NEW_OWNER_UID = remainingPlayers[0];
+    ROOM.OWNER_ID = NEW_OWNER_UID;
+    await redis.hmset(roomKey, ROOM);
+
+    const NEW_OWNER = await redis.hgetall(`player:${NEW_OWNER_UID}`);
+
+    io.in(ROOM_CODE).emit("UPDATE_ROOM", {
       TYPE: "CREATE",
       PLAYER: safePlayer(NEW_OWNER),
-      ROOM: safeRoom(ROOM),
+      ROOM: {
+        ...ROOM,
+        OWNER: safePlayer(NEW_OWNER),
+        PLAYERS: await Promise.all(
+          remainingPlayers.map(async (uid) => safePlayer(await redis.hgetall(`player:${uid}`)))
+        ),
+      },
     });
-    
-    logger.info(`👑 Room ${chalk.cyanBright(`"${ROOM_CODE}"`)} ownership changed: ${chalk.red(`"${USER.NAME}"`)} ➜ ${chalk.green(`"${NEW_OWNER.NAME}"`)}`);
 
-  };
+    logger.info(
+      `👑 Room ${chalk.cyanBright(`"${ROOM_CODE}"`)} ownership changed: ${chalk.red(`"${USER.NAME}"`)} ➜ ${chalk.green(`"${NEW_OWNER.NAME}"`)}`
+    );
+  } else {
+    // Atualiza apenas a lista de jogadores na sala
+    await redis.hmset(roomKey, ROOM);
+  }
 
   socket.leave(ROOM_CODE);
-  
   logger.info(`🚪 Player ${chalk.green(`"${USER.NAME}"`)} left room ${chalk.cyanBright(`"${ROOM_CODE}"`)}`);
-  
-};
+}

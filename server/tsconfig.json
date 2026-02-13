@@ -7,7 +7,7 @@
     "outDir": "build",
     "baseUrl": "./src",
     "paths": {
-      "@db/*": ["database/*"],
+      "@database/*": ["database/*"],
       "@socket/*": ["socket/*"],
       "@functions/*": ["functions/*"]
     },

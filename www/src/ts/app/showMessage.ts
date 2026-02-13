@@ -1,4 +1,4 @@
-import { lang } from "@language/main";
+import { lang } from "../../locales/main";
 import $ from "jquery";
 
 /**
@@ -22,7 +22,7 @@ function showMessage(message: string, duration: number = 5000): void {
   const RAW_HTML = `
     <div class="toast fade show">
       <div class="toast-header">
-        <img src="https://cookie-clicker-brasil.vercel.app/favicon.ico"
+        <img src="/favicon.ico"
         class="rounded me-2" style="width: 10%;" alt="APP ICON">
         <strong class="me-auto">Cookie</strong>
         <small>

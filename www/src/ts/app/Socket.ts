@@ -1,9 +1,9 @@
 import { 
   io, type Socket 
 } from "socket.io-client";
-import { showMessage } from "@ts/app/showMessage";
+import { showMessage } from "../app/showMessage";
 
-const SOCKET_URL = "http://0.0.0.0:3000";
+const SOCKET_URL = "http://localhost:3000";
 
 //import.meta.env.VITE_SOCKET_URL ?? "https://socket-hj1h.onrender.com";
 

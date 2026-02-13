@@ -20,19 +20,19 @@
   <meta property="og:title" content="Cookie Clicker Brasil">
   <meta property="og:description" content="Cookie Clicker Brasil - Procurando um jogo novo para jogar com seus amigos? Jogue agora!">
   <meta property="og:description" lang="en" content="Cookie Clicker Brasil - Looking for a new game to play with your friends? Play now!">
-  <meta property="og:image" content="https://cookie-clicker-brasil.vercel.app/favicon.ico">
-  <meta property="og:url" content="https://cookie-clicker-brasil.vercel.app/">
+  <meta property="og:image" content="/favicon.ico">
+  <meta property="og:url" content="/">
   <meta property="og:locale" content="en">
   <meta property="og:locale:alternate" content="pt-BR" />
   <meta property="og:type" content="website">  
   
   <!-- Links and Scripts -->  
   <link rel="manifest" href="manifest.json">
-  <link rel="canonical" href="https://cookie-clicker-brasil.vercel.app">
+  <link rel="canonical" href="">
   
   <!-- Favicon -->
-  <link rel="shortcut icon" href="https://cookie-clicker-brasil.vercel.app/favicon.ico" type="image/webp">
-  <link rel="apple-touch-icon" href="https://cookie-clicker-brasil.vercel.app/favicon.ico">  
+  <link rel="shortcut icon" href="/favicon.ico" type="image/webp">
+  <link rel="apple-touch-icon" href="/favicon.ico">  
   
   <!-- Fonts -->  
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=MedievalSharp&display=swap" rel="stylesheet">
@@ -59,12 +59,12 @@
     <p><i18next i18next-id="app.cookie.message"></i18next></p>
     <div class="row mt-2">
       <div class="col">
-        <button class="btn w-100 SOUND_EFFECT" id="reject-cookies">
+        <button type="button" aria-label="Reject cookies" class="btn w-100 SOUND_EFFECT" id="reject-cookies">
           <i class="fas fa-times-circle"></i> <i18next i18next-id="app.cookie.reject"></i18next>
         </button>
       </div>
       <div class="col">
-        <button class="btn w-100 SOUND_EFFECT" id="accept-cookies">
+        <button type="button" aria-label="Accept cookies" class="btn w-100 SOUND_EFFECT" id="accept-cookies">
           <i class="fas fa-cookie-bite"></i> <i18next i18next-id="app.cookie.accept"></i18next>
         </button>
       </div>
@@ -79,23 +79,23 @@
  
  <!-- MAIN BACKGROUND MUSIC FOR THE GAME -->
 <audio id="MUSIC_SONG" preload="auto" loop>
-  <source src="https://cookie-clicker-brasil.vercel.app/sound/music.mp3"
+  <source src="/sound/music.mp3"
   type="audio/mpeg" />
 </audio>
 
 <!-- BEEP SOUND EFFECT FOR QUICK ACTIONS -->
 <audio id="EFFECT_SONG" preload="auto">
-  <source src="https://cookie-clicker-brasil.vercel.app/sound/beeps.mp3" type="audio/mpeg" />
+  <source src="/sound/beeps.mp3" type="audio/mpeg" />
 </audio>
 
 <!-- NOTIFICATION SOUND WHEN A PLAYER JOINS -->
 <audio id="JOIN_SONG" preload="auto">
-  <source src="https://cookie-clicker-brasil.vercel.app/sound/join.mp3" type="audio/mpeg" />
+  <source src="/sound/join.mp3" type="audio/mpeg" />
 </audio>
 
 <!-- CLICK SOUND EFFECT FOR UI INTERACTIONS -->
 <audio id="CLICK_SONG" preload="auto">
-  <source src="https://cookie-clicker-brasil.vercel.app/sound/click.mp3" type="audio/mpeg" />
+  <source src="/sound/click.mp3" type="audio/mpeg" />
 </audio>
 
  <!-- SCREEN OF WHEN A NEW UPDATE IS AVAILABLE IN THE ANDROID APPLICATION --->
@@ -116,7 +116,7 @@
 
  <!--- SPLASH SCREEN --->
  <section id="splash_screen">
-    <img class="icon" src="https://cookie-clicker-brasil.vercel.app/favicon.ico" />
+    <img class="icon" src="/favicon.ico" alt="Splash Screen Icon" />
   <div class="splash_footer">
     <i18next i18next-id="app.splash_screen.message"><a target='_blank' data-bs-toggle='modal' data-bs-target='#terms_modal'>Terms of Use</a> and <a target='_blank' data-bs-toggle='modal' data-bs-target='#policy_modal'>Privacy Policy</a></i18next>
   </div>
@@ -185,10 +185,6 @@
      <button id="leave_room_game" class="btn SOUND_EFFECT w-100">
        <i class="fas fa-sign-out-alt"></i>
        <i18next i18next-id="app.waiting.button.leave">Leave</i18next>
-     </button>
-     <button id="chat_room_game" class="btn SOUND_EFFECT w-100">
-       <i class="fas fa-comments"></i>
-       <i18next i18next-id="app.waiting.button.chat">Chat</i18next>
      </button>
     </div>
    </div>

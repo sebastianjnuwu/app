@@ -9,12 +9,8 @@ i18next.init({
   debug: false,
   preload: ["en-US", "pt-BR"],
   resources: {
-    "en-US": {
-      translation: en,
-    },
-    "pt-BR": {
-      translation: pt,
-    },
+    "en-US": { translation: en },
+    "pt-BR": { translation: pt },
   },
   interpolation: {
     escapeValue: false,
@@ -23,22 +19,15 @@ i18next.init({
   load: "all",
 });
 
-let lang: TFunction | undefined;
+//  define uma funçSempreão TFunction, nunca undefined
+const lang: TFunction = i18next.getFixedT(
+  window.navigator.language === "pt-BR" ? "pt-BR" : "en-US"
+);
 
-switch (window.navigator.language) {
-  case "pt-BR":
-    lang = i18next.getFixedT("pt-BR");
-    break;
-  case "en-US":
-    lang = i18next.getFixedT("en-US");
-    break;
-  default:
-    lang = i18next.getFixedT("en-US");
-}
-
+// Atualiza elementos HTML automaticamente
 $("[i18next-id]").each(function () {
   const id = $(this).attr("i18next-id");
-  $(this).html(lang(id));
+  if (id) $(this).html(lang(id));
 });
 
 export { lang };

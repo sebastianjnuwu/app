@@ -1,9 +1,8 @@
-import { signInWithGoogle } from "@ts/app/plugins/firebase";
+import { signInWithGoogle, LogEvent } from "./app/plugins/firebase";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { showMessage } from "@ts/app/showMessage";
-import { lang } from "@language/main";
-import { socket } from "@ts/app/Socket";
-import { LogEvent } from "@ts/app/plugins/firebase";
+import { showMessage } from "./app/showMessage";
+import { lang } from "../locales/main";
+import { socket } from "./app/Socket";
 import "bootstrap";
 import "@scss/ui.scss";
 import "@ts/app/VersionUpdate";
@@ -13,100 +12,118 @@ import "@ts/game/StartRoom";
 import "@ts/game/UpdateRoom";
 import "@ts/game/LeaveRoom";
 
+// Função para serializar objetos no localStorage
 const encode = (data: object) =>
   btoa(unescape(encodeURIComponent(JSON.stringify(data))));
 
+// Função para deserializar
+const decode = <T = any>(str: string): T =>
+  JSON.parse(decodeURIComponent(escape(atob(str))));
+
 $(() => {
+  // Conecta o socket
+  socket.connect();
 
-socket.connect();
+  // Listener para erros do servidor
+  socket.on("ERR_SOCKET", ({ ERR_SOCKET }: { ERR_SOCKET: string }) => {
+    showMessage(lang(ERR_SOCKET));
+  });
 
-socket.on("ERR_SOCKET", ({ ERR_SOCKET }: { ERR_SOCKET: string }) => {
-  return showMessage(lang(ERR_SOCKET));
-});
+  // Splash screen
+  $("#splash_screen img").on("click", () => {
+    const musicElem = document.getElementById("MUSIC_SONG") as HTMLAudioElement;
+    if (!localStorage.MusicEnabled && musicElem) musicElem.play();
 
-$("#splash_screen img").on("click", () => {
+    $("#splash_screen").addClass("fade-out").attr("hidden", "true");
+    $("#home_menu").addClass("fade-in").removeAttr("hidden");
+  });
 
-  if (!localStorage.MusicEnabled) $("#MUSIC_SONG")[0].play();
-  
-  $("#splash_screen").attr("hidden", true);
-  $("#home_menu").attr("hidden", false);
-    
-});
+  // Efeitos sonoros
+  $(document).on("click", ".SOUND_EFFECT", () => {
+    const clickSong = document.getElementById("CLICK_SONG") as HTMLAudioElement;
+    if (localStorage.getItem("SoundEnabled") !== "false" && clickSong) clickSong.play();
+  });
 
-$(document).on("click", ".SOUND_EFFECT", () => {
-  if (localStorage.getItem("SoundEnabled") !== "false") $("#CLICK_SONG")[0].play();
-});
+  // Overlay de cookies
+  if (!localStorage.getItem("BITE")) {
+    $("#overlay").attr("hidden", "false");
+    $("#cookie").css("display", "block");
+  }
 
-if (!localStorage.getItem('BITE')) {
-  $('#overlay').attr("hidden", false);
-  $("#cookie").css('display', 'block');
-};
+  $("#reject-cookies").on("click", () => {
+    $("#overlay").attr("hidden", "true");
+    $("#cookie").css("animation", "slideInEnd 0.8s ease forwards");
+  });
 
-$('#reject-cookies').on('click', () => {
-  $('#overlay').attr("hidden", true);
-  $("#cookie").css('animation', 'slideInEnd 0.8s ease forwards');
-});
+  $("#accept-cookies").on("click", () => {
+    localStorage.setItem("BITE", "1");
+    $("#overlay").attr("hidden", "true");
+    $("#cookie").css("animation", "slideInEnd 0.8s ease forwards");
+  });
 
-$('#accept-cookies').on('click', () => {
-  localStorage.setItem('BITE', "1");
-  $('#overlay').attr("hidden", true);
-  $("#cookie").css('animation', 'slideInEnd 0.8s ease forwards');
-});
-  
-const UserStatus = localStorage.getItem("USER") ? "app.login.logout" : "app.login.google";
+  // Status do login
+  const UserStatus = localStorage.getItem("USER") ? "app.login.logout" : "app.login.google";
+  $("#google").text(lang(UserStatus));
 
-$("#google").text(lang(UserStatus));
+  $(".google").on("click", async () => {
+    if (localStorage.getItem("USER")) {
+      localStorage.removeItem("USER");
+      $("#google").text(lang("app.login.google"));
+      return;
+    }
 
-$(".google").on("click", async () => {
-  
-  if (localStorage.getItem("USER")) {
-    localStorage.removeItem("USER");
-    return $("#google").text(lang("app.login.google"));
+    const user = await signInWithGoogle();
+    if (!user) return;
+
+    localStorage.setItem("USER", encode(user));
+    $("#google").text(lang("app.login.logout"));
+    await LogEvent("login", { method: "GOOGLE" });
+  });
+
+  // Toggle sound/music
+  const toggleAudio = (id: string, enabledKey: string) => {
+    const el = document.getElementById(id) as HTMLInputElement | null;
+    if (!el) return;
+    el.checked = localStorage.getItem(enabledKey) !== "false";
+
+    el.addEventListener("change", (event) => {
+      const target = event.target as HTMLInputElement;
+      localStorage.setItem(enabledKey, target.checked.toString());
+
+      if (id === "toggleMusic") {
+        const musicElem = document.getElementById("MUSIC_SONG") as HTMLAudioElement;
+        if (musicElem) {
+          target.checked ? musicElem.play() : musicElem.pause();
+        }
+      }
+    });
   };
 
-  const user = await signInWithGoogle();
-  if (!user) return;
-  
-  localStorage.setItem("USER", encode(user));
-  $("#google").text(lang("app.login.logout"));
-  
-  await LogEvent("login", { method: "GOOGLE" });
-  
-});
+  toggleAudio("toggleSound", "SoundEnabled");
+  toggleAudio("toggleMusic", "MusicEnabled");
 
-$("#toggleSound").prop("checked", localStorage.getItem("SoundEnabled") !== "false");
+  // Atualiza visibilidade do código da sala
+  function updateRoomCodeVisibility() {
+    const hide = localStorage.getItem("hide_room_code") === "true";
+    const $code = $("#ROOM_CODE_TEXT");
+    const $icon = $("#toggle_code_visibility i");
 
-$("#toggleMusic").prop("checked", localStorage.getItem("MusicEnabled") !== "false");
-
-$("#toggleSound").on("change", (event) => {
-  localStorage.setItem("SoundEnabled", event.target.checked.toString());
-});
-
-$("#toggleMusic").on("change", (event) => {
-  localStorage.setItem("MusicEnabled", event.target.checked.toString());
-  if (event.target.checked) $("#MUSIC_SONG")[0].play(); else $("#MUSIC_SONG")[0].pause();
-});
-
-function updateRoomCodeVisibility() {
-  const hide = localStorage.getItem('hide_room_code') === 'true';
-  const $code = $('#ROOM_CODE_TEXT');
-  const $icon = $('#toggle_code_visibility i');
-
-  if (hide) {
-    $code.text('••••••');
-    $icon.removeClass('fa-eye').addClass('fa-eye-slash');
-  } else {
-    $code.text(localStorage.getItem("CODE"));
-    $icon.removeClass('fa-eye-slash').addClass('fa-eye');
+    if ($code.length && $icon.length) {
+      if (hide) {
+        $code.text("••••••");
+        $icon.removeClass("fa-eye").addClass("fa-eye-slash");
+      } else {
+        $code.text(localStorage.getItem("CODE") || "");
+        $icon.removeClass("fa-eye-slash").addClass("fa-eye");
+      }
+    }
   }
-}
 
-$('#toggle_code_visibility').on('click', function () {
-  const hide = localStorage.getItem('hide_room_code') === 'true';
-  localStorage.setItem('hide_room_code', (!hide).toString());
+  $("#toggle_code_visibility").on("click", () => {
+    const hide = localStorage.getItem("hide_room_code") === "true";
+    localStorage.setItem("hide_room_code", (!hide).toString());
+    updateRoomCodeVisibility();
+  });
+
   updateRoomCodeVisibility();
-});
-
-updateRoomCodeVisibility();
-
 });

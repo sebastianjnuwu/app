@@ -1,8 +1,23 @@
 import { safePlayer, safeRoom, GENERATE_CODE } from "@functions/generator";
 import { logger } from "@functions/logger";
 import type { Socket } from "socket.io";
-import db from "@db/prisma";
+import redis from "@database/redis"; 
 import chalk from "chalk";
+
+interface PLAYER_INFO {
+  ORIGINAL: boolean;
+  UID: string;
+  NAME: string;
+  PHOTO_URL: string;
+}
+
+interface RoomEventPayload {
+  PLAYER: PLAYER_INFO;
+  ROOM_PUBLIC?: boolean;
+  ROOM_CODE?: string;
+  ROOM_PLAYER_LIMIT?: number | string;
+  ROOM_TIME?: number | string;
+}
 
 export async function ROOM({
   PLAYER,
@@ -11,34 +26,35 @@ export async function ROOM({
   ROOM_PLAYER_LIMIT,
   ROOM_TIME,
 }: RoomEventPayload) {
-
   const socket = this as Socket;
   const io = socket.server;
 
   const CODE = (!ROOM_CODE || ROOM_CODE.trim() === "") ? await GENERATE_CODE() : ROOM_CODE;
 
-  let PLAYER_IN_DB = await db.PLAYER.findUnique({
-    where: { UID: PLAYER.UID },
-  });
+  // --- PLAYER ---
+  const playerKey = `player:${PLAYER.UID}`;
+  let PLAYER_IN_DB = await redis.hgetall(playerKey);
 
-  if (!PLAYER_IN_DB) {
-    PLAYER_IN_DB = await db.PLAYER.create({
-      data: {
-        UID: PLAYER.UID,
-        NAME: PLAYER.NAME,
-        PHOTO_URL: PLAYER.PHOTO_URL,
-        IS_ORIGINAL: PLAYER.ORIGINAL
-      },
-    });
+  if (!PLAYER_IN_DB || Object.keys(PLAYER_IN_DB).length === 0) {
+    PLAYER_IN_DB = {
+      UID: PLAYER.UID,
+      NAME: PLAYER.NAME,
+      PHOTO_URL: PLAYER.PHOTO_URL,
+      IS_ORIGINAL: PLAYER.ORIGINAL.toString(),
+      ROOM_ID: "",
+    };
+    await redis.hmset(playerKey, PLAYER_IN_DB);
   }
 
-  let ROOM = await db.ROOM.findUnique({
-    where: { CODE },
-    include: { PLAYERS: true, OWNER: true },
-  });
+  // --- ROOM ---
+  const roomKey = `room:${CODE}`;
+  let ROOM = await redis.hgetall(roomKey);
 
-  if (!ROOM && !ROOM_CODE) {
-
+  if (!ROOM || Object.keys(ROOM).length === 0) {
+    // Criar nova sala
+    if (ROOM_CODE) {
+      return socket.emit("ERR_SOCKET", { ERR_SOCKET: "app.error.ROOM_NOT_FOUND" });
+    }
     if (!ROOM_PLAYER_LIMIT) {
       return socket.emit("ERR_SOCKET", { ERR_SOCKET: "app.error.INVALID_PLAYER_LIMIT" });
     }
@@ -46,81 +62,77 @@ export async function ROOM({
     const limit = Number(ROOM_PLAYER_LIMIT);
     const time = Number(ROOM_TIME);
 
-    ROOM = await db.ROOM.create({
-      data: {
-        CODE,
-        OWNER_ID: PLAYER_IN_DB.ID,
-        STATE: "WAITING",
-        PLAYER_LIMIT: limit,
-        PUBLIC: ROOM_PUBLIC ?? false,
-        TIME: time,
-        PLAYERS: {
-          connect: { ID: PLAYER_IN_DB.ID }
-        },
-      },
-      include: { PLAYERS: true, OWNER: true },
-    });
+    ROOM = {
+      CODE,
+      OWNER_ID: PLAYER.UID,
+      STATE: "WAITING",
+      PLAYER_LIMIT: limit.toString(),
+      PUBLIC: (ROOM_PUBLIC ?? false).toString(),
+      TIME: time.toString(),
+      PLAYERS: JSON.stringify([PLAYER.UID]),
+    };
+
+    await redis.hmset(roomKey, ROOM);
 
     socket.join(CODE);
 
     socket.emit("UPDATE_ROOM", {
       TYPE: "CREATE",
       PLAYER: safePlayer(PLAYER_IN_DB),
-      ROOM: safeRoom(ROOM),
+      ROOM: {
+        ...ROOM,
+        OWNER: safePlayer(PLAYER_IN_DB),
+        PLAYERS: [safePlayer(PLAYER_IN_DB)],
+      },
     });
 
     logger.info(`📦 Room ${chalk.cyanBright(`"${CODE}"`)} created by ${chalk.green(`"${PLAYER.NAME}"`)}.`);
-
     return;
-  };
-
-  if (!ROOM && ROOM_CODE) {
-    return socket.emit("ERR_SOCKET", {
-      ERR_SOCKET: "app.error.ROOM_NOT_FOUND"
-    });
   }
 
+  // --- Verificação de estado ---
   if (ROOM.STATE === "IN_GAME") {
-    return socket.emit("ERR_SOCKET", {
-      ERR_SOCKET: "app.error.ROOM_STATE_ERROR_IN_GAME"
-    });
+    return socket.emit("ERR_SOCKET", { ERR_SOCKET: "app.error.ROOM_STATE_ERROR_IN_GAME" });
   }
-
   if (ROOM.STATE === "FINISHED") {
-    return socket.emit("ERR_SOCKET", {
-      ERR_SOCKET: "app.error.ROOM_STATE_ERROR_FINISHED"
-    });
+    return socket.emit("ERR_SOCKET", { ERR_SOCKET: "app.error.ROOM_STATE_ERROR_FINISHED" });
   }
 
-  if (ROOM.PLAYERS.find((p) => p.UID === PLAYER.UID)) {
-    return socket.emit("ERR_SOCKET", {
-      ERR_SOCKET: "app.error.PLAYER_EXISTS"
-    });
+  const players: string[] = JSON.parse(ROOM.PLAYERS || "[]");
+  if (players.includes(PLAYER.UID)) {
+    return socket.emit("ERR_SOCKET", { ERR_SOCKET: "app.error.PLAYER_EXISTS" });
   }
 
+  // --- Entrar na sala ---
   socket.join(CODE);
 
-  PLAYER_IN_DB = await db.PLAYER.update({
-    where: { UID: PLAYER.UID },
-    data: {
-      ROOM_ID: ROOM.ID,
-      NAME: PLAYER.NAME,
-      PHOTO_URL: PLAYER.PHOTO_URL,
-      IS_ORIGINAL: PLAYER.ORIGINAL
-    },
-  });
+  // Atualiza player
+  PLAYER_IN_DB.ROOM_ID = CODE;
+  PLAYER_IN_DB.NAME = PLAYER.NAME;
+  PLAYER_IN_DB.PHOTO_URL = PLAYER.PHOTO_URL;
+  PLAYER_IN_DB.IS_ORIGINAL = PLAYER.ORIGINAL.toString();
+  await redis.hmset(playerKey, PLAYER_IN_DB);
 
-  ROOM = await db.ROOM.findUnique({
-    where: { CODE },
-    include: { PLAYERS: true, OWNER: true },
-  });
+  // Atualiza lista de jogadores na sala
+  players.push(PLAYER.UID);
+  ROOM.PLAYERS = JSON.stringify(players);
+  await redis.hmset(roomKey, ROOM);
+
+  // Reconstrói objeto ROOM completo
+  const ROOM_OBJ = {
+    ...ROOM,
+    OWNER: safePlayer(await redis.hgetall(`player:${ROOM.OWNER_ID}`)),
+    PLAYERS: await Promise.all(players.map(async (uid) => {
+      const p = await redis.hgetall(`player:${uid}`);
+      return safePlayer(p);
+    })),
+  };
 
   io.in(CODE).emit("UPDATE_ROOM", {
     TYPE: "JOIN",
     PLAYER: safePlayer(PLAYER_IN_DB),
-    ROOM: safeRoom(ROOM),
+    ROOM: ROOM_OBJ,
   });
 
   logger.info(`👋 Player ${chalk.green(`"${PLAYER.NAME}"`)} joined room ${chalk.cyanBright(`"${CODE}"`)}.`);
-
-};
+}
