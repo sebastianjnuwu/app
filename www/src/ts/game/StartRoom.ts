@@ -1,11 +1,11 @@
-import { showMessage } from "@ts/app/showMessage";
-import { socket } from "@ts/app/Socket";
-import { lang } from "@language/main";
+import { showMessage } from "../app/showMessage";
+import { socket } from "../app/Socket";
+import { lang } from "../../locales/main";
 import { Modal } from "bootstrap";
 import { v4 } from 'uuid';
 import $ from "jquery";
 
-const $room_modal = new Modal($("#room_modal"));
+const $room_modal = new Modal($("#room_modal")[0] as Element);
 
 const encode = (data: object) =>
   btoa(unescape(encodeURIComponent(JSON.stringify(data))));
@@ -18,7 +18,7 @@ const decode = (encoded: string) => {
   }
 };
 
-const DATA = decode(localStorage.getItem("USER"));
+const DATA = localStorage.getItem("USER") ? decode(localStorage.getItem("USER")!) : null;
 
 const ROOM_NAME = $("#room_name") as JQuery<HTMLInputElement>;
 
@@ -26,17 +26,17 @@ const RANDOM_UID = v4();
 const RANDOM_PHOTO = `https://api.dicebear.com/7.x/pixel-art/svg?seed=${Date.now()}`;
 
 if (DATA) {
-  ROOM_NAME.val(DATA.displayName);
+  ROOM_NAME.val(DATA.displayName?.substring(0, 14) || "");
   ROOM_NAME.prop("readonly", true);
 } else {
   ROOM_NAME.val("");
   ROOM_NAME.prop("readonly", false);
 }
 
-const DECODE_PLAYER = decode(localStorage.getItem("PLAYER_INFO"));
+const DECODE_PLAYER = localStorage.getItem("PLAYER_INFO") ? decode(localStorage.getItem("PLAYER_INFO")!) : null;
 
 if (DECODE_PLAYER && typeof DECODE_PLAYER === "object") {
-  ROOM_NAME.val(DECODE_PLAYER.NAME);
+  ROOM_NAME.val(DECODE_PLAYER.NAME.substring(0, 14));
   ROOM_NAME.prop("readonly", true);
 };
 
@@ -81,7 +81,7 @@ $("#create_room").on("click", () => {
   const PLAYER_INFO = {
     ORIGINAL: !!DATA,
     UID: DATA?.uid || RANDOM_UID,
-    NAME: DATA?.displayName || ROOM_PLAYER,
+    NAME: DATA?.displayName?.substring(0, 14) || ROOM_PLAYER.substring(0, 14), // limite de 14 caracteres será aplicado no servidor, aqui é só para exibir o nome completo no modal
     PHOTO_URL: DATA?.photoURL || RANDOM_PHOTO,
   };
 
