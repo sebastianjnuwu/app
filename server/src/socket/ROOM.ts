@@ -1,5 +1,6 @@
 import { safePlayer, safeRoom, GENERATE_CODE } from "@functions/generator";
 import { logger } from "@functions/logger";
+import { RoomState, UpdateRoomType } from "../constants/constants";
 import type { Socket, Server } from "socket.io";
 import redis from "@database/redis";
 import chalk from "chalk";
@@ -93,7 +94,7 @@ export async function ROOM(
     ROOM = {
       CODE,
       OWNER_ID: sanitizedUID,
-      STATE: "WAITING",
+      STATE: RoomState.WAITING,
       PLAYER_LIMIT: limit.toString(),
       PUBLIC: (ROOM_PUBLIC ?? false).toString(),
       TIME: time.toString(),
@@ -105,7 +106,7 @@ export async function ROOM(
     socket.join(CODE);
 
     socket.emit("UPDATE_ROOM", {
-      TYPE: "CREATE",
+      TYPE: UpdateRoomType.CREATE,
       PLAYER: safePlayer(PLAYER_IN_DB),
       ROOM: {
         ...ROOM,
@@ -121,12 +122,12 @@ export async function ROOM(
   }
 
   // --- Verificação de estado ---
-  if (ROOM.STATE === "IN_GAME") {
+  if (ROOM.STATE === RoomState.IN_GAME) {
     return socket.emit("ERR_SOCKET", {
       ERR_SOCKET: "app.error.ROOM_STATE_ERROR_IN_GAME",
     });
   }
-  if (ROOM.STATE === "FINISHED") {
+  if (ROOM.STATE === RoomState.FINISHED) {
     return socket.emit("ERR_SOCKET", {
       ERR_SOCKET: "app.error.ROOM_STATE_ERROR_FINISHED",
     });
@@ -169,7 +170,7 @@ export async function ROOM(
   };
 
   io.in(CODE).emit("UPDATE_ROOM", {
-    TYPE: "JOIN",
+    TYPE: UpdateRoomType.JOIN,
     PLAYER: safePlayer(PLAYER_IN_DB),
     ROOM: ROOM_OBJ,
   });

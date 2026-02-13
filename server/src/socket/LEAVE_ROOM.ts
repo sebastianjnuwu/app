@@ -1,5 +1,6 @@
 import { logger } from "@functions/logger";
 import { safePlayer } from "@functions/generator";
+import { RoomState, UpdateRoomType } from "../constants/constants";
 import redis from "@database/redis";
 import chalk from "chalk";
 import type { Socket, Server } from "socket.io";
@@ -57,7 +58,7 @@ export async function LEAVE_ROOM(
     const players: string[] = JSON.parse(ROOM.PLAYERS || "[]");
 
     // Sala não está esperando → remove o player e pronto
-    if (ROOM.STATE !== "WAITING") {
+    if (ROOM.STATE !== RoomState.WAITING) {
       socket.leave(ROOM_CODE);
       logger.info(
         `🚪 Player ${chalk.green(`"${USER.NAME}"`)} left room ${chalk.cyanBright(`"${ROOM_CODE}"`)} (state: ${chalk.yellow(ROOM.STATE)})`,
@@ -102,7 +103,7 @@ export async function LEAVE_ROOM(
       };
 
       io.in(ROOM_CODE).emit("UPDATE_ROOM", {
-        TYPE: "OWNER_CHANGED",
+        TYPE: UpdateRoomType.OWNER_CHANGED,
         PLAYER: safePlayer(NEW_OWNER),
         ROOM: ROOM_OBJ,
       });

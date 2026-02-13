@@ -9,7 +9,8 @@
     "paths": {
       "@database/*": ["database/*"],
       "@socket/*": ["socket/*"],
-      "@functions/*": ["functions/*"]
+      "@functions/*": ["functions/*"],
+      "@types/*": ["types/*"]
     },
     "strict": true,
     "strictNullChecks": false,

@@ -4,6 +4,7 @@ import { Server } from "socket.io"; // valor real para instância
 import type { Socket } from "socket.io"; // apenas tipo
 import { ROOM } from "@socket/ROOM";
 import { LEAVE_ROOM } from "@socket/LEAVE_ROOM";
+import { UpdateRoomType } from "./constants/constants";
 import express from "express";
 import colors from "colors";
 import "@database/redis";
@@ -46,7 +47,7 @@ io.on("connection", (socket: Socket) => {
       socket.join(ROOM_CODE);
 
       io.in(ROOM_CODE).emit("UPDATE_ROOM", {
-        TYPE: "REJOIN",
+        TYPE: UpdateRoomType.REJOIN,
         PLAYER: USER,
       });
 
