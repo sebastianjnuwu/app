@@ -36,27 +36,43 @@ export async function ROOM(
     ROOM_TIME,
   }: RoomEventPayload,
 ) {
-  const CODE =
-    !ROOM_CODE || ROOM_CODE.trim() === "" ? await GENERATE_CODE() : ROOM_CODE;
+  try {
+    // Input validation
+    if (!PLAYER || !PLAYER.UID || !PLAYER.NAME) {
+      return socket.emit("ERR_SOCKET", {
+        ERR_SOCKET: "app.error.INVALID_PLAYER_DATA",
+      });
+    }
 
-  // --- PLAYER ---
-  const playerKey = `player:${PLAYER.UID}`;
-  let PLAYER_IN_DB = await redis.hgetall(playerKey);
+    // Sanitize inputs
+    const sanitizedUID = String(PLAYER.UID).replace(/[^a-zA-Z0-9-]/g, "");
+    if (sanitizedUID.length === 0) {
+      return socket.emit("ERR_SOCKET", {
+        ERR_SOCKET: "app.error.INVALID_PLAYER_UID",
+      });
+    }
 
-  if (!PLAYER_IN_DB || Object.keys(PLAYER_IN_DB).length === 0) {
-    PLAYER_IN_DB = {
-      UID: PLAYER.UID,
-      NAME: PLAYER.NAME.substring(0, 14), // limite de 14 caracteres
-      PHOTO_URL: PLAYER.PHOTO_URL,
-      IS_ORIGINAL: PLAYER.ORIGINAL.toString(),
-      ROOM_ID: "",
-    };
-    await redis.hmset(playerKey, PLAYER_IN_DB);
-  }
+    const CODE =
+      !ROOM_CODE || ROOM_CODE.trim() === "" ? await GENERATE_CODE() : ROOM_CODE;
 
-  // --- ROOM ---
-  const roomKey = `room:${CODE}`;
-  let ROOM = await redis.hgetall(roomKey);
+    // --- PLAYER ---
+    const playerKey = `player:${sanitizedUID}`;
+    let PLAYER_IN_DB = await redis.hgetall(playerKey);
+
+    if (!PLAYER_IN_DB || Object.keys(PLAYER_IN_DB).length === 0) {
+      PLAYER_IN_DB = {
+        UID: sanitizedUID,
+        NAME: PLAYER.NAME.substring(0, 14), // limite de 14 caracteres
+        PHOTO_URL: PLAYER.PHOTO_URL,
+        IS_ORIGINAL: PLAYER.ORIGINAL.toString(),
+        ROOM_ID: "",
+      };
+      await redis.hmset(playerKey, PLAYER_IN_DB);
+    }
+
+    // --- ROOM ---
+    const roomKey = `room:${CODE}`;
+    let ROOM = await redis.hgetall(roomKey);
 
   if (!ROOM || Object.keys(ROOM).length === 0) {
     // Criar nova sala
@@ -76,12 +92,12 @@ export async function ROOM(
 
     ROOM = {
       CODE,
-      OWNER_ID: PLAYER.UID,
+      OWNER_ID: sanitizedUID,
       STATE: "WAITING",
       PLAYER_LIMIT: limit.toString(),
       PUBLIC: (ROOM_PUBLIC ?? false).toString(),
       TIME: time.toString(),
-      PLAYERS: JSON.stringify([PLAYER.UID]),
+      PLAYERS: JSON.stringify([sanitizedUID]),
     };
 
     await redis.hmset(roomKey, ROOM);
@@ -117,7 +133,7 @@ export async function ROOM(
   }
 
   const players: string[] = JSON.parse(ROOM.PLAYERS || "[]");
-  if (players.includes(PLAYER.UID)) {
+  if (players.includes(sanitizedUID)) {
     return socket.emit("ERR_SOCKET", { ERR_SOCKET: "app.error.PLAYER_EXISTS" });
   }
 
@@ -132,7 +148,7 @@ export async function ROOM(
   await redis.hmset(playerKey, PLAYER_IN_DB);
 
   // Atualiza lista de jogadores na sala
-  players.push(PLAYER.UID);
+  players.push(sanitizedUID);
   ROOM.PLAYERS = JSON.stringify(players);
   await redis.hmset(roomKey, ROOM);
 
@@ -140,12 +156,16 @@ export async function ROOM(
   const ROOM_OBJ = {
     ...ROOM,
     OWNER: safePlayer(await redis.hgetall(`player:${ROOM.OWNER_ID}`)),
-    PLAYERS: await Promise.all(
-      players.map(async (uid) => {
-        const p = await redis.hgetall(`player:${uid}`);
-        return safePlayer(p);
-      }),
-    ),
+    PLAYERS: (
+      await Promise.allSettled(
+        players.map(async (uid) => {
+          const p = await redis.hgetall(`player:${uid}`);
+          return safePlayer(p);
+        }),
+      )
+    )
+      .filter((result) => result.status === "fulfilled")
+      .map((result: any) => result.value),
   };
 
   io.in(CODE).emit("UPDATE_ROOM", {
@@ -157,4 +177,10 @@ export async function ROOM(
   logger.info(
     `👋 Player ${chalk.green(`"${PLAYER.NAME.substring(0, 14)}"`)} joined room ${chalk.cyanBright(`"${CODE}"`)}.`,
   );
+  } catch (err) {
+    logger.error(`Error in ROOM handler: ${err}`);
+    socket.emit("ERR_SOCKET", {
+      ERR_SOCKET: "app.error.SERVER_ERROR",
+    });
+  }
 }

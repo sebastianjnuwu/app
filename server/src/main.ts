@@ -11,7 +11,13 @@ import "dotenv/config";
 
 const app = express();
 const http = createServer(app);
-const io = new Server(http);
+const io = new Server(http, {
+  cors: {
+    origin: process.env.CORS_ORIGIN || "*",
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
 
 app.get("*", (_, res) => {
   res.status(200).json({
@@ -29,7 +35,11 @@ io.on("connection", (socket: Socket) => {
   // Reentrada em sala
   socket.on("REJOIN_ROOM", async ({ USER, ROOM_CODE }) => {
     try {
-      if (!USER || !ROOM_CODE) return;
+      if (!USER || !ROOM_CODE) {
+        return socket.emit("ERR_SOCKET", {
+          ERR_SOCKET: "app.error.INVALID_REJOIN_DATA",
+        });
+      }
 
       socket.data.USER = USER;
       socket.data.ROOM_CODE = ROOM_CODE;
@@ -45,6 +55,9 @@ io.on("connection", (socket: Socket) => {
       );
     } catch (err) {
       logger.error(`Error on rejoin_room: ${err}`);
+      socket.emit("ERR_SOCKET", {
+        ERR_SOCKET: "app.error.SERVER_ERROR",
+      });
     }
   });
 
