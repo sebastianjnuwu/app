@@ -1,6 +1,6 @@
 import { safePlayer, safeRoom, GENERATE_CODE } from "@functions/generator";
 import { logger } from "@functions/logger";
-import type { Socket } from "socket.io";
+import type { Socket, Server } from "socket.io";
 import redis from "@database/redis"; 
 import chalk from "chalk";
 
@@ -19,16 +19,23 @@ interface RoomEventPayload {
   ROOM_TIME?: number | string;
 }
 
-export async function ROOM({
-  PLAYER,
-  ROOM_PUBLIC,
-  ROOM_CODE,
-  ROOM_PLAYER_LIMIT,
-  ROOM_TIME,
-}: RoomEventPayload) {
-  const socket = this as Socket;
-  const io = socket.server;
-
+/**
+ * Cria ou entra em uma sala usando Redis.
+ * @param socket - Socket do jogador
+ * @param io - Instância do Socket.IO server
+ * @param payload - Dados do evento ROOM
+ */
+export async function ROOM(
+  socket: Socket,
+  io: Server,
+  {
+    PLAYER,
+    ROOM_PUBLIC,
+    ROOM_CODE,
+    ROOM_PLAYER_LIMIT,
+    ROOM_TIME,
+  }: RoomEventPayload
+) {
   const CODE = (!ROOM_CODE || ROOM_CODE.trim() === "") ? await GENERATE_CODE() : ROOM_CODE;
 
   // --- PLAYER ---
@@ -38,7 +45,7 @@ export async function ROOM({
   if (!PLAYER_IN_DB || Object.keys(PLAYER_IN_DB).length === 0) {
     PLAYER_IN_DB = {
       UID: PLAYER.UID,
-      NAME: PLAYER.NAME,
+      NAME: PLAYER.NAME.substring(0, 20), // limite de 20 caracteres
       PHOTO_URL: PLAYER.PHOTO_URL,
       IS_ORIGINAL: PLAYER.ORIGINAL.toString(),
       ROOM_ID: "",
@@ -86,7 +93,7 @@ export async function ROOM({
       },
     });
 
-    logger.info(`📦 Room ${chalk.cyanBright(`"${CODE}"`)} created by ${chalk.green(`"${PLAYER.NAME}"`)}.`);
+    logger.info(`📦 Room ${chalk.cyanBright(`"${CODE}" - [0/${ROOM.PLAYER_LIMIT}] - ${ROOM.PUBLIC === "true" ? "public" : "private"}"`)} created by ${chalk.green(`"${PLAYER.NAME.substring(0, 20)}"`)}.`);
     return;
   }
 
@@ -108,7 +115,7 @@ export async function ROOM({
 
   // Atualiza player
   PLAYER_IN_DB.ROOM_ID = CODE;
-  PLAYER_IN_DB.NAME = PLAYER.NAME;
+  PLAYER_IN_DB.NAME = PLAYER.NAME.substring(0, 20); // limite de 20 caracteres
   PLAYER_IN_DB.PHOTO_URL = PLAYER.PHOTO_URL;
   PLAYER_IN_DB.IS_ORIGINAL = PLAYER.ORIGINAL.toString();
   await redis.hmset(playerKey, PLAYER_IN_DB);
@@ -134,5 +141,5 @@ export async function ROOM({
     ROOM: ROOM_OBJ,
   });
 
-  logger.info(`👋 Player ${chalk.green(`"${PLAYER.NAME}"`)} joined room ${chalk.cyanBright(`"${CODE}"`)}.`);
+  logger.info(`👋 Player ${chalk.green(`"${PLAYER.NAME.substring(0, 20)}"`)} joined room ${chalk.cyanBright(`"${CODE}"`)}.`);
 }

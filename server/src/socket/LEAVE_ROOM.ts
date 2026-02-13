@@ -1,23 +1,32 @@
 import { logger } from "@functions/logger";
-import { safePlayer, safeRoom } from "@functions/generator";
+import { safePlayer } from "@functions/generator";
 import redis from "@database/redis";
 import chalk from "chalk";
-import type { Socket } from "socket.io";
+import type { Socket, Server } from "socket.io";
+
+interface PLAYER_INFO {
+  UID: string;
+  NAME: string;
+  ORIGINAL?: boolean;
+  PHOTO_URL?: string;
+}
 
 interface LeaveRoomData {
-  USER: {
-    UID: string;
-    NAME: string;
-    ORIGINAL?: boolean;
-    PHOTO_URL?: string;
-  };
+  USER: PLAYER_INFO;
   ROOM_CODE: string;
 }
 
-export async function LEAVE_ROOM({ USER, ROOM_CODE }: LeaveRoomData) {
-  const socket = this as Socket;
-  const io = socket.server;
-
+/**
+ * Remove um jogador de uma sala Redis.
+ * @param socket - Socket do jogador
+ * @param io - Instância do Socket.IO server
+ * @param data - Dados do evento LEAVE_ROOM
+ */
+export async function LEAVE_ROOM(
+  socket: Socket,
+  io: Server,
+  { USER, ROOM_CODE }: LeaveRoomData
+) {
   const roomKey = `room:${ROOM_CODE}`;
   const playerKey = `player:${USER.UID}`;
 
@@ -51,7 +60,7 @@ export async function LEAVE_ROOM({ USER, ROOM_CODE }: LeaveRoomData) {
     await redis.del(roomKey);
     socket.leave(ROOM_CODE);
     logger.info(
-      `🗑️ Room ${chalk.cyanBright(`"${ROOM_CODE}"`)} deleted. Last owner was ${chalk.green(`"${USER.NAME}"`)}.`
+      `🗑️  Room ${chalk.cyanBright(`"${ROOM_CODE}"`)} deleted. Last owner was ${chalk.green(`"${USER.NAME}"`)}.`
     );
     return;
   }

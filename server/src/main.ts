@@ -13,41 +13,42 @@ const http = createServer(app);
 const io = new Server(http);
 
 app.get("*", (_, res) => {
-  res.status(200).json({
-    status: true,
-    date: new Date(),
-  });
+    res.status(200).json({
+        status: true,
+        date: new Date(),
+    });
 });
 
 io.on("connection", (socket: Socket) => {
-  logger.info(`Client connected: ${socket.id}`);
 
-  socket.on("ROOM", ROOM);
+    logger.info(`Client connected: ${socket.id}`);
 
-  socket.on("LEAVE_ROOM", LEAVE_ROOM);
+    socket.on("ROOM", (data) => ROOM(socket, io, data));
+
+    socket.on("LEAVE_ROOM", (data) => LEAVE_ROOM(socket, io, data));
 
     socket.on("disconnect", async () => {
-    logger.info(`Client disconnected: ${socket.id}`);
+        logger.info(`Client disconnected: ${socket.id}`);
 
-    const USER = socket.data.USER;
-    const ROOM_CODE = socket.data.ROOM_CODE;
+        const USER = socket.data.USER;
+        const ROOM_CODE = socket.data.ROOM_CODE;
 
-    if (USER && ROOM_CODE) {
-      try {
-        await LEAVE_ROOM({ USER, ROOM_CODE }).catch(err =>
-          logger.error(`Error leaving room on disconnect: ${err}`)
-        );
-      } catch (err) {
-        logger.error(`Error handling disconnect: ${err}`);
-      }
-    }
-  });
+        if (USER && ROOM_CODE) {
+            try {
+                await LEAVE_ROOM(socket, io, { USER, ROOM_CODE }).catch(err =>
+                    logger.error(`Error leaving room on disconnect: ${err}`)
+                );
+            } catch (err) {
+                logger.error(`Error handling disconnect: ${err}`);
+            }
+        }
+    });
 
 
 });
 
 http.listen(Number(process.env.PORT) || 3000, process.env.HOST ?? "localhost", () => {
-  logger.info(
-    `Socket running on: ${colors.bold.green(`http://${process.env.HOST ?? "localhost"}:${process.env.PORT ?? 3000}`)}`
-  );
+    logger.info(
+        `Socket running on: ${colors.bold.green(`http://${process.env.HOST ?? "localhost"}:${process.env.PORT ?? 3000}`)}`
+    );
 });
