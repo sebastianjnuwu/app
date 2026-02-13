@@ -57,6 +57,7 @@ const translation = {
         join: "O jogador <b>{{room_player}}</b> entrou na sala.",
         leave: "O jogador <b>{{room_player}}</b> saiu da sala.",
         rejoin: "O jogador <b>{{room_player}}</b> reentrou na sala.",
+        owner_changed: "Você agora é o dono da sala!",
       },
       NO_ROOM_PLAYER: "Parece que você não definiu seu nickname!",
       NO_ROOM_TIME: "Parece que você não definiu o tempo da sala!",

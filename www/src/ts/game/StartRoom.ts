@@ -18,7 +18,8 @@ const decode = (encoded: string) => {
   }
 };
 
-const DATA = localStorage.getItem("USER") ? decode(localStorage.getItem("USER")!) : null;
+const userItem = localStorage.getItem("USER");
+const DATA = userItem ? decode(userItem) : null;
 
 const ROOM_NAME = $("#room_name") as JQuery<HTMLInputElement>;
 
@@ -33,7 +34,8 @@ if (DATA) {
   ROOM_NAME.prop("readonly", false);
 }
 
-const DECODE_PLAYER = localStorage.getItem("PLAYER_INFO") ? decode(localStorage.getItem("PLAYER_INFO")!) : null;
+const playerItem = localStorage.getItem("PLAYER_INFO");
+const DECODE_PLAYER = playerItem ? decode(playerItem) : null;
 
 if (DECODE_PLAYER && typeof DECODE_PLAYER === "object") {
   ROOM_NAME.val(DECODE_PLAYER.NAME.substring(0, 14));

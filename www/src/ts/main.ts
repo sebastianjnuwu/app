@@ -8,8 +8,8 @@ import "@scss/ui.scss";
 import "@ts/app/VersionUpdate";
 import $ from "jquery";
 
-import "@ts/game/StartRoom";
-import "@ts/game/UpdateRoom";
+import "@ts/game/StartRoom"; // Entrar na sala / Criar sala
+import "@ts/game/UpdateRoom"; // Atualização de sala (entrada, saída, reentrada)
 import "@ts/game/LeaveRoom";
 
 // Função para serializar objetos no localStorage
