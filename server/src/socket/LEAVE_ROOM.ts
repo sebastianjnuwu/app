@@ -53,7 +53,7 @@ export async function LEAVE_ROOM(
 
     // Remove jogador da sala
     PLAYER.ROOM_ID = "";
-    await redis.hmset(playerKey, PLAYER);
+    await redis.hset(playerKey, PLAYER);
 
     const players: string[] = JSON.parse(ROOM.PLAYERS || "[]");
 
@@ -85,7 +85,7 @@ export async function LEAVE_ROOM(
     if (ROOM.OWNER_ID === sanitizedUID) {
       const NEW_OWNER_UID = remainingPlayers[0];
       ROOM.OWNER_ID = NEW_OWNER_UID;
-      await redis.hmset(roomKey, ROOM);
+      await redis.hset(roomKey, ROOM);
 
       const NEW_OWNER = await redis.hgetall(`player:${NEW_OWNER_UID}`);
       const playerResults = await Promise.allSettled(
@@ -115,7 +115,7 @@ export async function LEAVE_ROOM(
         `👑 Room ${chalk.cyanBright(`"${ROOM_CODE}"`)} ownership changed: ${chalk.red(`"${USER.NAME}"`)} ➜ ${chalk.green(`"${NEW_OWNER.NAME}"`)}`,
       );
     } else {
-      await redis.hmset(roomKey, ROOM);
+      await redis.hset(roomKey, ROOM);
     }
 
     socket.leave(ROOM_CODE);

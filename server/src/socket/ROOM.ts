@@ -74,7 +74,7 @@ export async function ROOM(
         IS_ORIGINAL: PLAYER.ORIGINAL.toString(),
         ROOM_ID: "",
       };
-      await redis.hmset(playerKey, PLAYER_IN_DB);
+      await redis.hset(playerKey, PLAYER_IN_DB);
     }
 
     // --- ROOM ---
@@ -107,7 +107,7 @@ export async function ROOM(
       PLAYERS: JSON.stringify([sanitizedUID]),
     };
 
-    await redis.hmset(roomKey, ROOM);
+    await redis.hset(roomKey, ROOM);
 
     socket.join(CODE);
 
@@ -152,12 +152,12 @@ export async function ROOM(
   PLAYER_IN_DB.NAME = PLAYER.NAME.substring(0, 14); // limite de 14 caracteres
   PLAYER_IN_DB.PHOTO_URL = PLAYER.PHOTO_URL;
   PLAYER_IN_DB.IS_ORIGINAL = PLAYER.ORIGINAL.toString();
-  await redis.hmset(playerKey, PLAYER_IN_DB);
+  await redis.hset(playerKey, PLAYER_IN_DB);
 
   // Atualiza lista de jogadores na sala
   players.push(sanitizedUID);
   ROOM.PLAYERS = JSON.stringify(players);
-  await redis.hmset(roomKey, ROOM);
+  await redis.hset(roomKey, ROOM);
 
   // Reconstrói objeto ROOM completo
   const playerResults = await Promise.allSettled(

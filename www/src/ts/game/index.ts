@@ -5,7 +5,7 @@ import { socket } from "@ts/socket";
 import { Modal } from "bootstrap";
 import $ from "jquery";
 
-const isSoundEnabled = () => localStorage.soundEnabled !== "false";
+const isSoundEnabled = () => localStorage.getItem("soundEnabled") !== "false";
 
 //@ts-ignore
 const $room_modal = new Modal($("#room_modal"));
@@ -105,7 +105,7 @@ if (localStorage.getItem("name")) {
 $("#form_button").on("click", () => {
   const option = $('input[name="option_game"]:checked').val() as string;
   const roomPlayer = $("#room_name").val() as string;
-  const playerLimit = $("#player_limit").val() as number;
+  const playerLimit = Number($("#player_limit").val());
   const roomCode = $("#room_code").val() as string;
   const roomPublic = $("#room_public").prop("checked") as boolean;
   const roomTime = $("#room_time").val() as string | null;
@@ -264,7 +264,7 @@ $("#leave_room").on("click", () => {
     token,
   });
 
-  localStorage.setItem("code", null);
+  localStorage.removeItem("code");
 
   $("ui").hide();
   $("#start-screen").show();
@@ -318,7 +318,7 @@ socket.on("game_end", ({ ranking }: { ranking: any[] }) => {
 
   cookies = 0;
   localStorage.setItem("cookie", cookies.toString());
-  localStorage.setItem("code", null);
+  localStorage.removeItem("code");
 
   $(".room-code").hide();
   $("#game").hide();
