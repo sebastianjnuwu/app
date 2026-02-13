@@ -64,6 +64,43 @@ export async function START_GAME(
     ROOM.STATE = RoomState.IN_GAME;
     await redis.hset(roomKey, ROOM);
 
+    // Reconstruir ROOM completo para emitir
+    const playerResults = await Promise.allSettled(
+      players.map(async (uid) => {
+        const p = await redis.hgetall(`player:${uid}`);
+        return {
+          UID: p.UID || "",
+          NAME: p.NAME || "",
+          PHOTO_URL: p.PHOTO_URL || "",
+        };
+      }),
+    );
+
+    const safePlayers = playerResults
+      .filter(
+        (result): result is PromiseFulfilledResult<{ UID: string; NAME: string; PHOTO_URL: string }> =>
+          result.status === "fulfilled",
+      )
+      .map((result) => result.value);
+
+    const ownerData = await redis.hgetall(`player:${ROOM.OWNER_ID}`);
+
+    const ROOM_OBJ = {
+      ...ROOM,
+      OWNER: {
+        UID: ownerData.UID || "",
+        NAME: ownerData.NAME || "",
+        PHOTO_URL: ownerData.PHOTO_URL || "",
+      },
+      PLAYERS: safePlayers,
+    };
+
+    // Notificar todos que o jogo está iniciando
+    io.in(ROOM_CODE).emit("UPDATE_ROOM", {
+      TYPE: "GAME_STARTING",
+      ROOM: ROOM_OBJ,
+    });
+
     logger.info(
       `🎮 Game starting in room ${chalk.cyan(ROOM_CODE)} by ${chalk.green(USER.NAME)}`,
     );

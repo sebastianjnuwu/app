@@ -115,7 +115,35 @@ export async function LEAVE_ROOM(
         `👑 Room ${chalk.cyanBright(`"${ROOM_CODE}"`)} ownership changed: ${chalk.red(`"${USER.NAME}"`)} ➜ ${chalk.green(`"${NEW_OWNER.NAME}"`)}`,
       );
     } else {
+      // Dono não mudou, mas precisa atualizar a lista de jogadores
       await redis.hset(roomKey, ROOM);
+
+      const playerResults = await Promise.allSettled(
+        remainingPlayers.map(async (uid) =>
+          safePlayer(await redis.hgetall(`player:${uid}`)),
+        ),
+      );
+
+      const safePlayers = playerResults
+        .filter(
+          (result): result is PromiseFulfilledResult<ReturnType<typeof safePlayer>> =>
+            result.status === "fulfilled",
+        )
+        .map((result) => result.value);
+
+      const ownerData = await redis.hgetall(`player:${ROOM.OWNER_ID}`);
+
+      const ROOM_OBJ = {
+        ...ROOM,
+        OWNER: safePlayer(ownerData),
+        PLAYERS: safePlayers,
+      };
+
+      io.in(ROOM_CODE).emit("UPDATE_ROOM", {
+        TYPE: "LEAVE",
+        PLAYER: safePlayer(PLAYER),
+        ROOM: ROOM_OBJ,
+      });
     }
 
     socket.leave(ROOM_CODE);

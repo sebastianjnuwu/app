@@ -27,6 +27,9 @@ const translation = {
       DUPLICATE_NAME: "Já existe um jogador com esse nome nesta sala.",
       NO_PUBLIC_ROOMS_AVAILABLE: "Não há salas públicas disponíveis no momento.",
       ROOM_NOT_FOUND: "Sala não encontrada.",
+      PLAYER_NOT_IN_ROOM: "Você não está mais nesta sala.",
+      DATA_NOT_FOUND: "Dados da sala ou jogador não encontrados.",
+      SERVER_ERROR: "Erro no servidor. Tente novamente.",
     },
     game: {
       nicknameLabel: "Nome do Jogador",

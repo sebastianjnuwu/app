@@ -8,6 +8,7 @@ import { START_GAME } from "@socket/START_GAME";
 import { UPDATE_COOKIES } from "@socket/UPDATE_COOKIES";
 import { JOIN_RANDOM_ROOM } from "@socket/JOIN_RANDOM_ROOM";
 import { UpdateRoomType } from "./constants/constants";
+import redis from "@database/redis";
 import express from "express";
 import colors from "colors";
 import "@database/redis";
@@ -45,17 +46,87 @@ io.on("connection", (socket: Socket) => {
         });
       }
 
-      socket.data.USER = USER;
+      // Sanitizar UID
+      const sanitizedUID = String(USER.UID).replace(/[^a-zA-Z0-9_-]/g, "");
+      if (!sanitizedUID) {
+        return socket.emit("ERR_SOCKET", {
+          ERR_SOCKET: "app.error.INVALID_PLAYER_UID",
+        });
+      }
+
+      // Recuperar dados do Redis
+      const playerKey = `player:${sanitizedUID}`;
+      const roomKey = `room:${ROOM_CODE}`;
+
+      const playerData = await redis.hgetall(playerKey);
+      const roomData = await redis.hgetall(roomKey);
+
+      if (
+        !playerData ||
+        !roomData ||
+        Object.keys(playerData).length === 0 ||
+        Object.keys(roomData).length === 0
+      ) {
+        return socket.emit("ERR_SOCKET", {
+          ERR_SOCKET: "app.error.ROOM_NOT_FOUND",
+        });
+      }
+
+      // Verificar se o jogador está na sala
+      const players: string[] = JSON.parse(roomData.PLAYERS || "[]");
+      if (!players.includes(sanitizedUID)) {
+        return socket.emit("ERR_SOCKET", {
+          ERR_SOCKET: "app.error.PLAYER_NOT_IN_ROOM",
+        });
+      }
+
+      socket.data.USER = playerData;
       socket.data.ROOM_CODE = ROOM_CODE;
       socket.join(ROOM_CODE);
 
+      // Reconstruir ROOM completo com todos os jogadores
+      const playerResults = await Promise.allSettled(
+        players.map(async (uid) => {
+          const p = await redis.hgetall(`player:${uid}`);
+          return {
+            UID: p.UID || "",
+            NAME: p.NAME || "",
+            PHOTO_URL: p.PHOTO_URL || "",
+          };
+        }),
+      );
+
+      const safePlayers = playerResults
+        .filter(
+          (result): result is PromiseFulfilledResult<{ UID: string; NAME: string; PHOTO_URL: string }> =>
+            result.status === "fulfilled",
+        )
+        .map((result) => result.value);
+
+      const ownerData = await redis.hgetall(`player:${roomData.OWNER_ID}`);
+
+      const ROOM_OBJ = {
+        ...roomData,
+        OWNER: {
+          UID: ownerData.UID || "",
+          NAME: ownerData.NAME || "",
+          PHOTO_URL: ownerData.PHOTO_URL || "",
+        },
+        PLAYERS: safePlayers,
+      };
+
       io.in(ROOM_CODE).emit("UPDATE_ROOM", {
         TYPE: UpdateRoomType.REJOIN,
-        PLAYER: USER,
+        PLAYER: {
+          UID: playerData.UID || "",
+          NAME: playerData.NAME || "",
+          PHOTO_URL: playerData.PHOTO_URL || "",
+        },
+        ROOM: ROOM_OBJ,
       });
 
       logger.info(
-        `👋 Player ${colors.green(USER.NAME)} rejoined room ${colors.cyan(ROOM_CODE)}.`,
+        `👋 Player ${colors.green(playerData.NAME)} rejoined room ${colors.cyan(ROOM_CODE)}.`,
       );
     } catch (err) {
       logger.error(`Error on rejoin_room: ${err}`);
