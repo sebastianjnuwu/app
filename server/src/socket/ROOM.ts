@@ -144,6 +144,25 @@ export async function ROOM(
     return socket.emit("ERR_SOCKET", { ERR_SOCKET: "app.error.PLAYER_EXISTS" });
   }
 
+  // Verificar nome duplicado
+  const truncatedName = PLAYER.NAME.substring(0, 14);
+  const playerNames = await Promise.allSettled(
+    players.map(async (uid) => {
+      const p = await redis.hgetall(`player:${uid}`);
+      return p.NAME;
+    }),
+  );
+
+  const existingNames = playerNames
+    .filter((result) => result.status === "fulfilled")
+    .map((result: any) => result.value);
+
+  if (existingNames.some((name) => name === truncatedName)) {
+    return socket.emit("ERR_SOCKET", {
+      ERR_SOCKET: "app.error.DUPLICATE_NAME",
+    });
+  }
+
   // --- Entrar na sala ---
   socket.join(CODE);
 

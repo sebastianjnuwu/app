@@ -94,7 +94,7 @@ $("#create_room").on("click", () => {
   if (OPTION === "room_random") {
     $room_modal.hide();
 
-    socket.emit("join_random_room", {
+    socket.emit("JOIN_RANDOM_ROOM", {
       PLAYER: { ...PLAYER_INFO },
     });
 

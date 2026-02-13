@@ -24,6 +24,8 @@ const translation = {
       ROOM_STATE_ERROR_IN_GAME: "A partida nesta sala já começou.",
       ROOM_STATE_ERROR_FINISHED: "A partida nesta sala ja terminou.",
       PLAYER_EXISTS: "Ja existe um jogador com seu nome nesta sala.",
+      DUPLICATE_NAME: "Já existe um jogador com esse nome nesta sala.",
+      NO_PUBLIC_ROOMS_AVAILABLE: "Não há salas públicas disponíveis no momento.",
       ROOM_NOT_FOUND: "Sala não encontrada.",
     },
     game: {

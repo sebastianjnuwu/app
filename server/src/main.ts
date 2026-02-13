@@ -6,6 +6,7 @@ import { ROOM } from "@socket/ROOM";
 import { LEAVE_ROOM } from "@socket/LEAVE_ROOM";
 import { START_GAME } from "@socket/START_GAME";
 import { UPDATE_COOKIES } from "@socket/UPDATE_COOKIES";
+import { JOIN_RANDOM_ROOM } from "@socket/JOIN_RANDOM_ROOM";
 import { UpdateRoomType } from "./constants/constants";
 import express from "express";
 import colors from "colors";
@@ -66,6 +67,9 @@ io.on("connection", (socket: Socket) => {
 
   // Sair da sala
   socket.on("LEAVE_ROOM", (data) => LEAVE_ROOM(socket, io, data));
+
+  // Entrar em sala aleatória
+  socket.on("JOIN_RANDOM_ROOM", (data) => JOIN_RANDOM_ROOM(socket, io, data));
 
   // Iniciar jogo
   socket.on("START_GAME", (data) => START_GAME(socket, io, data));
