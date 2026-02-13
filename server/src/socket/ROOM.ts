@@ -39,14 +39,20 @@ export async function ROOM(
 ) {
   try {
     // Input validation
-    if (!PLAYER || !PLAYER.UID || !PLAYER.NAME) {
+    if (!PLAYER) {
       return socket.emit("ERR_SOCKET", {
         ERR_SOCKET: "app.error.INVALID_PLAYER_DATA",
       });
     }
 
-    // Sanitize inputs
-    const sanitizedUID = String(PLAYER.UID).replace(/[^a-zA-Z0-9-]/g, "");
+    if (!PLAYER.UID || !PLAYER.NAME) {
+      return socket.emit("ERR_SOCKET", {
+        ERR_SOCKET: "app.error.INVALID_PLAYER_DATA",
+      });
+    }
+
+    // Sanitize inputs - allow alphanumeric, hyphens, and underscores for Firebase UIDs
+    const sanitizedUID = String(PLAYER.UID).replace(/[^a-zA-Z0-9_-]/g, "");
     if (sanitizedUID.length === 0) {
       return socket.emit("ERR_SOCKET", {
         ERR_SOCKET: "app.error.INVALID_PLAYER_UID",
@@ -154,19 +160,22 @@ export async function ROOM(
   await redis.hmset(roomKey, ROOM);
 
   // Reconstrói objeto ROOM completo
+  const playerResults = await Promise.allSettled(
+    players.map(async (uid) => {
+      const p = await redis.hgetall(`player:${uid}`);
+      return safePlayer(p);
+    }),
+  );
+
   const ROOM_OBJ = {
     ...ROOM,
     OWNER: safePlayer(await redis.hgetall(`player:${ROOM.OWNER_ID}`)),
-    PLAYERS: (
-      await Promise.allSettled(
-        players.map(async (uid) => {
-          const p = await redis.hgetall(`player:${uid}`);
-          return safePlayer(p);
-        }),
+    PLAYERS: playerResults
+      .filter(
+        (result): result is PromiseFulfilledResult<ReturnType<typeof safePlayer>> =>
+          result.status === "fulfilled",
       )
-    )
-      .filter((result) => result.status === "fulfilled")
-      .map((result: any) => result.value),
+      .map((result) => result.value),
   };
 
   io.in(CODE).emit("UPDATE_ROOM", {

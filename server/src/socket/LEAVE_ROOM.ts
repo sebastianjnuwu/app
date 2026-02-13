@@ -31,8 +31,8 @@ export async function LEAVE_ROOM(
       return;
     }
 
-    // Sanitize inputs
-    const sanitizedUID = String(USER.UID).replace(/[^a-zA-Z0-9-]/g, "");
+    // Sanitize inputs - allow alphanumeric, hyphens, and underscores for Firebase UIDs
+    const sanitizedUID = String(USER.UID).replace(/[^a-zA-Z0-9_-]/g, "");
     if (sanitizedUID.length === 0) {
       return;
     }
@@ -88,18 +88,21 @@ export async function LEAVE_ROOM(
       await redis.hmset(roomKey, ROOM);
 
       const NEW_OWNER = await redis.hgetall(`player:${NEW_OWNER_UID}`);
+      const playerResults = await Promise.allSettled(
+        remainingPlayers.map(async (uid) =>
+          safePlayer(await redis.hgetall(`player:${uid}`)),
+        ),
+      );
+
       const ROOM_OBJ = {
         ...ROOM,
         OWNER: safePlayer(NEW_OWNER),
-        PLAYERS: (
-          await Promise.allSettled(
-            remainingPlayers.map(async (uid) =>
-              safePlayer(await redis.hgetall(`player:${uid}`)),
-            ),
+        PLAYERS: playerResults
+          .filter(
+            (result): result is PromiseFulfilledResult<ReturnType<typeof safePlayer>> =>
+              result.status === "fulfilled",
           )
-        )
-          .filter((result) => result.status === "fulfilled")
-          .map((result: any) => result.value),
+          .map((result) => result.value),
       };
 
       io.in(ROOM_CODE).emit("UPDATE_ROOM", {
