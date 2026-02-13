@@ -41,7 +41,8 @@ $(() => {
   // Efeitos sonoros
   $(document).on("click", ".SOUND_EFFECT", () => {
     const clickSong = document.getElementById("CLICK_SONG") as HTMLAudioElement;
-    if (localStorage.getItem("SoundEnabled") !== "false" && clickSong) clickSong.play();
+    if (localStorage.getItem("SoundEnabled") !== "false" && clickSong)
+      clickSong.play();
   });
 
   // Overlay de cookies
@@ -62,7 +63,9 @@ $(() => {
   });
 
   // Status do login
-  const UserStatus = localStorage.getItem("USER") ? "app.login.logout" : "app.login.google";
+  const UserStatus = localStorage.getItem("USER")
+    ? "app.login.logout"
+    : "app.login.google";
   $("#google").text(lang(UserStatus));
 
   $(".google").on("click", async () => {
@@ -91,7 +94,9 @@ $(() => {
       localStorage.setItem(enabledKey, target.checked.toString());
 
       if (id === "toggleMusic") {
-        const musicElem = document.getElementById("MUSIC_SONG") as HTMLAudioElement;
+        const musicElem = document.getElementById(
+          "MUSIC_SONG",
+        ) as HTMLAudioElement;
         if (musicElem) {
           target.checked ? musicElem.play() : musicElem.pause();
         }

@@ -1,4 +1,3 @@
-
 :root {
   --layout: #fffbde;
   --layout-dark: #fbf0c1;
@@ -126,7 +125,7 @@ ui .statistic td .value {
     transform: translateY(-20px);
     opacity: 0;
   }
-  
+
   100% {
     transform: translateY(0);
     opacity: 1;
@@ -185,12 +184,11 @@ ui .statistic td .value {
 }
 
 @keyframes pulse {
-  
   0%,
   100% {
     transform: scale(1);
   }
-  
+
   50% {
     transform: scale(1.2);
   }
@@ -288,7 +286,7 @@ ui .statistic td .value {
   0% {
     transform: scale(1.2);
   }
-  
+
   100% {
     transform: scale(1);
   }
@@ -321,7 +319,7 @@ ui .statistic td .value {
     transform: translateY(100px);
     opacity: 0;
   }
-  
+
   100% {
     transform: translateY(0);
     opacity: 1;
@@ -329,12 +327,11 @@ ui .statistic td .value {
 }
 
 @keyframes bounce {
-  
   0%,
   100% {
     transform: translateY(0);
   }
-  
+
   50% {
     transform: translateY(-10px);
   }
@@ -410,9 +407,6 @@ ui .statistic td .value {
   box-shadow: 0 0 5px var(--layout-dark);
 }
 
-
-
-
 .block {
   font-family: "Minecraftia", cursive;
   font-size: 5rem;
@@ -421,12 +415,11 @@ ui .statistic td .value {
   font-weight: bold;
 }
 
-
 @keyframes slideInUp {
   from {
     transform: translateY(100%);
   }
-  
+
   to {
     transform: translateY(0);
   }
@@ -436,7 +429,7 @@ ui .statistic td .value {
   from {
     transform: translateY(0);
   }
-  
+
   to {
     transform: translateY(100%);
   }
@@ -447,7 +440,7 @@ ui .statistic td .value {
     opacity: 0;
     transform: translateY(20px);
   }
-  
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -455,32 +448,30 @@ ui .statistic td .value {
 }
 
 @keyframes wiggle {
-
   0%,
   100% {
     transform: translateX(0);
   }
-  
+
   25% {
     transform: translateX(-4px);
   }
-  
+
   50% {
     transform: translateX(4px);
   }
-  
+
   75% {
     transform: translateX(-2px);
   }
 }
 
 @keyframes pulseZoom {
-
   0%,
   100% {
     transform: scale(1);
   }
-  
+
   50% {
     transform: scale(1.05);
   }
@@ -495,11 +486,19 @@ ui .statistic td .value {
 }
 
 @keyframes fadeOut {
-  from { opacity: 1; }
-  to { opacity: 0; }
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

@@ -2,14 +2,14 @@ import { showMessage } from "../app/showMessage";
 import { socket } from "../app/Socket";
 import { lang } from "../../locales/main";
 import { Modal } from "bootstrap";
-import { v4 } from 'uuid';
+import { v4 } from "uuid";
 import $ from "jquery";
 
 const $room_modal = new Modal($("#room_modal")[0] as Element);
 
 const encode = (data: object) =>
   btoa(unescape(encodeURIComponent(JSON.stringify(data))));
-  
+
 const decode = (encoded: string) => {
   try {
     return JSON.parse(decodeURIComponent(escape(atob(encoded))));
@@ -40,7 +40,7 @@ const DECODE_PLAYER = playerItem ? decode(playerItem) : null;
 if (DECODE_PLAYER && typeof DECODE_PLAYER === "object") {
   ROOM_NAME.val(DECODE_PLAYER.NAME.substring(0, 14));
   ROOM_NAME.prop("readonly", true);
-};
+}
 
 $('input[name="option_game"]').on("change", () => {
   const option = $('input[name="option_game"]:checked').val() as string;
@@ -65,21 +65,19 @@ $('input[name="option_game"]').on("change", () => {
   }
 });
 
-
 $("#create_room").on("click", () => {
-  
   const OPTION = $('input[name="option_game"]:checked').val() as string;
-  
+
   const ROOM_PLAYER = ROOM_NAME.val() as string;
-  
+
   const ROOM_PLAYER_LIMIT = $("#player_limit").val() as number;
-  
+
   const ROOM_CODE = $("#room_code").val() as string;
-  
+
   const ROOM_PUBLIC = $("#room_public").prop("checked") as boolean;
-  
+
   const ROOM_TIME = $("#room_time").val() as string | null;
-  
+
   const PLAYER_INFO = {
     ORIGINAL: !!DATA,
     UID: DATA?.uid || RANDOM_UID,
@@ -91,17 +89,17 @@ $("#create_room").on("click", () => {
     return showMessage(
       `<i class="fas fa-exclamation-circle"></i> ${lang("app.room.NO_ROOM_PLAYER")}`,
     );
-  };
+  }
 
   if (OPTION === "room_random") {
     $room_modal.hide();
 
     socket.emit("join_random_room", {
-      PLAYER: { ...PLAYER_INFO }
+      PLAYER: { ...PLAYER_INFO },
     });
 
     return;
-  };
+  }
 
   if (OPTION === "create") {
     if (!ROOM_TIME) {
@@ -129,24 +127,24 @@ $("#create_room").on("click", () => {
         `<i class="fas fa-exclamation-circle"></i> ${lang("app.room.ROOM_LIMIT_MAX")}`,
       );
     }
-  };
+  }
 
   if (OPTION === "join" && !ROOM_CODE) {
     return showMessage(
       `<i class="fas fa-exclamation-circle"></i> ${lang("app.room.NO_ROOM_CODE")}`,
     );
-  };
+  }
 
   if (!socket.connected) {
     return showMessage(
       `<i class="fas fa-exclamation-circle"></i> ${lang("app.room.NO_CONNECTED")}`,
     );
-  };
+  }
 
   $room_modal.hide();
 
   localStorage.setItem("PLAYER_INFO", encode(PLAYER_INFO));
-  
+
   socket.emit("ROOM", {
     PLAYER: { ...PLAYER_INFO },
     ROOM_PUBLIC,
@@ -154,5 +152,4 @@ $("#create_room").on("click", () => {
     ROOM_PLAYER_LIMIT,
     ROOM_TIME,
   });
-  
 });

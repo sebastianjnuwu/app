@@ -10,15 +10,13 @@ const decode = (encoded: string) => {
 };
 
 $("#leave_room_game").on("click", () => {
-
   socket.emit("LEAVE_ROOM", {
     USER: decode(localStorage.getItem("PLAYER_INFO")),
-    ROOM_CODE: localStorage.getItem("CODE")
+    ROOM_CODE: localStorage.getItem("CODE"),
   });
- 
+
   $("#GAMEPLAY").attr("hidden", true);
-  $("#home_menu").attr("hidden", false); 
-  
+  $("#home_menu").attr("hidden", false);
+
   localStorage.removeItem("CODE");
-    
 });

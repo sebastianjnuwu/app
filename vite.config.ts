@@ -32,6 +32,6 @@ export default defineConfig({
     host: process.env.VITE_WEB_HOST ?? ("localhost" as string),
     port: +(process.env.VITE_WEB_PORT ?? 8080),
     cors: true,
-    allowedHosts: ["cookie.squareweb.app"]
+    allowedHosts: ["cookie.squareweb.app"],
   },
 });

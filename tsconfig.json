@@ -1,36 +1,21 @@
 {
-    "compilerOptions": {
-        "target": "ESNext",
-        "module": "ESNext",
-        "lib": [
-            "ESNext",
-            "DOM"
-        ],
-        "outDir": "build",
-        "strict": true,
-        "isolatedModules": true,
-        "esModuleInterop": true,
-        "noEmit": true,
-        "skipLibCheck": true,
-        "baseUrl": "./src",
-        "paths": {
-            "@ts/*": [
-                "ts/*"
-            ],
-            "@language/*": [
-                "locales/*"
-            ],
-            "@scss/*": [
-                "styles/scss/*"
-            ]
-        }
-    },
-    "include": [
-        "src/**/*",
-        "types/**/*"
-    ],
-    "exclude": [
-        "node_modules",
-        "build"
-    ]
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "outDir": "build",
+    "strict": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@ts/*": ["ts/*"],
+      "@language/*": ["locales/*"],
+      "@scss/*": ["styles/scss/*"]
+    }
+  },
+  "include": ["src/**/*", "types/**/*"],
+  "exclude": ["node_modules", "build"]
 }

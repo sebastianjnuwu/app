@@ -12,8 +12,7 @@ import $ from "jquery";
  * - Auto-dismisses after the given duration.
  * - Can also be manually dismissed.
  */
-function showMessage(message: string, duration: number = 5000): void {
-  
+function showMessage(message: string, duration = 5000): void {
   const $message = $("#message");
   if (!$message.length) return;
 

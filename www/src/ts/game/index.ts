@@ -1,5 +1,5 @@
 import { showMessage } from "@ts/game/toast";
-import { EffectSong, JoinSong } from "@ts/game/sound"
+import { EffectSong, JoinSong } from "@ts/game/sound";
 import { lang } from "@language/main";
 import { socket } from "@ts/socket";
 import { Modal } from "bootstrap";
@@ -14,10 +14,10 @@ const $room_modal = new Modal($("#room_modal"));
 let cookies: number = Number(localStorage.getItem("cookie")) || 0;
 let token = "";
 function main() {
-  if (localStorage.getItem("tmp-token")) token = localStorage.getItem("tmp-token");
-  
+  if (localStorage.getItem("tmp-token"))
+    token = localStorage.getItem("tmp-token");
 }
-main()
+main();
 if (cookies < 0) {
   cookies = 0;
   localStorage.setItem("cookie", cookies.toString());
@@ -90,10 +90,11 @@ $(".cookie").on("click", function (e) {
 });
 
 // Rejoin room if necessary
-if (token) socket.emit("rejoin_room", {
-  token: token,
-  room_code: localStorage.getItem("code"),
-});
+if (token)
+  socket.emit("rejoin_room", {
+    token: token,
+    room_code: localStorage.getItem("code"),
+  });
 
 // Set room name if available
 if (localStorage.getItem("name")) {
@@ -193,56 +194,68 @@ socket.on(
   },
 );
 // Handle token updates
+socket.on("token", (data: { token: string }) => {
+  localStorage.setItem("tmp-token", data.token);
+  token = data.token;
+});
+
 socket.on(
-  "token",
-  (data: { token: string }) => {
-    localStorage.setItem("tmp-token", data.token)
-    token = data.token
+  "update_room",
+  ({
+    type,
+    room_player,
+    room,
+  }: {
+    type?: "JOIN" | "LEAVE" | "REJOIN";
+    room_player: string;
+    room: any;
+  }) => {
+    $("#start-screen").hide();
+    $("ui").show();
+
+    if (room.state === "waiting") {
+      $("#splash-screen").hide();
+      $(".waiting-room").show();
+      $(".room-code").show();
+    } else if (room.state === "in_game") {
+      $("#splash-screen").hide();
+      $(".waiting-room").hide();
+      $("#game").show();
+    }
+
+    if (room.owner === localStorage.getItem("name")) {
+      $("#start_game").show();
+    } else {
+      $("#start_game").hide();
+    }
+
+    localStorage.setItem("code", room.code);
+
+    $("#current_code").text(room.code);
+    $("#online").text(room.players.length);
+
+    switch (type) {
+      case "JOIN":
+        if (isSoundEnabled()) JoinSong.play();
+        showMessage(
+          `<i class="fas fa-sign-in-alt"></i> ${lang("room.message.join", { room_player })}`,
+        );
+        break;
+      case "LEAVE":
+        if (isSoundEnabled()) JoinSong.play();
+        showMessage(
+          `<i class="fas fa-sign-out-alt"></i> ${lang("room.message.leave", { room_player })}`,
+        );
+        break;
+      case "REJOIN":
+        if (isSoundEnabled()) JoinSong.play();
+        showMessage(
+          `<i class="fas fa-user-clock"></i> ${lang("room.message.rejoin", { room_player })}`,
+        );
+        break;
+    }
   },
 );
-
-socket.on("update_room", ({ type, room_player, room }: { type?: "JOIN" | "LEAVE" | "REJOIN", room_player: string; room: any }) => {
-  
-  $("#start-screen").hide();
-  $("ui").show();
-
-  if (room.state === "waiting") {
-    $("#splash-screen").hide();
-    $(".waiting-room").show();
-    $(".room-code").show();
-  } else if (room.state === "in_game") {
-    $("#splash-screen").hide();
-    $(".waiting-room").hide();
-    $("#game").show();
-  }
-
-  if (room.owner === localStorage.getItem("name")) {
-    $("#start_game").show();
-  } else {
-    $("#start_game").hide();
-  }
-
-  localStorage.setItem("code", room.code);
-
-  $("#current_code").text(room.code);
-  $("#online").text(room.players.length);
-
-  switch (type) {
-    case "JOIN":
-      if (isSoundEnabled()) JoinSong.play();
-      showMessage(`<i class="fas fa-sign-in-alt"></i> ${lang("room.message.join", { room_player })}`);
-      break;
-    case "LEAVE":
-      if (isSoundEnabled()) JoinSong.play();
-      showMessage(`<i class="fas fa-sign-out-alt"></i> ${lang("room.message.leave", { room_player })}`);
-      break;
-    case "REJOIN":
-      if (isSoundEnabled()) JoinSong.play();
-      showMessage(`<i class="fas fa-user-clock"></i> ${lang("room.message.rejoin", { room_player })}`);
-      break;
-  }
-
-});
 
 // Leave room functionality
 $("#leave_room").on("click", () => {

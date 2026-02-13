@@ -14,62 +14,68 @@ const http = createServer(app);
 const io = new Server(http);
 
 app.get("*", (_, res) => {
-    res.status(200).json({
-        status: true,
-        date: new Date(),
-    });
+  res.status(200).json({
+    status: true,
+    date: new Date(),
+  });
 });
 
 io.on("connection", (socket: Socket) => {
-    logger.info(`Client connected: ${socket.id}`);
+  logger.info(`Client connected: ${socket.id}`);
 
-    // Entrar na sala / Criar sala
-    socket.on("ROOM", (data) => ROOM(socket, io, data));
+  // Entrar na sala / Criar sala
+  socket.on("ROOM", (data) => ROOM(socket, io, data));
 
-     // Reentrada em sala
-    socket.on("REJOIN_ROOM", async ({ USER, ROOM_CODE }) => {
-        try {
-            if (!USER || !ROOM_CODE) return;
-    
-            socket.data.USER = USER;
-            socket.data.ROOM_CODE = ROOM_CODE;
-            socket.join(ROOM_CODE);
+  // Reentrada em sala
+  socket.on("REJOIN_ROOM", async ({ USER, ROOM_CODE }) => {
+    try {
+      if (!USER || !ROOM_CODE) return;
 
-            io.in(ROOM_CODE).emit("UPDATE_ROOM", {
-                TYPE: "REJOIN",
-                PLAYER: USER,
-            });
+      socket.data.USER = USER;
+      socket.data.ROOM_CODE = ROOM_CODE;
+      socket.join(ROOM_CODE);
 
-            logger.info(`👋 Player ${colors.green(USER.NAME)} rejoined room ${colors.cyan(ROOM_CODE)}.`);
-        } catch (err) {
-            logger.error(`Error on rejoin_room: ${err}`);
-        }
-    });
+      io.in(ROOM_CODE).emit("UPDATE_ROOM", {
+        TYPE: "REJOIN",
+        PLAYER: USER,
+      });
 
-    // Sair da sala
-    socket.on("LEAVE_ROOM", (data) => LEAVE_ROOM(socket, io, data));
+      logger.info(
+        `👋 Player ${colors.green(USER.NAME)} rejoined room ${colors.cyan(ROOM_CODE)}.`,
+      );
+    } catch (err) {
+      logger.error(`Error on rejoin_room: ${err}`);
+    }
+  });
 
-    // Desconexão
-    socket.on("disconnect", async () => {
-        logger.info(`Client disconnected: ${socket.id}`);
+  // Sair da sala
+  socket.on("LEAVE_ROOM", (data) => LEAVE_ROOM(socket, io, data));
 
-        const USER = socket.data.USER;
-        const ROOM_CODE = socket.data.ROOM_CODE;
+  // Desconexão
+  socket.on("disconnect", async () => {
+    logger.info(`Client disconnected: ${socket.id}`);
 
-        if (USER && ROOM_CODE) {
-            try {
-                await LEAVE_ROOM(socket, io, { USER, ROOM_CODE }).catch(err =>
-                    logger.error(`Error leaving room on disconnect: ${err}`)
-                );
-            } catch (err) {
-                logger.error(`Error handling disconnect: ${err}`);
-            }
-        }
-    });
+    const USER = socket.data.USER;
+    const ROOM_CODE = socket.data.ROOM_CODE;
+
+    if (USER && ROOM_CODE) {
+      try {
+        await LEAVE_ROOM(socket, io, { USER, ROOM_CODE }).catch((err) =>
+          logger.error(`Error leaving room on disconnect: ${err}`),
+        );
+      } catch (err) {
+        logger.error(`Error handling disconnect: ${err}`);
+      }
+    }
+  });
 });
 
-http.listen(Number(process.env.PORT) || 3000, process.env.HOST ?? "localhost", () => {
+http.listen(
+  Number(process.env.PORT) || 3000,
+  process.env.HOST ?? "localhost",
+  () => {
     logger.info(
-        `Socket running on: ${colors.bold.green(`http://${process.env.HOST ?? "localhost"}:${process.env.PORT ?? 3000}`)}`
+      `Socket running on: ${colors.bold.green(`http://${process.env.HOST ?? "localhost"}:${process.env.PORT ?? 3000}`)}`,
     );
-});
+  },
+);

@@ -41,7 +41,5 @@
     "type": "git",
     "url": "https://github.com/sebastianjnuwu/cookie.git"
   },
-  "trustedDependencies": [
-    "@biomejs/biome"
-  ]
+  "trustedDependencies": ["@biomejs/biome"]
 }

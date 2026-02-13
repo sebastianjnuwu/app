@@ -84,5 +84,4 @@ if (window.Capacitor.getPlatform() !== "android") {
   $("#start_game").on("click", () => $remove_banner());
 
   $("#game_exit").on("click", () => $show_video());
-  
 }

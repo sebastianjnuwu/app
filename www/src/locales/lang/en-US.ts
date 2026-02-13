@@ -7,9 +7,10 @@ import type ptbrtranslation from "./pt-BR";
 // @lang/en-US
 const enUSTranslation = {
   cookie: {
-    message: "This website uses cookies to make your experience even sweeter. By continuing, you agree to our <a style='color: var(--text-color-dark);' data-bs-toggle='modal' data-bs-target='#policy_modal'>Privacy Policy</a> and <a style='color: var(--text-color-dark);' data-bs-toggle='modal' data-bs-target='#terms_modal'>Terms of Use</a>.",
+    message:
+      "This website uses cookies to make your experience even sweeter. By continuing, you agree to our <a style='color: var(--text-color-dark);' data-bs-toggle='modal' data-bs-target='#policy_modal'>Privacy Policy</a> and <a style='color: var(--text-color-dark);' data-bs-toggle='modal' data-bs-target='#terms_modal'>Terms of Use</a>.",
     accept: "Accept",
-    reject: "Reject"
+    reject: "Reject",
   },
   donate: {
     copy_button: "Copy {{type}}",
@@ -17,8 +18,9 @@ const enUSTranslation = {
     message: {
       pix: "Copied the Pix key <b class='selection' style='user-select: all; cursor: pointer;'>{{pix}}</b>? You're now part of the <b>Cookie Clicker Brasil</b> revolution!",
 
-      bitcoin: "Bitcoin in hand, cookie on screen! Support <b>Cookie Clicker Brasil</b> with a donation to <b class='selection' style='user-select: all; cursor: pointer;'>{{bitcoin}}</b>."
-    }
+      bitcoin:
+        "Bitcoin in hand, cookie on screen! Support <b>Cookie Clicker Brasil</b> with a donation to <b class='selection' style='user-select: all; cursor: pointer;'>{{bitcoin}}</b>.",
+    },
   },
   general: {
     cookies: "Cookies",
@@ -29,7 +31,8 @@ const enUSTranslation = {
   },
   splashScreen: {
     splashClick: "Click...",
-    policy: "<a target='_blank' data-bs-toggle='modal' data-bs-target='#terms_modal'>Terms of Use</a> and <a target='_blank' data-bs-toggle='modal' data-bs-target='#policy_modal'>Privacy Policy</a>"
+    policy:
+      "<a target='_blank' data-bs-toggle='modal' data-bs-target='#terms_modal'>Terms of Use</a> and <a target='_blank' data-bs-toggle='modal' data-bs-target='#policy_modal'>Privacy Policy</a>",
   },
   menu: {
     cookieTitle: "Cookie",
@@ -90,17 +93,17 @@ const enUSTranslation = {
   },
   settings: {
     sound: "Sound Effect",
-    music: "Music"
+    music: "Music",
   },
   terms: {
-    title: "Terms of Use"
+    title: "Terms of Use",
   },
   policy: {
-    title: "Privacy Policy"
+    title: "Privacy Policy",
   },
   update: {
     title: "New version available!",
-    download: "Download"
+    download: "Download",
   },
 } satisfies typeof ptbrtranslation;
 

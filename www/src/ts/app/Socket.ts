@@ -1,6 +1,4 @@
-import { 
-  io, type Socket 
-} from "socket.io-client";
+import { io, type Socket } from "socket.io-client";
 import { showMessage } from "../app/showMessage";
 
 const SOCKET_URL = "http://localhost:3000";

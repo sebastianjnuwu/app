@@ -21,7 +21,7 @@ i18next.init({
 
 //  define uma funçSempreão TFunction, nunca undefined
 const lang: TFunction = i18next.getFixedT(
-  window.navigator.language === "pt-BR" ? "pt-BR" : "en-US"
+  window.navigator.language === "pt-BR" ? "pt-BR" : "en-US",
 );
 
 // Atualiza elementos HTML automaticamente
