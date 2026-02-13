@@ -12,8 +12,11 @@ const socket: Socket = io(SOCKET_URL, {
   autoConnect: false,
 });
 
-socket.on("connect", () => {
-  console.log("[Socket] connected.");
-});
+// Only log in development
+if (import.meta.env.DEV) {
+  socket.on("connect", () => {
+    console.log("[Socket] connected.");
+  });
+}
 
 export { socket };

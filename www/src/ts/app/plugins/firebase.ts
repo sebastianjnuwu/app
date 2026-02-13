@@ -27,7 +27,9 @@ async function LogEvent(
   name: string,
   params?: Record<string, any>,
 ): Promise<void> {
-  console.log("[Analytics] event:", name);
+  if (import.meta.env.DEV) {
+    console.log("[Analytics] event:", name);
+  }
 
   if (Capacitor.getPlatform() === "web" && analytics) {
     await webLogEvent(analytics, name, params || {});
