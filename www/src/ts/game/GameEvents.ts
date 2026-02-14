@@ -27,8 +27,8 @@ $("#room_create_game").on("click", () => {
   socket.emit("START_GAME", {
     ROOM_CODE: roomCode,
     USER: {
-      UID: playerInfo.uid,
-      NAME: playerInfo.displayName || "Player",
+      UID: playerInfo.UID,
+      NAME: playerInfo.NAME || "Player",
     },
   });
 

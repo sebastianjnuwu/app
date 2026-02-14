@@ -80,6 +80,14 @@ socket.on(
           `<i class="fas fa-crown"></i> ${lang("app.room.message.owner_changed")}`,
         );
         break;
+
+      case "GAME_STARTING":
+        // Esconder botão de iniciar jogo
+        $("#room_create_game").attr("hidden", "true");
+        showMessage(
+          `<i class="fas fa-play"></i> ${lang("app.game.starting")}`,
+        );
+        break;
     }
   },
 );

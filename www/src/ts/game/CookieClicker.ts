@@ -41,7 +41,7 @@ const updateCookies = (): void => {
   socket.emit("UPDATE_COOKIES", {
     ROOM_CODE: roomCode,
     USER: {
-      UID: parsedPlayer.uid,
+      UID: parsedPlayer.UID,
     },
     cookies,
   });

@@ -41,6 +41,8 @@ const translation = {
       joinRoom: "Entrar em uma sala",
       roomCodeLabel: "Código da Sala",
       gameTimeLabel: "Tempo de Jogo",
+      starting: "O jogo está começando...",
+      finished: "Jogo finalizado!",
     },
     login: {
       google: "Entrar",
