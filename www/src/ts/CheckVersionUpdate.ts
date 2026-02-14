@@ -7,7 +7,7 @@ const getCurrentVersion = async (): Promise<string> => {
     const { version } = await App.getInfo();
     return version;
   } 
-  return "1.0.2";
+  return "1.0.3";
 };
 
 getCurrentVersion().then((CURRENT_VERSION) => {
