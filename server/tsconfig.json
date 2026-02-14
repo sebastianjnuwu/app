@@ -10,7 +10,8 @@
       "@database/*": ["database/*"],
       "@socket/*": ["socket/*"],
       "@functions/*": ["functions/*"],
-      "@types/*": ["types/*"]
+      "@types/*": ["types/*"],
+      "@utils/*": ["utils/*"]
     },
     "strict": true,
     "strictNullChecks": false,
