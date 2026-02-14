@@ -11,15 +11,6 @@ const enUSTranslation = {
     accept: "Accept",
     reject: "Reject"
   },
-  donate: {
-    copy_button: "Copy {{type}}",
-    back_button: "Back",
-    message: {
-      pix: "Copied the Pix key <b class='selection' style='user-select: all; cursor: pointer;'>{{pix}}</b>? You're now part of the <b>Cookie Clicker Brasil</b> revolution!",
-
-      bitcoin: "Bitcoin in hand, cookie on screen! Support <b>Cookie Clicker Brasil</b> with a donation to <b class='selection' style='user-select: all; cursor: pointer;'>{{bitcoin}}</b>."
-    }
-  },
   general: {
     cookies: "Cookies",
     seconds: "Clicks",
@@ -37,7 +28,6 @@ const enUSTranslation = {
     statistics: "Statistics",
     shop: "Shop",
     settings: "Settings",
-    donate: "Donate",
   },
   ranking: {
     rankingTitle: "Ranking",
